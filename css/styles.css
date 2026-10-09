@@ -1,0 +1,875 @@
+/* Cubo paso a paso — modo oscuro.
+   El cubo es lo único con color saturado; la interfaz se queda en tinta azulada
+   y usa un lila (que no existe en el cubo) para marcar selección y movimiento. */
+
+:root {
+  --bg: #141821;
+  --panel: #1a1f2a;
+  --raised: #242b39;
+  --line: #303849;
+  --text: #e9ebf2;
+  --muted: #9aa3b6;
+  --accent: #b9a0ff;
+  --accent-ink: #1b1436;
+  --accent-wash: rgba(185, 160, 255, 0.14);
+  --sans: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 400 15px/1.45 var(--sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+ul,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+}
+
+/* ---------------------------------------------------------------- Layout */
+
+.app {
+  display: grid;
+  height: 100dvh;
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 27vw, 400px);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'top top'
+    'stage cases'
+    'player cases';
+}
+
+/* ---------------------------------------------------------------- Barra superior */
+
+.top {
+  grid-area: top;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 20px 6px;
+  min-width: 0;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.methods {
+  display: flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--panel);
+  flex: none;
+}
+
+.methods button {
+  padding: 5px 14px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.methods button[aria-pressed='true'] {
+  background: var(--raised);
+  color: var(--text);
+}
+
+.stages {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.stages ol {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  padding: 2px;
+}
+
+/* Las etapas son una secuencia: el número y la línea que las une lo dicen. */
+.stages li {
+  display: flex;
+  align-items: center;
+}
+
+.stages li + li::before {
+  content: '';
+  width: 10px;
+  height: 1px;
+  background: var(--line);
+}
+
+.stages button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px 5px 5px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.stages .num {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  font: 700 12px/1 var(--mono);
+}
+
+.stages button:hover {
+  color: var(--text);
+}
+
+.stages button[aria-current] {
+  background: var(--accent-wash);
+  color: var(--text);
+}
+
+.stages button[aria-current] .num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.ghost {
+  flex: none;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.ghost:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- Cubo */
+
+.stage {
+  grid-area: stage;
+  position: relative;
+  min-height: 0;
+  /* Halo circular detrás del cubo: se apaga en el color de la página antes de
+     tocar el borde, así no se nota dónde acaba la zona del cubo. */
+  background: radial-gradient(circle closest-side at 50% 50%, #343d54 0%, #232a3a 45%, var(--bg) 100%);
+}
+
+.viewport {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.viewport:active {
+  cursor: grabbing;
+}
+
+.viewport:focus-visible {
+  outline-offset: -4px;
+}
+
+.viewport canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* El movimiento actual, en grande, junto al cubo. */
+.now {
+  position: absolute;
+  left: 22px;
+  bottom: 12px;
+  font: 700 clamp(44px, 7vw, 92px) / 1 var(--mono);
+  letter-spacing: -0.04em;
+  color: var(--text);
+  opacity: 0.22;
+  pointer-events: none;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.now.moving {
+  color: var(--accent);
+  opacity: 0.95;
+}
+
+.view-tools {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hint {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  color: var(--muted);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--raised);
+  color: var(--text);
+}
+
+.icon svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon:not(:disabled):hover {
+  background: var(--line);
+}
+
+/* ---------------------------------------------------------------- Algoritmo */
+
+.player {
+  grid-area: player;
+  display: grid;
+  gap: 10px;
+  padding: 8px 20px 18px;
+  min-width: 0;
+}
+
+.case-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.case-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.case-title h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.case-title p {
+  margin-top: 3px;
+  max-width: 78ch;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.cases-open {
+  display: none;
+}
+
+.variants {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.variants[hidden] {
+  display: none;
+}
+
+.variants button {
+  padding: 3px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.variants button[aria-pressed='true'] {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--accent-wash);
+}
+
+.moves {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  max-height: 96px;
+  overflow-y: auto;
+  padding: 2px;
+}
+
+.group {
+  display: flex;
+  gap: 4px;
+}
+
+.move {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background: var(--raised);
+  font: 700 17px/1 var(--mono);
+  transition: background 0.12s, color 0.12s, transform 0.12s;
+}
+
+.move:hover {
+  background: var(--line);
+}
+
+.move.done {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--muted);
+}
+
+.move.next {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.move.active {
+  background: var(--accent);
+  color: var(--accent-ink);
+  transform: translateY(-2px);
+}
+
+.note {
+  min-height: 1.45em;
+  color: var(--text);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transport {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.buttons .icon svg {
+  fill: currentColor;
+}
+
+.icon.play {
+  width: 52px;
+  height: 52px;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.icon.play:not(:disabled):hover {
+  background: #cdbaff;
+}
+
+.icon.play svg {
+  width: 24px;
+  height: 24px;
+}
+
+.icon .i-pause {
+  display: none;
+}
+
+.icon.play .i-pause {
+  stroke-width: 3.2;
+}
+
+.icon.is-playing .i-pause {
+  display: block;
+}
+
+.icon.is-playing .i-play {
+  display: none;
+}
+
+.progress {
+  min-width: 78px;
+  color: var(--muted);
+  font: 500 13px/1 var(--mono);
+}
+
+.speed,
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.speed input {
+  width: 120px;
+  accent-color: var(--accent);
+}
+
+.speed output {
+  min-width: 42px;
+  color: var(--text);
+  font: 500 13px/1 var(--mono);
+}
+
+.check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+
+/* ---------------------------------------------------------------- Casos */
+
+.cases {
+  grid-area: cases;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.cases-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+}
+
+.cases-bar h2 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.cases-close {
+  display: none;
+}
+
+.cases-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 16px 20px;
+  scrollbar-color: var(--line) transparent;
+}
+
+.stage-desc {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+#case-list h3 {
+  margin: 20px 0 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+#case-list ul {
+  display: grid;
+  gap: 6px;
+}
+
+#case-list.grid ul {
+  grid-template-columns: repeat(auto-fill, minmax(82px, 1fr));
+}
+
+.case {
+  width: 100%;
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px transparent;
+  text-align: left;
+}
+
+.case:hover {
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.case[aria-pressed='true'] {
+  background: var(--accent-wash);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.case-text {
+  display: block;
+  min-width: 0;
+}
+
+.case-name {
+  display: block;
+  font-weight: 500;
+}
+
+.case-nick,
+.case-alg {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.case-alg {
+  font-family: var(--mono);
+  overflow-wrap: anywhere;
+}
+
+/* Rejilla (etapas con muchos casos): miniatura arriba, número debajo. */
+.grid .case {
+  display: grid;
+  gap: 6px;
+  padding: 9px 8px 8px;
+  text-align: center;
+}
+
+.grid .case svg {
+  width: 100%;
+  max-width: 68px;
+  margin: 0 auto;
+}
+
+.grid .case-name {
+  font: 700 14px/1.1 var(--mono);
+}
+
+.grid .case-nick {
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+/* Lista (etapas con pocos casos): miniatura a la izquierda, texto a la derecha. */
+.rows .case {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+}
+
+.rows .case svg {
+  flex: none;
+  width: 58px;
+}
+
+.arrow {
+  stroke: #14161d;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.arrow-head {
+  fill: #14161d;
+}
+
+.backdrop {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- Ayuda */
+
+dialog {
+  width: min(760px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  color: var(--text);
+}
+
+dialog::backdrop {
+  background: rgba(8, 10, 15, 0.7);
+}
+
+.help-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.help-head h2 {
+  font-size: 19px;
+}
+
+.help-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px 32px;
+  padding: 20px;
+}
+
+.help-body h3 {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.help-body p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 14px;
+  margin: 14px 0;
+  font-size: 14px;
+}
+
+.legend dt {
+  font: 700 14px/1.45 var(--mono);
+  white-space: nowrap;
+}
+
+.legend.keys dt {
+  font-family: var(--sans);
+  font-weight: 400;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 24px;
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--raised);
+  font: 500 12px/1.5 var(--mono);
+  text-align: center;
+}
+
+.fatal {
+  position: fixed;
+  inset: auto 16px 16px 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: #5a1d24;
+  color: #fff;
+}
+
+/* Con muchas etapas y poco ancho, solo la etapa actual muestra su nombre. */
+@media (max-width: 1340px) {
+  .stages .many button:not([aria-current]) span:last-child {
+    display: none;
+  }
+
+  .stages .many button:not([aria-current]) {
+    padding: 5px;
+  }
+}
+
+/* ---------------------------------------------------------------- Pantallas bajas */
+
+@media (max-height: 760px) and (min-width: 861px) {
+  .player {
+    gap: 8px;
+    padding: 10px 18px 12px;
+  }
+
+  .case-title p {
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+
+  .moves {
+    max-height: 48px;
+  }
+}
+
+/* ---------------------------------------------------------------- Móvil */
+
+@media (max-width: 860px) {
+  .app {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'top'
+      'stage'
+      'player';
+  }
+
+  .top {
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    padding: 8px 12px;
+  }
+
+  .brand {
+    flex: 1;
+    font-size: 15px;
+  }
+
+  .methods button {
+    padding: 4px 10px;
+    font-size: 14px;
+  }
+
+  .stages {
+    order: 3;
+    flex: 1 1 60%;
+  }
+
+  .top .ghost {
+    order: 4;
+  }
+
+  .top .ghost {
+    padding: 4px 10px;
+    font-size: 13px;
+  }
+
+  .hint,
+  .view-tools {
+    display: none;
+  }
+
+  .now {
+    left: 12px;
+    bottom: 6px;
+  }
+
+  .player {
+    gap: 8px;
+    padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .case-title h1 {
+    font-size: 18px;
+  }
+
+  .cases-open {
+    display: block;
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .moves {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-height: none;
+    scrollbar-width: none;
+  }
+
+  .transport {
+    gap: 8px 14px;
+  }
+
+  .speed input {
+    width: 90px;
+  }
+
+  /* El panel de casos pasa a ser un cajón inferior. */
+  .cases {
+    position: fixed;
+    inset: 14dvh 0 0 0;
+    z-index: 20;
+    background: var(--panel);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.45);
+    transform: translateY(100%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0.25s;
+  }
+
+  .cases .case:not([aria-pressed='true']) {
+    background: var(--bg);
+  }
+
+  .cases-open .cases {
+    transform: none;
+    visibility: visible;
+  }
+
+  .cases-close {
+    display: grid;
+  }
+
+  .backdrop:not([hidden]) {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: rgba(8, 10, 15, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

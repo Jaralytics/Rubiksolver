@@ -1,0 +1,13 @@
+{
+  "name": "rubiksolver",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tutorial interactivo en 3D para resolver el cubo de Rubik 3x3 (CFOP y método principiante).",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "test": "node tools/test-engine.mjs && node tools/verify-catalog.mjs",
+    "build:catalog": "node tools/build-catalog.mjs",
+    "fetch:reference": "node tools/fetch-reference.mjs --refresh"
+  }
+}

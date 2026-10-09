@@ -1,0 +1,2726 @@
+{
+ "version": 1,
+ "cubo": "3x3",
+ "generado": "2026-10-09",
+ "convencion": "Cruz blanca abajo, amarillo arriba, verde al frente. Cada caso se genera aplicando al cubo resuelto el inverso de \"algoritmo\" (o \"preparacion\" si existe).",
+ "fuentes": [
+  {
+   "nombre": "SpeedSolving Wiki",
+   "url": "https://www.speedsolving.com/wiki/",
+   "uso": "Numeración de casos y referencia cruzada de OLL, PLL y F2L"
+  },
+  {
+   "nombre": "J Perm",
+   "url": "https://jperm.net/algs",
+   "uso": "Selección del algoritmo principal y agrupación por formas"
+  },
+  {
+   "nombre": "CubeSkills",
+   "url": "https://www.cubeskills.com/",
+   "uso": "Hojas de algoritmos de F2L, OLL y PLL"
+  },
+  {
+   "nombre": "Ruwix",
+   "url": "https://ruwix.com/",
+   "uso": "Método principiante por capas"
+  }
+ ],
+ "metodos": [
+  {
+   "id": "cfop",
+   "nombre": "CFOP",
+   "descripcion": "El método de speedcubing más usado: Cruz, F2L, OLL y PLL.",
+   "etapas": [
+    "cfop-cruz",
+    "cfop-f2l",
+    "cfop-oll",
+    "cfop-pll"
+   ]
+  },
+  {
+   "id": "principiante",
+   "nombre": "Principiante",
+   "descripcion": "Método por capas con pocos algoritmos fáciles de memorizar.",
+   "etapas": [
+    "pr-cruz",
+    "pr-esquinas",
+    "pr-capa2",
+    "pr-cruz-amarilla",
+    "pr-orientar-esquinas",
+    "pr-permutar-esquinas",
+    "pr-permutar-aristas"
+   ]
+  }
+ ],
+ "etapas": [
+  {
+   "id": "cfop-cruz",
+   "metodo": "cfop",
+   "nombre": "Cruz",
+   "tipo": "cruz",
+   "mascara": "cruz",
+   "miniatura": "iso",
+   "flechas": false,
+   "descripcion": "Forma una cruz blanca en la cara inferior, con cada arista alineada con el centro de su lado. Es intuitiva: no se memorizan algoritmos, sino cómo llevar cada arista según dónde esté. El objetivo es planearla entera y hacerla en 8 movimientos o menos.",
+   "grupos": [
+    "Arista en la capa superior",
+    "Arista en la capa media",
+    "Arista en la capa inferior",
+    "Cruz completa desde una mezcla"
+   ]
+  },
+  {
+   "id": "cfop-f2l",
+   "metodo": "cfop",
+   "nombre": "F2L",
+   "tipo": "f2l",
+   "mascara": "f2l",
+   "miniatura": "iso",
+   "flechas": false,
+   "descripcion": "First Two Layers: se resuelven las dos primeras capas a la vez, insertando cuatro parejas esquina-arista. Estos son los 41 casos de una pareja respecto de su hueco (aquí, el del frente a la derecha). La idea siempre es la misma: formar la pareja en la capa superior e insertarla.",
+   "grupos": [
+    "Inserciones básicas",
+    "Recolocar la arista",
+    "Recolocar la arista y girar la esquina",
+    "Separar la pareja pasando por encima",
+    "Pareja formada de lado",
+    "Casos raros",
+    "Esquina en su sitio, arista arriba",
+    "Arista en su sitio, esquina arriba",
+    "Esquina y arista en el hueco"
+   ]
+  },
+  {
+   "id": "cfop-oll",
+   "metodo": "cfop",
+   "nombre": "OLL",
+   "tipo": "oll",
+   "mascara": "oll",
+   "miniatura": "planta",
+   "flechas": false,
+   "descripcion": "Orientation of the Last Layer: un solo algoritmo deja toda la cara superior amarilla. Hay 57 casos, agrupados por la forma que dibujan las pegatinas amarillas. Empieza por el grupo «Cruz hecha»: con él y tres casos de aristas ya puedes hacer el OLL en dos pasos.",
+   "grupos": [
+    "Cruz hecha (solo esquinas)",
+    "Formas en T",
+    "Cuadrados",
+    "Formas en C",
+    "Formas en W",
+    "Esquinas orientadas",
+    "Formas en P",
+    "Formas en I",
+    "Peces",
+    "Salto de caballo",
+    "Formas incómodas",
+    "L pequeña",
+    "Rayo pequeño",
+    "Rayo grande",
+    "Punto"
+   ]
+  },
+  {
+   "id": "cfop-pll",
+   "metodo": "cfop",
+   "nombre": "PLL",
+   "tipo": "pll",
+   "mascara": "todo",
+   "miniatura": "planta",
+   "flechas": true,
+   "descripcion": "Permutation of the Last Layer: un solo algoritmo coloca las piezas de la última capa sin desorientarlas. Hay 21 casos; se reconocen por los bloques y «faros» (dos esquinas del mismo color) que se ven en los lados.",
+   "grupos": [
+    "Solo aristas",
+    "Solo esquinas",
+    "Intercambio de esquinas adyacentes",
+    "Intercambio de esquinas diagonales",
+    "Permutaciones G"
+   ]
+  },
+  {
+   "id": "pr-cruz",
+   "metodo": "principiante",
+   "nombre": "Cruz blanca",
+   "tipo": "cruz",
+   "mascara": "cruz",
+   "miniatura": "iso",
+   "flechas": false,
+   "descripcion": "Forma una cruz blanca en la cara inferior. Lleva las aristas blancas una por una: busca la arista, colócala frente a ti y aplica el caso que corresponda. Cada arista debe coincidir también con el centro de su lado.",
+   "grupos": [
+    "Arista en la capa superior",
+    "Arista en la capa media",
+    "Arista en la capa inferior"
+   ]
+  },
+  {
+   "id": "pr-esquinas",
+   "metodo": "principiante",
+   "nombre": "Esquinas blancas",
+   "tipo": "capa1",
+   "mascara": "capa1",
+   "miniatura": "iso",
+   "flechas": false,
+   "descripcion": "Completa la primera capa metiendo las cuatro esquinas blancas. Coloca cada esquina en la capa superior, justo encima de su hueco, y aplica el caso según hacia dónde mire el blanco. Truco: repetir R U R' U' también la acaba insertando.",
+   "grupos": [
+    "Esquina arriba, sobre su hueco",
+    "Esquina en el hueco, mal orientada"
+   ]
+  },
+  {
+   "id": "pr-capa2",
+   "metodo": "principiante",
+   "nombre": "Segunda capa",
+   "tipo": "capa2",
+   "mascara": "f2l",
+   "miniatura": "iso",
+   "flechas": false,
+   "descripcion": "Inserta las cuatro aristas de la capa media. Busca en la capa superior una arista sin amarillo, alinéala con el centro de su color y bájala hacia la derecha o hacia la izquierda.",
+   "grupos": [
+    "Arista en la capa superior",
+    "Arista en la capa media"
+   ]
+  },
+  {
+   "id": "pr-cruz-amarilla",
+   "metodo": "principiante",
+   "nombre": "Cruz amarilla",
+   "tipo": "eoll",
+   "mascara": "eoll",
+   "miniatura": "planta",
+   "flechas": false,
+   "descripcion": "Orienta las aristas de la última capa para formar una cruz amarilla. Solo hay un algoritmo: F R U R' U' F'. Según lo que veas (punto, L o línea) lo aplicas una, dos o tres veces.",
+   "grupos": [
+    "Una aplicación",
+    "Dos aplicaciones",
+    "Tres aplicaciones"
+   ]
+  },
+  {
+   "id": "pr-orientar-esquinas",
+   "metodo": "principiante",
+   "nombre": "Cara amarilla",
+   "tipo": "ocll",
+   "mascara": "oll",
+   "miniatura": "planta",
+   "flechas": false,
+   "descripcion": "Orienta las esquinas para completar la cara amarilla usando solo el Sune (R U R' U R U2 R'). Si no sale a la primera, recoloca la capa superior como se indica y repite.",
+   "grupos": [
+    "Una aplicación",
+    "Dos aplicaciones",
+    "Tres aplicaciones"
+   ]
+  },
+  {
+   "id": "pr-permutar-esquinas",
+   "metodo": "principiante",
+   "nombre": "Colocar esquinas",
+   "tipo": "cpll",
+   "mascara": "cpll",
+   "miniatura": "planta",
+   "flechas": false,
+   "descripcion": "Coloca las esquinas de la última capa. Busca «faros»: dos esquinas del mismo color en un lado. Con los faros atrás, un solo algoritmo las coloca; si no hay faros, hazlo una vez para crearlos.",
+   "grupos": [
+    "Una aplicación",
+    "Dos aplicaciones"
+   ]
+  },
+  {
+   "id": "pr-permutar-aristas",
+   "metodo": "principiante",
+   "nombre": "Colocar aristas",
+   "tipo": "epll",
+   "mascara": "todo",
+   "miniatura": "planta",
+   "flechas": true,
+   "descripcion": "Último paso: rota las aristas que faltan. Con el lado resuelto atrás, el algoritmo rota las otras tres aristas. Si no hay ningún lado resuelto, aplícalo una vez desde cualquier ángulo y aparecerá.",
+   "grupos": [
+    "Una aplicación",
+    "Dos aplicaciones"
+   ]
+  }
+ ],
+ "casos": [
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-01",
+   "nombre": "Arriba, blanco hacia arriba",
+   "grupo": "Arista en la capa superior",
+   "algoritmo": "F2",
+   "alternativas": [],
+   "descripcion": "La arista está en la capa superior con el blanco mirando arriba, justo sobre su centro. Media vuelta de la cara la baja a su sitio.",
+   "notas": [
+    "Alinea la arista sobre su centro y baja con media vuelta"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     0,
+     1,
+     1
+    ],
+    "cara": "U"
+   }
+  },
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-02",
+   "nombre": "Arriba, blanco hacia el frente",
+   "grupo": "Arista en la capa superior",
+   "algoritmo": "(U' R') (F) (R)",
+   "alternativas": [],
+   "descripcion": "La arista está arriba pero con el blanco mirando al frente: bajarla con F2 la dejaría volteada.",
+   "notas": [
+    "Lleva la arista a la capa media",
+    "Bájala con el blanco hacia abajo",
+    "Devuelve la arista de la cruz que moviste"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     0,
+     1,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-03",
+   "nombre": "Capa media a la derecha, blanco a la derecha",
+   "grupo": "Arista en la capa media",
+   "algoritmo": "F",
+   "alternativas": [],
+   "descripcion": "La arista está en la capa media y su color lateral ya coincide con el centro del frente: un solo giro la baja.",
+   "notas": [
+    "Un giro de la cara frontal la baja a su sitio"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     0,
+     1
+    ],
+    "cara": "R"
+   }
+  },
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-04",
+   "nombre": "Capa media a la izquierda, blanco a la izquierda",
+   "grupo": "Arista en la capa media",
+   "algoritmo": "F'",
+   "alternativas": [],
+   "descripcion": "El espejo del caso anterior: la arista está en la capa media a la izquierda.",
+   "notas": [
+    "Un giro de la cara frontal la baja a su sitio"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     -1,
+     0,
+     1
+    ],
+    "cara": "L"
+   }
+  },
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-05",
+   "nombre": "Capa media a la derecha, blanco al frente",
+   "grupo": "Arista en la capa media",
+   "algoritmo": "(D) (R') (D')",
+   "alternativas": [],
+   "descripcion": "La arista está en la capa media pero bajaría en la cara de la derecha. Se acerca el hueco con D, se baja y se devuelve.",
+   "notas": [
+    "Lleva el hueco de la cruz bajo la arista",
+    "Baja la arista",
+    "Devuelve la cruz a su posición"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     0,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-06",
+   "nombre": "Capa media a la izquierda, blanco al frente",
+   "grupo": "Arista en la capa media",
+   "algoritmo": "(D') (L) (D)",
+   "alternativas": [],
+   "descripcion": "Espejo del caso anterior, con la arista en la capa media a la izquierda.",
+   "notas": [
+    "Lleva el hueco de la cruz bajo la arista",
+    "Baja la arista",
+    "Devuelve la cruz a su posición"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     -1,
+     0,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-07",
+   "nombre": "En su sitio pero volteada",
+   "grupo": "Arista en la capa inferior",
+   "algoritmo": "(F') (D R' D')",
+   "alternativas": [],
+   "descripcion": "La arista está en su posición de la cruz, pero con el blanco mirando al frente.",
+   "notas": [
+    "Súbela a la capa media",
+    "Insértala bien orientada desde el lado"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     0,
+     -1,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-08",
+   "nombre": "Abajo, en el lugar equivocado",
+   "grupo": "Arista en la capa inferior",
+   "algoritmo": "(R2) (U) (F2)",
+   "alternativas": [],
+   "descripcion": "La arista está en la cruz con el blanco abajo, pero bajo el centro equivocado (aquí, el de la derecha, cuya arista aún no se ha colocado y por eso se ve gris).",
+   "notas": [
+    "Súbela a la capa superior",
+    "Alinéala sobre su centro",
+    "Bájala a su sitio"
+   ],
+   "ocultar": [
+    [
+     1,
+     -1,
+     0
+    ]
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     -1,
+     0
+    ],
+    "cara": "D"
+   }
+  },
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-09",
+   "nombre": "Ejemplo 1: cruz completa",
+   "grupo": "Cruz completa desde una mezcla",
+   "algoritmo": "D F U' R2 L B",
+   "alternativas": [],
+   "descripcion": "Mezcla: D2 R' U2 F2 L B2 L' D2 R' B' U L' F' D R2 B. Solución óptima de la cruz en 6 movimientos; fíjate en cómo cada giro coloca una arista sin estropear las anteriores.",
+   "preparacion": "D2 R' U2 F2 L B2 L' D2 R' B' U L' F' D R2 B"
+  },
+  {
+   "etapa": "cfop-cruz",
+   "id": "cfop-cruz-10",
+   "nombre": "Ejemplo 2: cruz completa",
+   "grupo": "Cruz completa desde una mezcla",
+   "algoritmo": "F B2 L' D' F' B'",
+   "alternativas": [],
+   "descripcion": "Mezcla: F2 U' L2 D F2 U B2 U2 R' B L' U2 F' D' L F' R2 D. Solución óptima de la cruz en 6 movimientos; fíjate en cómo cada giro coloca una arista sin estropear las anteriores.",
+   "preparacion": "F2 U' L2 D F2 U B2 U2 R' B L' U2 F' D' L F' R2 D"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-01",
+   "nombre": "F2L 1",
+   "grupo": "Inserciones básicas",
+   "algoritmo": "(U) (R U' R')",
+   "alternativas": [
+    "R' F R F'"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista arriba (a la derecha) con el verde hacia arriba. La pareja ya está formada.",
+   "referencia": "F2L 1",
+   "notas": [
+    "Aparta la arista",
+    "Inserta la pareja"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-02",
+   "nombre": "F2L 2",
+   "grupo": "Inserciones básicas",
+   "algoritmo": "(U') (F' U F)",
+   "alternativas": [
+    "y' U' R' U R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista arriba (al frente) con el naranja hacia arriba. La pareja ya está formada.",
+   "referencia": "F2L 2",
+   "notas": [
+    "Aparta la arista",
+    "Inserta la pareja por el frente"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-03",
+   "nombre": "F2L 3",
+   "grupo": "Inserciones básicas",
+   "algoritmo": "F' U' F",
+   "alternativas": [
+    "y' R' U' R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista arriba (a la izquierda) con el naranja hacia arriba.",
+   "referencia": "F2L 3",
+   "notas": [
+    "La pareja ya está formada: insértala por el frente"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-04",
+   "nombre": "F2L 4",
+   "grupo": "Inserciones básicas",
+   "algoritmo": "R U R'",
+   "alternativas": [],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista arriba (atrás) con el verde hacia arriba.",
+   "referencia": "F2L 4",
+   "notas": [
+    "La pareja ya está formada: insértala por la derecha"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-05",
+   "nombre": "F2L 5",
+   "grupo": "Recolocar la arista",
+   "algoritmo": "(U' R U R') (U2) (R U' R')",
+   "alternativas": [
+    "U' R U R' U' R U2 R'"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista arriba (atrás) con el verde hacia arriba.",
+   "referencia": "F2L 5",
+   "notas": [
+    "Esconde la esquina y recoloca la arista",
+    "Alinea la pareja",
+    "Inserta"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-06",
+   "nombre": "F2L 6",
+   "grupo": "Recolocar la arista",
+   "algoritmo": "(U' r U' R') (U R U r')",
+   "alternativas": [
+    "d R' U' R U2 R' U R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista arriba (a la izquierda) con el naranja hacia arriba.",
+   "referencia": "F2L 6"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-07",
+   "nombre": "F2L 7",
+   "grupo": "Recolocar la arista",
+   "algoritmo": "(U' R U2 R') (U2) (R U' R')",
+   "alternativas": [
+    "(U' R U2 R')2"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista arriba (a la izquierda) con el verde hacia arriba.",
+   "referencia": "F2L 7",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-08",
+   "nombre": "F2L 8",
+   "grupo": "Recolocar la arista",
+   "algoritmo": "(r' U2) (R2 U R2 U r)",
+   "alternativas": [
+    "d R' U2 R U2 R' U R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista arriba (atrás) con el naranja hacia arriba.",
+   "referencia": "F2L 8"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-09",
+   "nombre": "F2L 9",
+   "grupo": "Recolocar la arista y girar la esquina",
+   "algoritmo": "(U' R U' R') (U) (F' U' F)",
+   "alternativas": [
+    "d R' U' R U' R' U' R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista arriba (atrás) con el naranja hacia arriba.",
+   "referencia": "F2L 9",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta por el frente"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-10",
+   "nombre": "F2L 10",
+   "grupo": "Recolocar la arista y girar la esquina",
+   "algoritmo": "(U' R U R') (U) (R U R')",
+   "alternativas": [
+    "U F' U F U' R U R'"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista arriba (a la izquierda) con el verde hacia arriba.",
+   "referencia": "F2L 10",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta por la derecha"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-11",
+   "nombre": "F2L 11",
+   "grupo": "Recolocar la arista y girar la esquina",
+   "algoritmo": "(U' R U2 R') (U) (F' U' F)",
+   "alternativas": [
+    "y' R U2 R2 U' R2 U' R'"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista arriba (a la derecha) con el naranja hacia arriba.",
+   "referencia": "F2L 11",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta por el frente"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-12",
+   "nombre": "F2L 12",
+   "grupo": "Recolocar la arista y girar la esquina",
+   "algoritmo": "(R U' R' U) (R U' R') (U2) (R U' R')",
+   "alternativas": [
+    "R' U2 R2 U R2 U R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista arriba (al frente) con el verde hacia arriba.",
+   "referencia": "F2L 12"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-13",
+   "nombre": "F2L 13",
+   "grupo": "Recolocar la arista y girar la esquina",
+   "algoritmo": "(U F' U F) (U') (F' U' F)",
+   "alternativas": [
+    "d R' U R U' R' U' R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista arriba (al frente) con el naranja hacia arriba.",
+   "referencia": "F2L 13",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta por el frente"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-14",
+   "nombre": "F2L 14",
+   "grupo": "Recolocar la arista y girar la esquina",
+   "algoritmo": "(U' R U' R') (U) (R U R')",
+   "alternativas": [],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista arriba (a la derecha) con el verde hacia arriba.",
+   "referencia": "F2L 14",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta por la derecha"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-15",
+   "nombre": "F2L 15",
+   "grupo": "Separar la pareja pasando por encima",
+   "algoritmo": "(R' D' R) (U') (R' D R) (U) (R U' R')",
+   "alternativas": [
+    "R U R' U2 R U' R' U R U' R'"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista arriba (al frente) con el verde hacia arriba.",
+   "referencia": "F2L 15"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-16",
+   "nombre": "F2L 16",
+   "grupo": "Separar la pareja pasando por encima",
+   "algoritmo": "(R U' R') (U2) (F' U' F)",
+   "alternativas": [
+    "R U' R' U d R' U' R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista arriba (a la derecha) con el naranja hacia arriba.",
+   "referencia": "F2L 16",
+   "notas": [
+    "Saca la esquina y separa las piezas",
+    "Alinea la pareja",
+    "Inserta por el frente"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-17",
+   "nombre": "F2L 17",
+   "grupo": "Separar la pareja pasando por encima",
+   "algoritmo": "(R U2 R') (U') (R U R')",
+   "alternativas": [],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista arriba (a la derecha) con el verde hacia arriba.",
+   "referencia": "F2L 17",
+   "notas": [
+    "Separa las piezas",
+    "Alinea la pareja",
+    "Inserta"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-18",
+   "nombre": "F2L 18",
+   "grupo": "Separar la pareja pasando por encima",
+   "algoritmo": "(F' U2 F) (U) (F' U' F)",
+   "alternativas": [
+    "y' R' U2 R U R' U' R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista arriba (al frente) con el naranja hacia arriba.",
+   "referencia": "F2L 18",
+   "notas": [
+    "Separa las piezas",
+    "Alinea la pareja",
+    "Inserta por el frente"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-19",
+   "nombre": "F2L 19",
+   "grupo": "Pareja formada de lado",
+   "algoritmo": "(U) (R U2 R') (U) (R U' R')",
+   "alternativas": [
+    "(R U' R' U)2 R U R'"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista arriba (atrás) con el verde hacia arriba.",
+   "referencia": "F2L 19"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-20",
+   "nombre": "F2L 20",
+   "grupo": "Pareja formada de lado",
+   "algoritmo": "(U') (F' U2 F) (U') (F' U F)",
+   "alternativas": [
+    "y' U' R' U2 R U' R' U R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista arriba (a la izquierda) con el naranja hacia arriba.",
+   "referencia": "F2L 20"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-21",
+   "nombre": "F2L 21",
+   "grupo": "Pareja formada de lado",
+   "algoritmo": "(R U' R') (U2) (R U R')",
+   "alternativas": [
+    "U2 R U R' U R U' R'"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista arriba (a la izquierda) con el verde hacia arriba.",
+   "referencia": "F2L 21"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-22",
+   "nombre": "F2L 22",
+   "grupo": "Pareja formada de lado",
+   "algoritmo": "(r U' r') (U2) (r U r')",
+   "alternativas": [
+    "F' U F U2 F' U' F",
+    "y' R' U R U2 R' U' R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista arriba (atrás) con el naranja hacia arriba.",
+   "referencia": "F2L 22"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-23",
+   "nombre": "F2L 23",
+   "grupo": "Casos raros",
+   "algoritmo": "(U2 R2 U2) (R' U' R U') (R2)",
+   "alternativas": [
+    "U R U' R' U' R U' R' U R U' R'"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista arriba (al frente) con el verde hacia arriba.",
+   "referencia": "F2L 23"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-24",
+   "nombre": "F2L 24",
+   "grupo": "Casos raros",
+   "algoritmo": "(F U R U' R' F') (R U' R')",
+   "alternativas": [
+    "y' U2 R2 U2 R U R' U R2"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista arriba (a la derecha) con el naranja hacia arriba.",
+   "referencia": "F2L 24"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-25",
+   "nombre": "F2L 25",
+   "grupo": "Esquina en su sitio, arista arriba",
+   "algoritmo": "(U') (R' F R F') (R U R')",
+   "alternativas": [
+    "R' F' R U R U' R' F"
+   ],
+   "descripcion": "Esquina resuelta en su hueco; arista arriba (a la derecha) con el verde hacia arriba.",
+   "referencia": "F2L 25"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-26",
+   "nombre": "F2L 26",
+   "grupo": "Esquina en su sitio, arista arriba",
+   "algoritmo": "(U) (R U' R') (F R' F' R)",
+   "alternativas": [
+    "U R U' R' U' F' U F"
+   ],
+   "descripcion": "Esquina resuelta en su hueco; arista arriba (al frente) con el naranja hacia arriba.",
+   "referencia": "F2L 26"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-27",
+   "nombre": "F2L 27",
+   "grupo": "Esquina en su sitio, arista arriba",
+   "algoritmo": "(R U' R' U) (R U' R')",
+   "alternativas": [
+    "R U' R2 F R F'"
+   ],
+   "descripcion": "Esquina en su hueco, girada, con el blanco hacia el frente; arista arriba (a la derecha) con el verde hacia arriba.",
+   "referencia": "F2L 27"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-28",
+   "nombre": "F2L 28",
+   "grupo": "Esquina en su sitio, arista arriba",
+   "algoritmo": "(R U R' U') (F R' F' R)",
+   "alternativas": [
+    "y' R' U R U' R' U R"
+   ],
+   "descripcion": "Esquina en su hueco, girada, con el blanco hacia la derecha; arista arriba (al frente) con el naranja hacia arriba.",
+   "referencia": "F2L 28"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-29",
+   "nombre": "F2L 29",
+   "grupo": "Esquina en su sitio, arista arriba",
+   "algoritmo": "(R' F R F') (U R U' R')",
+   "alternativas": [
+    "y' R' U' R U R' U' R",
+    "(R' F R F')2"
+   ],
+   "descripcion": "Esquina en su hueco, girada, con el blanco hacia el frente; arista arriba (al frente) con el naranja hacia arriba.",
+   "referencia": "F2L 29"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-30",
+   "nombre": "F2L 30",
+   "grupo": "Esquina en su sitio, arista arriba",
+   "algoritmo": "(R U R' U') (R U R')",
+   "alternativas": [],
+   "descripcion": "Esquina en su hueco, girada, con el blanco hacia la derecha; arista arriba (a la derecha) con el verde hacia arriba.",
+   "referencia": "F2L 30",
+   "notas": [
+    "Saca la esquina con el gatillo",
+    "Inserta la pareja"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-31",
+   "nombre": "F2L 31",
+   "grupo": "Arista en su sitio, esquina arriba",
+   "algoritmo": "(U') (R' F R F') (R U' R')",
+   "alternativas": [
+    "R U' R' d R' U R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista en su hueco, volteada. La pareja ya está formada.",
+   "referencia": "F2L 31"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-32",
+   "nombre": "F2L 32",
+   "grupo": "Arista en su sitio, esquina arriba",
+   "algoritmo": "(R U R' U')2 (R U R')",
+   "alternativas": [
+    "(U R U' R')3"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia arriba; arista resuelta en su hueco.",
+   "referencia": "F2L 32",
+   "notas": [
+    "Repite el gatillo dos veces",
+    "Inserta"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-33",
+   "nombre": "F2L 33",
+   "grupo": "Arista en su sitio, esquina arriba",
+   "algoritmo": "(U' R U' R') (U2) (R U' R')",
+   "alternativas": [],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista resuelta en su hueco.",
+   "referencia": "F2L 33",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-34",
+   "nombre": "F2L 34",
+   "grupo": "Arista en su sitio, esquina arriba",
+   "algoritmo": "(U R U R') (U2) (R U R')",
+   "alternativas": [
+    "U F' U F U2 F' U F"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista resuelta en su hueco.",
+   "referencia": "F2L 34",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-35",
+   "nombre": "F2L 35",
+   "grupo": "Arista en su sitio, esquina arriba",
+   "algoritmo": "(U' R U R') (U) (F' U' F)",
+   "alternativas": [
+    "U' R U R' d R' U' R"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia el frente; arista en su hueco, volteada.",
+   "referencia": "F2L 35",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta por el frente"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-36",
+   "nombre": "F2L 36",
+   "grupo": "Arista en su sitio, esquina arriba",
+   "algoritmo": "(U F' U' F) (U') (R U R')",
+   "alternativas": [
+    "U2 R' F R F' U2 R U R'"
+   ],
+   "descripcion": "Esquina arriba (delante a la derecha) con el blanco hacia la derecha; arista en su hueco, volteada.",
+   "referencia": "F2L 36",
+   "notas": [
+    "Forma la pareja",
+    "Alinea",
+    "Inserta por la derecha"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-37",
+   "nombre": "F2L 37",
+   "grupo": "Esquina y arista en el hueco",
+   "algoritmo": "(R2 U2) (F R2 F') (U2 R' U R')",
+   "alternativas": [
+    "R U' R' d R' U2 R U2 R' U R"
+   ],
+   "descripcion": "Esquina resuelta en su hueco; arista en su hueco, volteada.",
+   "referencia": "F2L 38"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-38",
+   "nombre": "F2L 38",
+   "grupo": "Esquina y arista en el hueco",
+   "algoritmo": "(R U' R') (U' R U R') (U2) (R U' R')",
+   "alternativas": [
+    "R U R' U' R U2 R' U' R U R'"
+   ],
+   "descripcion": "Esquina en su hueco, girada, con el blanco hacia el frente; arista resuelta en su hueco.",
+   "referencia": "F2L 39",
+   "notas": [
+    "Saca la pareja",
+    "Recoloca",
+    "Alinea",
+    "Inserta"
+   ]
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-39",
+   "nombre": "F2L 39",
+   "grupo": "Esquina y arista en el hueco",
+   "algoritmo": "(R U' R' U) (R U2 R') (U) (R U' R')",
+   "alternativas": [
+    "R U R' U2 R U' R' U R U R'"
+   ],
+   "descripcion": "Esquina en su hueco, girada, con el blanco hacia la derecha; arista resuelta en su hueco.",
+   "referencia": "F2L 40"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-40",
+   "nombre": "F2L 40",
+   "grupo": "Esquina y arista en el hueco",
+   "algoritmo": "(r U' r') (U2) (r U r') (R U R')",
+   "alternativas": [
+    "R U' R' d R' U' R U' R' U' R"
+   ],
+   "descripcion": "Esquina en su hueco, girada, con el blanco hacia el frente; arista en su hueco, volteada.",
+   "referencia": "F2L 41"
+  },
+  {
+   "etapa": "cfop-f2l",
+   "id": "f2l-41",
+   "nombre": "F2L 41",
+   "grupo": "Esquina y arista en el hueco",
+   "algoritmo": "(R U' R') (r U' r') (U2) (r U r')",
+   "alternativas": [
+    "R U' R' U d R' U' R U' R' U R"
+   ],
+   "descripcion": "Esquina en su hueco, girada, con el blanco hacia la derecha; arista en su hueco, volteada.",
+   "referencia": "F2L 42"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-27",
+   "nombre": "OLL 27 · Sune",
+   "grupo": "Cruz hecha (solo esquinas)",
+   "algoritmo": "R U R' U R U2 R'",
+   "alternativas": [
+    "(U') R' U2 R U R' U R"
+   ],
+   "descripcion": "La cruz amarilla ya está hecha; solo faltan esquinas. Son los 7 casos del OLL en dos pasos. Aristas orientadas: 4 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 27"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-26",
+   "nombre": "OLL 26 · Antisune",
+   "grupo": "Cruz hecha (solo esquinas)",
+   "algoritmo": "R U2 R' U' R U' R'",
+   "alternativas": [
+    "(U') R' U' R U' R' U2 R",
+    "(U) L' U' L U' L' U2 L"
+   ],
+   "descripcion": "La cruz amarilla ya está hecha; solo faltan esquinas. Son los 7 casos del OLL en dos pasos. Aristas orientadas: 4 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 26"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-21",
+   "nombre": "OLL 21 · H (doble Sune)",
+   "grupo": "Cruz hecha (solo esquinas)",
+   "algoritmo": "(R U R' U) (R U' R' U) (R U2 R')",
+   "alternativas": [
+    "(U) R U2 R' U' R U R' U' R U' R'",
+    "(U) F (R U R' U')3 F'"
+   ],
+   "descripcion": "La cruz amarilla ya está hecha; solo faltan esquinas. Son los 7 casos del OLL en dos pasos. Aristas orientadas: 4 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 21"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-22",
+   "nombre": "OLL 22 · Pi",
+   "grupo": "Cruz hecha (solo esquinas)",
+   "algoritmo": "R U2 (R2 U' R2 U') (R2 U2 R)",
+   "alternativas": [
+    "f R U R' U' S' R U R' U' F'"
+   ],
+   "descripcion": "La cruz amarilla ya está hecha; solo faltan esquinas. Son los 7 casos del OLL en dos pasos. Aristas orientadas: 4 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 22"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-23",
+   "nombre": "OLL 23 · Faros (U)",
+   "grupo": "Cruz hecha (solo esquinas)",
+   "algoritmo": "(R2 D') (R U2 R') (D) (R U2 R)",
+   "alternativas": [
+    "(U2) R2 D R' U2 R D' R' U2 R'"
+   ],
+   "descripcion": "La cruz amarilla ya está hecha; solo faltan esquinas. Son los 7 casos del OLL en dos pasos. Aristas orientadas: 4 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 23"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-24",
+   "nombre": "OLL 24 · T (camaleón)",
+   "grupo": "Cruz hecha (solo esquinas)",
+   "algoritmo": "(r U R' U') (r' F R F')",
+   "alternativas": [
+    "(U2) l' U' L U l F' L' F"
+   ],
+   "descripcion": "La cruz amarilla ya está hecha; solo faltan esquinas. Son los 7 casos del OLL en dos pasos. Aristas orientadas: 4 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 24"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-25",
+   "nombre": "OLL 25 · L (pajarita)",
+   "grupo": "Cruz hecha (solo esquinas)",
+   "algoritmo": "(F') (r U R' U') (r' F R)",
+   "alternativas": [
+    "(U') F R' F' r U R U' r'"
+   ],
+   "descripcion": "La cruz amarilla ya está hecha; solo faltan esquinas. Son los 7 casos del OLL en dos pasos. Aristas orientadas: 4 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 25"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-33",
+   "nombre": "OLL 33 · Llave (T)",
+   "grupo": "Formas en T",
+   "algoritmo": "(R U R' U') (R' F R F')",
+   "alternativas": [],
+   "descripcion": "Las pegatinas amarillas forman una T. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 33",
+   "notas": [
+    "Gatillo «sexy move»",
+    "Gatillo «sledgehammer»"
+   ]
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-45",
+   "nombre": "OLL 45 · Traje (T)",
+   "grupo": "Formas en T",
+   "algoritmo": "(F) (R U R' U') (F')",
+   "alternativas": [],
+   "descripcion": "Las pegatinas amarillas forman una T. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 45",
+   "notas": [
+    "Abre con F",
+    "Gatillo «sexy move»",
+    "Cierra con F'"
+   ]
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-05",
+   "nombre": "OLL 5 · Cuadrado izquierdo",
+   "grupo": "Cuadrados",
+   "algoritmo": "r' U2 R U R' U r",
+   "alternativas": [
+    "(U2) l' U2 L U L' U l"
+   ],
+   "descripcion": "Un bloque cuadrado de 2×2 amarillo en una esquina. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 5"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-06",
+   "nombre": "OLL 6 · Cuadrado derecho",
+   "grupo": "Cuadrados",
+   "algoritmo": "r U2 R' U' R U' r'",
+   "alternativas": [],
+   "descripcion": "Un bloque cuadrado de 2×2 amarillo en una esquina. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 6"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-34",
+   "nombre": "OLL 34 · Ciudad (C)",
+   "grupo": "Formas en C",
+   "algoritmo": "(R U R2 U') (R' F R U) (R U' F')",
+   "alternativas": [
+    "(U') f R f' U' r' U' R U M'"
+   ],
+   "descripcion": "Las pegatinas amarillas forman una C. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 34"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-46",
+   "nombre": "OLL 46 · Faros (C)",
+   "grupo": "Formas en C",
+   "algoritmo": "(R' U') (R' F R F') (U R)",
+   "alternativas": [],
+   "descripcion": "Las pegatinas amarillas forman una C. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 46",
+   "notas": [
+    "Abre",
+    "Gatillo «sledgehammer»",
+    "Cierra"
+   ]
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-36",
+   "nombre": "OLL 36 · Wario (W)",
+   "grupo": "Formas en W",
+   "algoritmo": "(L' U' L U') (L' U L U) (L F' L' F)",
+   "alternativas": [
+    "(U') R U R2 F' U' F U R2 U2 R'",
+    "R' F' U' F2 U R U' R' F' R"
+   ],
+   "descripcion": "Las pegatinas amarillas forman una W en diagonal. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 36"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-38",
+   "nombre": "OLL 38 · Mario (W)",
+   "grupo": "Formas en W",
+   "algoritmo": "(R U R' U) (R U' R' U') (R' F R F')",
+   "alternativas": [],
+   "descripcion": "Las pegatinas amarillas forman una W en diagonal. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 38"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-28",
+   "nombre": "OLL 28 · Flecha",
+   "grupo": "Esquinas orientadas",
+   "algoritmo": "(r U R' U') (r' R U R U' R')",
+   "alternativas": [
+    "(U2) M' U M U2 M' U M"
+   ],
+   "descripcion": "Las cuatro esquinas ya están orientadas; faltan aristas. Aristas orientadas: 2 de 4; esquinas orientadas: 4 de 4.",
+   "referencia": "OLL 28"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-57",
+   "nombre": "OLL 57 · Momia (H)",
+   "grupo": "Esquinas orientadas",
+   "algoritmo": "(R U R' U') (M' U R U' r')",
+   "alternativas": [],
+   "descripcion": "Las cuatro esquinas ya están orientadas; faltan aristas. Aristas orientadas: 2 de 4; esquinas orientadas: 4 de 4.",
+   "referencia": "OLL 57"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-31",
+   "nombre": "OLL 31 · Sofá",
+   "grupo": "Formas en P",
+   "algoritmo": "(R' U' F) (U R U' R') (F' R)",
+   "alternativas": [],
+   "descripcion": "Las pegatinas amarillas forman una P. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 31"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-32",
+   "nombre": "OLL 32 · Anti-sofá",
+   "grupo": "Formas en P",
+   "algoritmo": "(L U F') (U' L' U L) (F L')",
+   "alternativas": [
+    "(U2) S R U R' U' R' F R f'",
+    "(U2) R U B' U' R' U R B R'"
+   ],
+   "descripcion": "Las pegatinas amarillas forman una P. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 32"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-43",
+   "nombre": "OLL 43 · Anti-P",
+   "grupo": "Formas en P",
+   "algoritmo": "(R' U' F') (U F R)",
+   "alternativas": [
+    "(U) F' U' L' U L F"
+   ],
+   "descripcion": "Las pegatinas amarillas forman una P. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 43"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-44",
+   "nombre": "OLL 44 · P",
+   "grupo": "Formas en P",
+   "algoritmo": "(F) (U R U' R') (F')",
+   "alternativas": [
+    "(U2) f R U R' U' f'"
+   ],
+   "descripcion": "Las pegatinas amarillas forman una P. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 44",
+   "notas": [
+    "Abre con F",
+    "Gatillo",
+    "Cierra con F'"
+   ]
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-51",
+   "nombre": "OLL 51 · Tapón",
+   "grupo": "Formas en I",
+   "algoritmo": "(F) (U R U' R')2 (F')",
+   "alternativas": [
+    "(U2) f R U R' U' R U R' U' f'"
+   ],
+   "descripcion": "Una línea amarilla que cruza el centro, sin esquinas orientadas. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 51",
+   "notas": [
+    "Abre con F",
+    "Gatillo dos veces",
+    "Cierra con F'"
+   ]
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-52",
+   "nombre": "OLL 52 · Olla arrocera",
+   "grupo": "Formas en I",
+   "algoritmo": "(R U R' U) (R U' B U' B' R')",
+   "alternativas": [
+    "(U2) R' F' U' F U' R U R' U R"
+   ],
+   "descripcion": "Una línea amarilla que cruza el centro, sin esquinas orientadas. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 52"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-55",
+   "nombre": "OLL 55 · Autopista",
+   "grupo": "Formas en I",
+   "algoritmo": "(R' F R U) (R U' R2 F') (R2 U' R' U) (R U R')",
+   "alternativas": [
+    "(U) R U2 R2 U' R U' R' U2 F R F'",
+    "r U2 R' U' r' R2 U R' U' r U' r'"
+   ],
+   "descripcion": "Una línea amarilla que cruza el centro, sin esquinas orientadas. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 55"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-56",
+   "nombre": "OLL 56 · Farolas",
+   "grupo": "Formas en I",
+   "algoritmo": "(r U r') (U R U' R')2 (r U' r')",
+   "alternativas": [
+    "r' U' r U' R' U R U' R' U R r' U r"
+   ],
+   "descripcion": "Una línea amarilla que cruza el centro, sin esquinas orientadas. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 56"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-09",
+   "nombre": "OLL 9 · Cometa",
+   "grupo": "Peces",
+   "algoritmo": "(R U R' U') (R' F R2 U R' U' F')",
+   "alternativas": [],
+   "descripcion": "Forma de pez: un cuadrado con una cola en diagonal. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 9"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-10",
+   "nombre": "OLL 10 · Anti-cometa",
+   "grupo": "Peces",
+   "algoritmo": "(R U R' U) (R' F R F') (R U2 R')",
+   "alternativas": [
+    "(U) F U F' R' F R U' R' F' R"
+   ],
+   "descripcion": "Forma de pez: un cuadrado con una cola en diagonal. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 10"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-35",
+   "nombre": "OLL 35 · Ensalada de pez",
+   "grupo": "Peces",
+   "algoritmo": "(R U2 R') (R' F R F') (R U2 R')",
+   "alternativas": [],
+   "descripcion": "Forma de pez: un cuadrado con una cola en diagonal. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 35"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-37",
+   "nombre": "OLL 37 · Pez montado",
+   "grupo": "Peces",
+   "algoritmo": "(F R' F' R) (U R U' R')",
+   "alternativas": [
+    "F R U' R' U' R U R' F'"
+   ],
+   "descripcion": "Forma de pez: un cuadrado con una cola en diagonal. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 37"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-13",
+   "nombre": "OLL 13 · Pistola",
+   "grupo": "Salto de caballo",
+   "algoritmo": "(F U R U') (R2 F' R) (U R U' R')",
+   "alternativas": [
+    "F U R U2 R' U' R U R' F'",
+    "r U' r' U' r U r' F' U F"
+   ],
+   "descripcion": "Una línea central con una pegatina desplazada, como el salto del caballo. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 13"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-14",
+   "nombre": "OLL 14 · Anti-pistola",
+   "grupo": "Salto de caballo",
+   "algoritmo": "(R' F R) (U R' F' R) (F U' F')",
+   "alternativas": [],
+   "descripcion": "Una línea central con una pegatina desplazada, como el salto del caballo. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 14"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-15",
+   "nombre": "OLL 15 · Limpiacristales",
+   "grupo": "Salto de caballo",
+   "algoritmo": "(r' U' r) (R' U' R U) (r' U r)",
+   "alternativas": [
+    "(U2) l' U' l L' U' L U l' U l"
+   ],
+   "descripcion": "Una línea central con una pegatina desplazada, como el salto del caballo. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 15"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-16",
+   "nombre": "OLL 16 · Anti-limpiacristales",
+   "grupo": "Salto de caballo",
+   "algoritmo": "(r U r') (R U R' U') (r U' r')",
+   "alternativas": [],
+   "descripcion": "Una línea central con una pegatina desplazada, como el salto del caballo. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 16"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-29",
+   "nombre": "OLL 29 · Camaleón manchado",
+   "grupo": "Formas incómodas",
+   "algoritmo": "(R U R' U') (R U' R') (F' U' F) (R U R')",
+   "alternativas": [
+    "(U') r2 D' r U r' D r2 U' r' U' r"
+   ],
+   "descripcion": "Formas irregulares con dos esquinas orientadas. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 29"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-30",
+   "nombre": "OLL 30 · Anti-camaleón manchado",
+   "grupo": "Formas incómodas",
+   "algoritmo": "(F R' F) (R2 U' R' U') (R U R' F2)",
+   "alternativas": [
+    "F U R U2 R' U' R U2 R' U' F'"
+   ],
+   "descripcion": "Formas irregulares con dos esquinas orientadas. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 30"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-41",
+   "nombre": "OLL 41 · Pez incómodo",
+   "grupo": "Formas incómodas",
+   "algoritmo": "(R U R' U R U2 R') (F R U R' U' F')",
+   "alternativas": [],
+   "descripcion": "Formas irregulares con dos esquinas orientadas. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 41",
+   "notas": [
+    "Sune",
+    "Orienta las aristas"
+   ]
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-42",
+   "nombre": "OLL 42 · Pez incómodo izquierdo",
+   "grupo": "Formas incómodas",
+   "algoritmo": "(R' U' R U' R' U2 R) (F R U R' U' F')",
+   "alternativas": [
+    "R' U' R U' R' U2 R U R' F' U' F U R"
+   ],
+   "descripcion": "Formas irregulares con dos esquinas orientadas. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 42",
+   "notas": [
+    "Sune izquierdo",
+    "Orienta las aristas"
+   ]
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-47",
+   "nombre": "OLL 47 · Anti-rompecuellos",
+   "grupo": "L pequeña",
+   "algoritmo": "(R' U') (R' F R F')2 (U R)",
+   "alternativas": [
+    "F' L' U' L U L' U' L U F"
+   ],
+   "descripcion": "Solo el centro y dos aristas adyacentes forman una L. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 47"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-48",
+   "nombre": "OLL 48 · Rompecuellos",
+   "grupo": "L pequeña",
+   "algoritmo": "(F) (R U R' U')2 (F')",
+   "alternativas": [],
+   "descripcion": "Solo el centro y dos aristas adyacentes forman una L. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 48",
+   "notas": [
+    "Abre con F",
+    "Gatillo «sexy move» dos veces",
+    "Cierra con F'"
+   ]
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-49",
+   "nombre": "OLL 49 · L pequeña trasera",
+   "grupo": "L pequeña",
+   "algoritmo": "r U' r2 U r2 U r2 U' r",
+   "alternativas": [
+    "(U2) R B' R2 F R2 B R2 F' R"
+   ],
+   "descripcion": "Solo el centro y dos aristas adyacentes forman una L. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 49"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-50",
+   "nombre": "OLL 50 · L pequeña delantera",
+   "grupo": "L pequeña",
+   "algoritmo": "r' U r2 U' r2 U' r2 U r'",
+   "alternativas": [
+    "(U2) R' F R2 B' R2 F' R2 B R'"
+   ],
+   "descripcion": "Solo el centro y dos aristas adyacentes forman una L. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 50"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-53",
+   "nombre": "OLL 53 · Sartén",
+   "grupo": "L pequeña",
+   "algoritmo": "(r' U' R U') (R' U R U') (R' U2 r)",
+   "alternativas": [
+    "(U2) l' U' L U' L' U L U' L' U2 l"
+   ],
+   "descripcion": "Solo el centro y dos aristas adyacentes forman una L. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 53"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-54",
+   "nombre": "OLL 54 · Anti-sartén",
+   "grupo": "L pequeña",
+   "algoritmo": "(r U R' U) (R U' R' U) (R U2 r')",
+   "alternativas": [],
+   "descripcion": "Solo el centro y dos aristas adyacentes forman una L. Aristas orientadas: 2 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 54"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-07",
+   "nombre": "OLL 7 · Sune ancho",
+   "grupo": "Rayo pequeño",
+   "algoritmo": "r U R' U R U2 r'",
+   "alternativas": [],
+   "descripcion": "Un zigzag corto con una esquina orientada. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 7"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-08",
+   "nombre": "OLL 8 · Sune ancho izquierdo",
+   "grupo": "Rayo pequeño",
+   "algoritmo": "r' U' R U' R' U2 r",
+   "alternativas": [
+    "(U2) l' U' L U' L' U2 l",
+    "(U2) R U2 R' U2 R' F R F'"
+   ],
+   "descripcion": "Un zigzag corto con una esquina orientada. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 8"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-11",
+   "nombre": "OLL 11 · Escalera abajo",
+   "grupo": "Rayo pequeño",
+   "algoritmo": "r U R' U R' F R F' R U2 r'",
+   "alternativas": [
+    "(U2) r' R2 U R' U R U2 R' U M'"
+   ],
+   "descripcion": "Un zigzag corto con una esquina orientada. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 11"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-12",
+   "nombre": "OLL 12 · Escalera arriba",
+   "grupo": "Rayo pequeño",
+   "algoritmo": "M' R' U' R U' R' U2 R U' R r'",
+   "alternativas": [
+    "(U2) l L2 U' L U' L' U2 L U' M'"
+   ],
+   "descripcion": "Un zigzag corto con una esquina orientada. Aristas orientadas: 2 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 12"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-39",
+   "nombre": "OLL 39 · Rayo grande izquierdo",
+   "grupo": "Rayo grande",
+   "algoritmo": "(L F' L') (U' L U) (F U' L')",
+   "alternativas": [
+    "(U2) R U R' F' U' F U R U2 R'"
+   ],
+   "descripcion": "Un zigzag que cruza toda la cara. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 39"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-40",
+   "nombre": "OLL 40 · Rayo grande derecho",
+   "grupo": "Rayo grande",
+   "algoritmo": "(R' F R) (U R' U') (F' U R)",
+   "alternativas": [],
+   "descripcion": "Un zigzag que cruza toda la cara. Aristas orientadas: 2 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 40"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-01",
+   "nombre": "OLL 1 · Pista",
+   "grupo": "Punto",
+   "algoritmo": "(R U2 R') (R' F R F') (U2) (R' F R F')",
+   "alternativas": [
+    "(U) R U' R2 D' r U' r' D R2 U R'"
+   ],
+   "descripcion": "Ninguna arista orientada: solo el centro es amarillo. Aristas orientadas: 0 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 1"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-02",
+   "nombre": "OLL 2 · Zamboni",
+   "grupo": "Punto",
+   "algoritmo": "(F R U R' U' F') (f R U R' U' f')",
+   "alternativas": [
+    "F R U R' U' S R U R' U' f'"
+   ],
+   "descripcion": "Ninguna arista orientada: solo el centro es amarillo. Aristas orientadas: 0 de 4; esquinas orientadas: 0 de 4.",
+   "referencia": "OLL 2"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-03",
+   "nombre": "OLL 3 · Anti-molinillo",
+   "grupo": "Punto",
+   "algoritmo": "(f R U R' U' f') (U') (F R U R' U' F')",
+   "alternativas": [
+    "(U) r' R2 U R' U r U2 r' U M'"
+   ],
+   "descripcion": "Ninguna arista orientada: solo el centro es amarillo. Aristas orientadas: 0 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 3"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-04",
+   "nombre": "OLL 4 · Molinillo",
+   "grupo": "Punto",
+   "algoritmo": "(f R U R' U' f') (U) (F R U R' U' F')",
+   "alternativas": [
+    "R' F2 R2 U2 R' F' R U2 R2 F2 R"
+   ],
+   "descripcion": "Ninguna arista orientada: solo el centro es amarillo. Aristas orientadas: 0 de 4; esquinas orientadas: 1 de 4.",
+   "referencia": "OLL 4"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-17",
+   "nombre": "OLL 17 · Diagonal",
+   "grupo": "Punto",
+   "algoritmo": "(R U R' U) (R' F R F') (U2) (R' F R F')",
+   "alternativas": [
+    "(U2) F R' F' R U S' R U' R' S"
+   ],
+   "descripcion": "Ninguna arista orientada: solo el centro es amarillo. Aristas orientadas: 0 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 17"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-18",
+   "nombre": "OLL 18 · Corona",
+   "grupo": "Punto",
+   "algoritmo": "(r U R' U R U2 r') (r' U' R U' R' U2 r)",
+   "alternativas": [
+    "(U) R U2 R2 F R F' U2 M' U R U' r'"
+   ],
+   "descripcion": "Ninguna arista orientada: solo el centro es amarillo. Aristas orientadas: 0 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 18"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-19",
+   "nombre": "OLL 19 · Conejo",
+   "grupo": "Punto",
+   "algoritmo": "(r' R U) (R U R' U') (r R2 F R F')",
+   "alternativas": [
+    "(U) S' R U R' S U' R' F R F'"
+   ],
+   "descripcion": "Ninguna arista orientada: solo el centro es amarillo. Aristas orientadas: 0 de 4; esquinas orientadas: 2 de 4.",
+   "referencia": "OLL 19"
+  },
+  {
+   "etapa": "cfop-oll",
+   "id": "oll-20",
+   "nombre": "OLL 20 · Equis",
+   "grupo": "Punto",
+   "algoritmo": "(r U R' U') (M2 U R U' R') (U' M')",
+   "alternativas": [
+    "M U R U R' U' M2 U R U' r'",
+    "S' R U R' S U' M' U R U' r'"
+   ],
+   "descripcion": "Ninguna arista orientada: solo el centro es amarillo. Aristas orientadas: 0 de 4; esquinas orientadas: 4 de 4.",
+   "referencia": "OLL 20"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-ua",
+   "nombre": "Perm Ua",
+   "grupo": "Solo aristas",
+   "algoritmo": "(M2 U M) (U2) (M' U M2)",
+   "alternativas": [
+    "R U' R U R U R U' R' U' R2"
+   ],
+   "descripcion": "Las cuatro esquinas resueltas y una barra completa; las otras tres aristas rotan en sentido antihorario.",
+   "referencia": "PLL Ua"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-ub",
+   "nombre": "Perm Ub",
+   "grupo": "Solo aristas",
+   "algoritmo": "(M2 U' M) (U2) (M' U' M2)",
+   "alternativas": [
+    "R2 U R U R' U' R' U' R' U R'"
+   ],
+   "descripcion": "Como Ua, pero las tres aristas rotan en sentido horario.",
+   "referencia": "PLL Ub"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-h",
+   "nombre": "Perm H",
+   "grupo": "Solo aristas",
+   "algoritmo": "(M2 U M2) (U2) (M2 U M2)",
+   "alternativas": [],
+   "descripcion": "Esquinas resueltas; cada arista se intercambia con la opuesta. Todos los lados muestran un patrón ajedrezado.",
+   "referencia": "PLL H"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-z",
+   "nombre": "Perm Z",
+   "grupo": "Solo aristas",
+   "algoritmo": "(M' U M2 U M2 U M') (U2 M2)",
+   "alternativas": [
+    "(U) M2 U M2 U M' U2 M2 U2 M' (U2)"
+   ],
+   "descripcion": "Esquinas resueltas; las aristas se intercambian por parejas adyacentes.",
+   "referencia": "PLL Z"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-aa",
+   "nombre": "Perm Aa",
+   "grupo": "Solo esquinas",
+   "algoritmo": "x (R' U R') (D2) (R U' R') (D2) (R2) x'",
+   "alternativas": [
+    "(U') x L2 D2 L' U' L D2 L' U L' x' (U)"
+   ],
+   "descripcion": "Aristas resueltas; tres esquinas rotan en sentido horario. Hay un par de faros en un lado.",
+   "referencia": "PLL Aa"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-ab",
+   "nombre": "Perm Ab",
+   "grupo": "Solo esquinas",
+   "algoritmo": "x (R2) (D2) (R U R') (D2) (R U' R) x'",
+   "alternativas": [
+    "(U2) x' L2 D2 L U L' D2 L U' L x (U2)"
+   ],
+   "descripcion": "Aristas resueltas; tres esquinas rotan en sentido antihorario, al contrario que en Aa.",
+   "referencia": "PLL Ab"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-e",
+   "nombre": "Perm E",
+   "grupo": "Solo esquinas",
+   "algoritmo": "x' (R U' R' D) (R U R' D') (R U R' D) (R U' R' D') x",
+   "alternativas": [],
+   "descripcion": "Aristas resueltas; las esquinas se intercambian por parejas a cada lado. No hay faros en ningún lado.",
+   "referencia": "PLL E"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-t",
+   "nombre": "Perm T",
+   "grupo": "Intercambio de esquinas adyacentes",
+   "algoritmo": "(R U R' U') (R' F R2 U' R') (U' R U R' F')",
+   "alternativas": [],
+   "descripcion": "Se intercambian dos esquinas adyacentes y dos aristas opuestas. Faros en un lado y una barra de dos piezas en ambos costados.",
+   "referencia": "PLL T"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-f",
+   "nombre": "Perm F",
+   "grupo": "Intercambio de esquinas adyacentes",
+   "algoritmo": "(R' U' F') (R U R' U') (R' F R2 U' R') (U' R U R' U R)",
+   "alternativas": [],
+   "descripcion": "Una barra completa de tres piezas en un lado; se intercambian dos esquinas y dos aristas del resto.",
+   "referencia": "PLL F"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-ja",
+   "nombre": "Perm Ja",
+   "grupo": "Intercambio de esquinas adyacentes",
+   "algoritmo": "x (R2 F R F') (R U2) (r' U r U2) x'",
+   "alternativas": [
+    "(U') R' U L' U2 R U' R' U2 R L"
+   ],
+   "descripcion": "Una barra completa en un lado y un bloque de dos piezas contiguo; se intercambian dos esquinas adyacentes y dos aristas adyacentes.",
+   "referencia": "PLL Ja"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-jb",
+   "nombre": "Perm Jb",
+   "grupo": "Intercambio de esquinas adyacentes",
+   "algoritmo": "(R U R' F') (R U R' U') (R' F R2 U' R')",
+   "alternativas": [
+    "R U2 R' U' R U2 L' U R' U' L (U)"
+   ],
+   "descripcion": "Espejo de Ja: la barra completa y el bloque de dos piezas quedan al otro lado.",
+   "referencia": "PLL Jb"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-ra",
+   "nombre": "Perm Ra",
+   "grupo": "Intercambio de esquinas adyacentes",
+   "algoritmo": "(R U' R' U') (R U R D) (R' U' R D') (R' U2 R')",
+   "alternativas": [
+    "R U R' F' R U2 R' U2 R' F R U R U2 R'"
+   ],
+   "descripcion": "Faros en un lado y un solo bloque de dos piezas; el resto está desordenado.",
+   "referencia": "PLL Ra"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-rb",
+   "nombre": "Perm Rb",
+   "grupo": "Intercambio de esquinas adyacentes",
+   "algoritmo": "(R2 F R) (U R U' R') (F' R U2 R' U2 R)",
+   "alternativas": [
+    "(U') R' U2 R U2 R' F R U R' U' R' F' R2 (U')"
+   ],
+   "descripcion": "Espejo de Ra.",
+   "referencia": "PLL Rb"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-v",
+   "nombre": "Perm V",
+   "grupo": "Intercambio de esquinas diagonales",
+   "algoritmo": "(R U' R U) (R' D R D') (R U' D) (R2 U R2 D' R2)",
+   "alternativas": [
+    "(U') R' U R' U' y R' F' R2 U' R' U R' F R F (U)"
+   ],
+   "descripcion": "Intercambio diagonal de esquinas con un bloque de dos piezas en dos lados contiguos.",
+   "referencia": "PLL V"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-y",
+   "nombre": "Perm Y",
+   "grupo": "Intercambio de esquinas diagonales",
+   "algoritmo": "(F R U' R') (U' R U R' F') (R U R' U') (R' F R F')",
+   "alternativas": [],
+   "descripcion": "Intercambio diagonal de esquinas y de dos aristas adyacentes; no hay ninguna barra.",
+   "referencia": "PLL Y"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-na",
+   "nombre": "Perm Na",
+   "grupo": "Intercambio de esquinas diagonales",
+   "algoritmo": "(R U R' U) (R U R' F') (R U R' U') (R' F R2 U' R') (U2 R U' R')",
+   "alternativas": [
+    "z U R' D R2 U' R D' U R' D R2 U' R D' z' (U')"
+   ],
+   "descripcion": "Intercambio diagonal de esquinas y de dos aristas opuestas; cada lado muestra un bloque de dos piezas.",
+   "referencia": "PLL Na"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-nb",
+   "nombre": "Perm Nb",
+   "grupo": "Intercambio de esquinas diagonales",
+   "algoritmo": "(R' U R U') (R' F' U' F) (R U R' F) (R' F' R U' R)",
+   "alternativas": [
+    "(r D r' U2)5"
+   ],
+   "descripcion": "Espejo de Na.",
+   "referencia": "PLL Nb"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-ga",
+   "nombre": "Perm Ga",
+   "grupo": "Permutaciones G",
+   "algoritmo": "(R2 U) (R' U R' U') (R U' R2) (D U') (R' U R D')",
+   "alternativas": [
+    "R2 u R' U R' U' R u' R2 y' R' U R (U')"
+   ],
+   "descripcion": "Faros en un lado; tres esquinas y tres aristas rotan. Un bloque de dos piezas contiguo a los faros.",
+   "referencia": "PLL Ga"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-gb",
+   "nombre": "Perm Gb",
+   "grupo": "Permutaciones G",
+   "algoritmo": "(R' U' R) (U D') (R2 U R' U) (R U' R U') (R2 D)",
+   "alternativas": [
+    "R' U' R y R2 u R' U R U' R u' R2 (U)"
+   ],
+   "descripcion": "Inverso de Ga.",
+   "referencia": "PLL Gb"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-gc",
+   "nombre": "Perm Gc",
+   "grupo": "Permutaciones G",
+   "algoritmo": "(R2 U') (R U' R U) (R' U R2) (D' U) (R U' R' D)",
+   "alternativas": [
+    "R2 u' R U' R U R' u R2 y R U' R' (U)"
+   ],
+   "descripcion": "Como las demás G: faros en un lado y tres esquinas y tres aristas rotando. Cambia la posición del bloque de dos piezas.",
+   "referencia": "PLL Gc"
+  },
+  {
+   "etapa": "cfop-pll",
+   "id": "pll-gd",
+   "nombre": "Perm Gd",
+   "grupo": "Permutaciones G",
+   "algoritmo": "(R U R') (U' D) (R2 U' R U') (R' U R' U) (R2 D')",
+   "alternativas": [
+    "R U R' y' R2 u' R U' R' U R' u R2 (U')"
+   ],
+   "descripcion": "Inverso de Gc.",
+   "referencia": "PLL Gd"
+  },
+  {
+   "etapa": "pr-cruz",
+   "id": "pr-cruz-01",
+   "nombre": "Arriba, blanco hacia arriba",
+   "grupo": "Arista en la capa superior",
+   "algoritmo": "F2",
+   "alternativas": [],
+   "descripcion": "La arista está en la capa superior con el blanco mirando arriba, justo sobre su centro. Media vuelta de la cara la baja a su sitio.",
+   "notas": [
+    "Alinea la arista sobre su centro y baja con media vuelta"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     0,
+     1,
+     1
+    ],
+    "cara": "U"
+   }
+  },
+  {
+   "etapa": "pr-cruz",
+   "id": "pr-cruz-02",
+   "nombre": "Arriba, blanco hacia el frente",
+   "grupo": "Arista en la capa superior",
+   "algoritmo": "(U' R') (F) (R)",
+   "alternativas": [],
+   "descripcion": "La arista está arriba pero con el blanco mirando al frente: bajarla con F2 la dejaría volteada.",
+   "notas": [
+    "Lleva la arista a la capa media",
+    "Bájala con el blanco hacia abajo",
+    "Devuelve la arista de la cruz que moviste"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     0,
+     1,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-cruz",
+   "id": "pr-cruz-03",
+   "nombre": "Capa media a la derecha, blanco a la derecha",
+   "grupo": "Arista en la capa media",
+   "algoritmo": "F",
+   "alternativas": [],
+   "descripcion": "La arista está en la capa media y su color lateral ya coincide con el centro del frente: un solo giro la baja.",
+   "notas": [
+    "Un giro de la cara frontal la baja a su sitio"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     0,
+     1
+    ],
+    "cara": "R"
+   }
+  },
+  {
+   "etapa": "pr-cruz",
+   "id": "pr-cruz-04",
+   "nombre": "Capa media a la izquierda, blanco a la izquierda",
+   "grupo": "Arista en la capa media",
+   "algoritmo": "F'",
+   "alternativas": [],
+   "descripcion": "El espejo del caso anterior: la arista está en la capa media a la izquierda.",
+   "notas": [
+    "Un giro de la cara frontal la baja a su sitio"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     -1,
+     0,
+     1
+    ],
+    "cara": "L"
+   }
+  },
+  {
+   "etapa": "pr-cruz",
+   "id": "pr-cruz-05",
+   "nombre": "Capa media a la derecha, blanco al frente",
+   "grupo": "Arista en la capa media",
+   "algoritmo": "(D) (R') (D')",
+   "alternativas": [],
+   "descripcion": "La arista está en la capa media pero bajaría en la cara de la derecha. Se acerca el hueco con D, se baja y se devuelve.",
+   "notas": [
+    "Lleva el hueco de la cruz bajo la arista",
+    "Baja la arista",
+    "Devuelve la cruz a su posición"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     0,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-cruz",
+   "id": "pr-cruz-06",
+   "nombre": "Capa media a la izquierda, blanco al frente",
+   "grupo": "Arista en la capa media",
+   "algoritmo": "(D') (L) (D)",
+   "alternativas": [],
+   "descripcion": "Espejo del caso anterior, con la arista en la capa media a la izquierda.",
+   "notas": [
+    "Lleva el hueco de la cruz bajo la arista",
+    "Baja la arista",
+    "Devuelve la cruz a su posición"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     -1,
+     0,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-cruz",
+   "id": "pr-cruz-07",
+   "nombre": "En su sitio pero volteada",
+   "grupo": "Arista en la capa inferior",
+   "algoritmo": "(F') (D R' D')",
+   "alternativas": [],
+   "descripcion": "La arista está en su posición de la cruz, pero con el blanco mirando al frente.",
+   "notas": [
+    "Súbela a la capa media",
+    "Insértala bien orientada desde el lado"
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     0,
+     -1,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-cruz",
+   "id": "pr-cruz-08",
+   "nombre": "Abajo, en el lugar equivocado",
+   "grupo": "Arista en la capa inferior",
+   "algoritmo": "(R2) (U) (F2)",
+   "alternativas": [],
+   "descripcion": "La arista está en la cruz con el blanco abajo, pero bajo el centro equivocado (aquí, el de la derecha, cuya arista aún no se ha colocado y por eso se ve gris).",
+   "notas": [
+    "Súbela a la capa superior",
+    "Alinéala sobre su centro",
+    "Bájala a su sitio"
+   ],
+   "ocultar": [
+    [
+     1,
+     -1,
+     0
+    ]
+   ],
+   "verificacion": {
+    "pieza": [
+     0,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     -1,
+     0
+    ],
+    "cara": "D"
+   }
+  },
+  {
+   "etapa": "pr-esquinas",
+   "id": "pr-esquinas-01",
+   "nombre": "Blanco hacia la derecha",
+   "grupo": "Esquina arriba, sobre su hueco",
+   "algoritmo": "R U R'",
+   "alternativas": [
+    "(R U R' U')"
+   ],
+   "descripcion": "La esquina está justo encima de su hueco con el blanco mirando a la derecha.",
+   "notas": [
+    "Baja el hueco, mete la esquina y sube"
+   ],
+   "verificacion": {
+    "pieza": [
+     1,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     1,
+     1
+    ],
+    "cara": "R"
+   }
+  },
+  {
+   "etapa": "pr-esquinas",
+   "id": "pr-esquinas-02",
+   "nombre": "Blanco hacia el frente",
+   "grupo": "Esquina arriba, sobre su hueco",
+   "algoritmo": "F' U' F",
+   "alternativas": [
+    "(R U R' U')5"
+   ],
+   "descripcion": "La esquina está encima de su hueco con el blanco mirando al frente.",
+   "notas": [
+    "El mismo movimiento, pero entrando por el frente"
+   ],
+   "verificacion": {
+    "pieza": [
+     1,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     1,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-esquinas",
+   "id": "pr-esquinas-03",
+   "nombre": "Blanco hacia arriba",
+   "grupo": "Esquina arriba, sobre su hueco",
+   "algoritmo": "(R U2 R') (U') (R U R')",
+   "alternativas": [
+    "(R U R' U')3"
+   ],
+   "descripcion": "La esquina está encima de su hueco con el blanco mirando arriba.",
+   "notas": [
+    "Gira la esquina para que el blanco mire de lado",
+    "Recolócala sobre el hueco",
+    "Insértala"
+   ],
+   "verificacion": {
+    "pieza": [
+     1,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     1,
+     1
+    ],
+    "cara": "U"
+   }
+  },
+  {
+   "etapa": "pr-esquinas",
+   "id": "pr-esquinas-04",
+   "nombre": "En el hueco, blanco al frente",
+   "grupo": "Esquina en el hueco, mal orientada",
+   "algoritmo": "(F' U' F U) (F' U' F)",
+   "alternativas": [
+    "(R U R' U')4"
+   ],
+   "descripcion": "La esquina ya está en su hueco pero girada, con el blanco al frente.",
+   "notas": [
+    "Saca la esquina",
+    "Vuelve a insertarla bien orientada"
+   ],
+   "verificacion": {
+    "pieza": [
+     1,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     -1,
+     1
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-esquinas",
+   "id": "pr-esquinas-05",
+   "nombre": "En el hueco, blanco a la derecha",
+   "grupo": "Esquina en el hueco, mal orientada",
+   "algoritmo": "(R U R' U') (R U R')",
+   "alternativas": [
+    "(R U R' U')2"
+   ],
+   "descripcion": "La esquina ya está en su hueco pero girada, con el blanco a la derecha.",
+   "notas": [
+    "Saca la esquina",
+    "Vuelve a insertarla bien orientada"
+   ],
+   "verificacion": {
+    "pieza": [
+     1,
+     -1,
+     1
+    ],
+    "pegatina": "D",
+    "pos": [
+     1,
+     -1,
+     1
+    ],
+    "cara": "R"
+   }
+  },
+  {
+   "etapa": "pr-capa2",
+   "id": "pr-capa2-01",
+   "nombre": "Arista hacia la derecha",
+   "grupo": "Arista en la capa superior",
+   "algoritmo": "(U R U' R') (U' F' U F)",
+   "alternativas": [],
+   "descripcion": "La arista está arriba al frente y su color frontal coincide con el centro. Tiene que bajar al hueco de la derecha.",
+   "notas": [
+    "Aleja la arista y saca la esquina",
+    "Reinserta la esquina junto con la arista"
+   ],
+   "verificacion": {
+    "pieza": [
+     1,
+     0,
+     1
+    ],
+    "pos": [
+     0,
+     1,
+     1
+    ],
+    "pegatina": "F",
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-capa2",
+   "id": "pr-capa2-02",
+   "nombre": "Arista hacia la izquierda",
+   "grupo": "Arista en la capa superior",
+   "algoritmo": "(U' L' U L) (U F U' F')",
+   "alternativas": [],
+   "descripcion": "Espejo del caso anterior: la arista tiene que bajar al hueco de la izquierda.",
+   "notas": [
+    "Aleja la arista y saca la esquina",
+    "Reinserta la esquina junto con la arista"
+   ],
+   "verificacion": {
+    "pieza": [
+     -1,
+     0,
+     1
+    ],
+    "pos": [
+     0,
+     1,
+     1
+    ],
+    "pegatina": "F",
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-capa2",
+   "id": "pr-capa2-03",
+   "nombre": "Arista en su hueco, volteada",
+   "grupo": "Arista en la capa media",
+   "algoritmo": "(U R U' R' U' F' U F) (U2) (U R U' R' U' F' U F)",
+   "alternativas": [],
+   "descripcion": "La arista está en su hueco pero al revés. Se saca con el mismo algoritmo y se vuelve a insertar.",
+   "notas": [
+    "Saca la arista con el algoritmo de inserción",
+    "Colócala sobre su centro",
+    "Insértala bien orientada"
+   ],
+   "verificacion": {
+    "pieza": [
+     1,
+     0,
+     1
+    ],
+    "pos": [
+     1,
+     0,
+     1
+    ],
+    "pegatina": "F",
+    "cara": "R"
+   }
+  },
+  {
+   "etapa": "pr-cruz-amarilla",
+   "id": "pr-cruz-amarilla-01",
+   "nombre": "Línea",
+   "grupo": "Una aplicación",
+   "algoritmo": "(F R U R' U' F')",
+   "alternativas": [],
+   "descripcion": "Dos aristas opuestas ya son amarillas y forman una línea. Con la línea en horizontal (de izquierda a derecha), aplica el algoritmo una vez.",
+   "notas": [
+    "Aplica F R U R' U' F'"
+   ],
+   "verificacion": {
+    "forma": "linea"
+   }
+  },
+  {
+   "etapa": "pr-cruz-amarilla",
+   "id": "pr-cruz-amarilla-02",
+   "nombre": "L",
+   "grupo": "Dos aplicaciones",
+   "algoritmo": "(F R U R' U' F') (F R U R' U' F')",
+   "alternativas": [
+    "F U R U' R' F'"
+   ],
+   "descripcion": "Dos aristas adyacentes ya son amarillas y forman una L. Con la L atrás a la izquierda, la primera aplicación la convierte en línea y la segunda completa la cruz.",
+   "notas": [
+    "Aplica F R U R' U' F'",
+    "Repite F R U R' U' F'"
+   ],
+   "verificacion": {
+    "forma": "L"
+   }
+  },
+  {
+   "etapa": "pr-cruz-amarilla",
+   "id": "pr-cruz-amarilla-03",
+   "nombre": "Punto",
+   "grupo": "Tres aplicaciones",
+   "algoritmo": "(F R U R' U' F') (U2) (F R U R' U' F') (F R U R' U' F')",
+   "alternativas": [
+    "F R U R' U' F' f R U R' U' f'"
+   ],
+   "descripcion": "Ninguna arista es amarilla. La primera aplicación crea una L; se recoloca la capa superior y se sigue como en ese caso.",
+   "notas": [
+    "Aplica F R U R' U' F'",
+    "Recoloca la capa superior",
+    "Repite F R U R' U' F'",
+    "Repite F R U R' U' F'"
+   ],
+   "verificacion": {
+    "forma": "punto"
+   }
+  },
+  {
+   "etapa": "pr-orientar-esquinas",
+   "id": "pr-orientar-esquinas-01",
+   "nombre": "Sune (pez)",
+   "grupo": "Una aplicación",
+   "algoritmo": "(R U R' U R U2 R')",
+   "alternativas": [],
+   "descripcion": "Una sola esquina amarilla arriba (forma de pez): un Sune completa la cara.",
+   "referencia": "OLL 27",
+   "notas": [
+    "Aplica Sune"
+   ]
+  },
+  {
+   "etapa": "pr-orientar-esquinas",
+   "id": "pr-orientar-esquinas-02",
+   "nombre": "Antisune (pez inverso)",
+   "grupo": "Dos aplicaciones",
+   "algoritmo": "(R U R' U R U2 R') (U2) (R U R' U R U2 R')",
+   "alternativas": [
+    "(U2) R U2 R' U' R U' R'"
+   ],
+   "descripcion": "Una sola esquina amarilla arriba, pero las otras tres miran hacia el lado contrario que en el Sune.",
+   "referencia": "OLL 26",
+   "notas": [
+    "Aplica Sune",
+    "Recoloca la capa superior",
+    "Repite Sune"
+   ]
+  },
+  {
+   "etapa": "pr-orientar-esquinas",
+   "id": "pr-orientar-esquinas-03",
+   "nombre": "H (cruz sola)",
+   "grupo": "Dos aplicaciones",
+   "algoritmo": "(R U R' U R U2 R') (R U R' U R U2 R')",
+   "alternativas": [
+    "(R U R' U) (R U' R' U) (R U2 R')"
+   ],
+   "descripcion": "Ninguna esquina amarilla arriba; forman dos pares de faros amarillos en lados opuestos.",
+   "referencia": "OLL 21",
+   "notas": [
+    "Aplica Sune",
+    "Repite Sune"
+   ]
+  },
+  {
+   "etapa": "pr-orientar-esquinas",
+   "id": "pr-orientar-esquinas-04",
+   "nombre": "Pi",
+   "grupo": "Dos aplicaciones",
+   "algoritmo": "(R U R' U R U2 R') (U) (R U R' U R U2 R')",
+   "alternativas": [
+    "(U') R U2 (R2 U' R2 U') (R2 U2 R)"
+   ],
+   "descripcion": "Ninguna esquina amarilla arriba; un par de faros amarillos en un lado y las otras dos miran hacia fuera.",
+   "referencia": "OLL 22",
+   "notas": [
+    "Aplica Sune",
+    "Recoloca la capa superior",
+    "Repite Sune"
+   ]
+  },
+  {
+   "etapa": "pr-orientar-esquinas",
+   "id": "pr-orientar-esquinas-05",
+   "nombre": "Faros (U)",
+   "grupo": "Tres aplicaciones",
+   "algoritmo": "(R U R' U R U2 R') (U2) (R U R' U R U2 R') (U) (R U R' U R U2 R')",
+   "alternativas": [
+    "(U) (R2 D') (R U2 R') (D) (R U2 R)"
+   ],
+   "descripcion": "Dos esquinas amarillas arriba en el mismo lado; las otras dos forman faros amarillos.",
+   "referencia": "OLL 23",
+   "notas": [
+    "Aplica Sune",
+    "Recoloca la capa superior",
+    "Repite Sune",
+    "Recoloca la capa superior",
+    "Repite Sune"
+   ]
+  },
+  {
+   "etapa": "pr-orientar-esquinas",
+   "id": "pr-orientar-esquinas-06",
+   "nombre": "T (camaleón)",
+   "grupo": "Tres aplicaciones",
+   "algoritmo": "(R U R' U R U2 R') (U') (R U R' U R U2 R') (U) (R U R' U R U2 R')",
+   "alternativas": [
+    "(U) (r U R' U') (r' F R F')"
+   ],
+   "descripcion": "Dos esquinas amarillas arriba en el mismo lado; las otras dos miran hacia lados opuestos.",
+   "referencia": "OLL 24",
+   "notas": [
+    "Aplica Sune",
+    "Recoloca la capa superior",
+    "Repite Sune",
+    "Recoloca la capa superior",
+    "Repite Sune"
+   ]
+  },
+  {
+   "etapa": "pr-orientar-esquinas",
+   "id": "pr-orientar-esquinas-07",
+   "nombre": "L (pajarita)",
+   "grupo": "Tres aplicaciones",
+   "algoritmo": "(R U R' U R U2 R') (R U R' U R U2 R') (R U R' U R U2 R')",
+   "alternativas": [
+    "(U') (F') (r U R' U') (r' F R)"
+   ],
+   "descripcion": "Dos esquinas amarillas arriba en diagonal.",
+   "referencia": "OLL 25",
+   "notas": [
+    "Aplica Sune",
+    "Repite Sune",
+    "Repite Sune"
+   ]
+  },
+  {
+   "etapa": "pr-permutar-esquinas",
+   "id": "pr-permutar-esquinas-01",
+   "nombre": "Faros en un lado",
+   "grupo": "Una aplicación",
+   "algoritmo": "(R' F R' B2 R F' R' B2 R2)",
+   "alternativas": [
+    "x R' U R' D2 R U' R' D2 R2 x'"
+   ],
+   "descripcion": "Un lado tiene dos esquinas del mismo color (faros). Con los faros atrás, el algoritmo coloca las esquinas.",
+   "notas": [
+    "Aplica el algoritmo de esquinas"
+   ],
+   "verificacion": {
+    "forma": "adyacente"
+   }
+  },
+  {
+   "etapa": "pr-permutar-esquinas",
+   "id": "pr-permutar-esquinas-02",
+   "nombre": "Sin faros",
+   "grupo": "Dos aplicaciones",
+   "algoritmo": "(R' F R' B2 R F' R' B2 R2) (U) (R' F R' B2 R F' R' B2 R2)",
+   "alternativas": [
+    "F R U' R' U' R U R' F' R U R' U' R' F R F' (U2)"
+   ],
+   "descripcion": "Ningún lado tiene faros: hay que intercambiar esquinas en diagonal. Una aplicación crea los faros y la segunda resuelve.",
+   "notas": [
+    "Aplica el algoritmo de esquinas",
+    "Recoloca la capa superior",
+    "Repite el algoritmo de esquinas"
+   ],
+   "verificacion": {
+    "forma": "diagonal"
+   }
+  },
+  {
+   "etapa": "pr-permutar-aristas",
+   "id": "pr-permutar-aristas-01",
+   "nombre": "Tres aristas (sentido antihorario)",
+   "grupo": "Una aplicación",
+   "algoritmo": "(R U' R U R U R U' R' U' R2)",
+   "alternativas": [],
+   "descripcion": "Un lado completo (atrás); las otras tres aristas rotan en sentido antihorario. Un solo algoritmo.",
+   "referencia": "PLL Ua",
+   "notas": [
+    "Aplica el algoritmo de aristas"
+   ]
+  },
+  {
+   "etapa": "pr-permutar-aristas",
+   "id": "pr-permutar-aristas-02",
+   "nombre": "Tres aristas (sentido horario)",
+   "grupo": "Dos aplicaciones",
+   "algoritmo": "(R U' R U R U R U' R' U' R2) (R U' R U R U R U' R' U' R2)",
+   "alternativas": [
+    "(M2 U' M) (U2) (M' U' M2)"
+   ],
+   "descripcion": "Un lado completo (atrás); las aristas rotan en sentido horario: el mismo algoritmo, dos veces.",
+   "referencia": "PLL Ub",
+   "notas": [
+    "Aplica el algoritmo de aristas",
+    "Repite el algoritmo de aristas"
+   ]
+  },
+  {
+   "etapa": "pr-permutar-aristas",
+   "id": "pr-permutar-aristas-03",
+   "nombre": "Aristas opuestas (H)",
+   "grupo": "Dos aplicaciones",
+   "algoritmo": "(R U' R U R U R U' R' U' R2) (U) (R U' R U R U R U' R' U' R2)",
+   "alternativas": [
+    "(M2 U M2) (U2) (M2 U M2) (U)"
+   ],
+   "descripcion": "Ningún lado completo; cada arista se intercambia con la de enfrente.",
+   "referencia": "PLL H",
+   "notas": [
+    "Aplica el algoritmo de aristas",
+    "Recoloca la capa superior",
+    "Repite el algoritmo de aristas"
+   ]
+  },
+  {
+   "etapa": "pr-permutar-aristas",
+   "id": "pr-permutar-aristas-04",
+   "nombre": "Aristas adyacentes (Z)",
+   "grupo": "Dos aplicaciones",
+   "algoritmo": "(R U' R U R U R U' R' U' R2) (U') (R U' R U R U R U' R' U' R2)",
+   "alternativas": [
+    "(U) (M' U M2 U M2 U M') (U2 M2) (U)"
+   ],
+   "descripcion": "Ningún lado completo; las aristas se intercambian por parejas contiguas.",
+   "referencia": "PLL Z",
+   "notas": [
+    "Aplica el algoritmo de aristas",
+    "Recoloca la capa superior",
+    "Repite el algoritmo de aristas"
+   ]
+  }
+ ]
+}
