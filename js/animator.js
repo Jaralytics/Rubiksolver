@@ -1,8 +1,6 @@
 // animator.js — Anima movimientos de uno en uno y mantiene sincronizados el
 // modelo lógico y la vista. El modelo solo cambia cuando el giro termina, así
-// que en todo momento describe un estado válido del cubo.
-
-import { invertMoves } from './cube-model.js';
+// que en todo momento describe un estado válido del puzzle.
 
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
@@ -29,9 +27,9 @@ export class Animator {
       return Promise.resolve();
     }
     return new Promise((resolve) => {
-      const target = (move.q * Math.PI) / 2;
-      // Media vuelta: algo más larga, pero no el doble.
-      const total = duration * (Math.abs(move.q) === 2 ? 1.45 : 1);
+      const target = move.q * this.model.unit;
+      // Los giros largos (media vuelta, 144°): algo más lentos, pero no el doble; lo decide el modelo.
+      const total = duration * (this.model.turnFactor?.(move) ?? 1);
       const start = performance.now();
       this.view.beginTurn(move);
       const job = { move, resolve, frame: 0 };
@@ -104,7 +102,7 @@ export class Player extends EventTarget {
    * Carga un caso: `moves` es la solución y `setup` la secuencia que lleva del
    * cubo resuelto al caso (por defecto, el inverso de la solución).
    */
-  async load(moves, { setup = invertMoves(moves), animate = true } = {}) {
+  async load(moves, { setup = this.model.invertMoves(moves), animate = true } = {}) {
     const token = ++this.token;
     this.moves = moves;
     this.index = 0;
@@ -151,7 +149,7 @@ export class Player extends EventTarget {
       if (this.index === 0) return;
       this.active = this.index - 1;
       this.emit();
-      await this.animator.play(invertMoves([this.moves[this.index - 1]])[0], this.duration);
+      await this.animator.play(this.model.invertMoves([this.moves[this.index - 1]])[0], this.duration);
       if (token !== this.token) return;
       this.index--;
     }

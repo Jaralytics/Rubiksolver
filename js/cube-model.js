@@ -105,52 +105,77 @@ const BASE = {
   z: { axis: 2, whole: true, dir: -1 }, // como F
 };
 
-const TOKEN = /^(\d*)([UDLRFBMESxyzudlrfb])(w?)([23]?)('?)/;
+// Prefijos admitidos: profundidad ("3Rw"), capa interior sola ("2R") y rango de capas ("2-3Rw").
+const TOKEN = /^(?:(\d+)-(\d+)|(\d*))([UDLRFBMESxyzudlrfb])(w?)([23]?)('?)/;
 
 /**
- * Convierte un token ("R", "U2", "r'", "Rw", "3Rw2", "M'", "x"…) en un movimiento
+ * Convierte un token ("R", "U2", "r'", "Rw", "3Rw2", "2R", "2-3Rw", "M'", "x"…) en un movimiento
  * { axis, lo, hi, q, base, amount, prime, text } para un cubo de tamaño `size`.
+ *
+ * Capas: se numeran desde la cara del giro (1 = la exterior). "Rw" y "r" giran las dos
+ * primeras; "3Rw", las tres primeras; "2R", solo la segunda; "2-3Rw", de la segunda a la
+ * tercera. Convención de minúsculas: en todos los tamaños "r" equivale a "Rw" (dos capas).
+ * M, E y S solo existen en tamaños impares.
  */
 export function parseMove(token, size = 3) {
   const m = TOKEN.exec(token);
   if (!m || m[0].length !== token.length) throw new Error(`Movimiento no reconocido: "${token}"`);
-  const [, depthTxt, rawLetter, w, amountTxt, primeTxt] = m;
+  const [, rangeFrom, rangeTo, depthTxt, rawLetter, w, amountTxt, primeTxt] = m;
   const h = (size - 1) / 2;
   const lower = rawLetter >= 'a' && rawLetter <= 'z' && !'xyz'.includes(rawLetter);
   const letter = lower ? rawLetter.toUpperCase() : rawLetter;
   const def = BASE[letter];
   const wide = lower || w === 'w';
-  if (wide && (def.slice || def.whole)) throw new Error(`Movimiento no reconocido: "${token}"`);
-  if (depthTxt && !wide) throw new Error(`Movimiento no reconocido: "${token}"`);
+  const bad = () => new Error(`Movimiento no reconocido: "${token}"`);
+  const faceTurn = !def.slice && !def.whole;
+  if (wide && !faceTurn) throw bad();
+  if ((depthTxt || rangeFrom) && !faceTurn) throw bad();
 
   let lo;
   let hi;
+  let from = 1;
+  let to = 1;
   if (def.whole) {
     lo = -h;
     hi = h;
   } else if (def.slice) {
+    if (size % 2 === 0) throw new Error(`"${token}" no existe en un cubo ${size}x${size}`);
     lo = -h + 1;
     hi = h - 1;
     if (lo > hi) throw new Error(`"${token}" no existe en un cubo ${size}x${size}`);
   } else {
-    const depth = wide ? Math.max(2, Number(depthTxt) || 2) : 1;
-    if (depth > size) throw new Error(`"${token}" no existe en un cubo ${size}x${size}`);
+    if (rangeFrom) {
+      from = Number(rangeFrom);
+      to = Number(rangeTo);
+    } else if (wide) {
+      to = Math.max(2, Number(depthTxt) || 2);
+    } else if (depthTxt) {
+      from = to = Number(depthTxt);
+    }
+    if (from < 1 || from > to || to > size) throw new Error(`"${token}" no existe en un cubo ${size}x${size}`);
+    if (wide && to - from + 1 >= size) throw new Error(`"${token}" gira el cubo entero en un ${size}x${size}: usa x, y o z`);
     if (def.side > 0) {
-      hi = h;
-      lo = h - (depth - 1);
+      hi = h - (from - 1);
+      lo = h - (to - 1);
     } else {
-      lo = -h;
-      hi = -h + (depth - 1);
+      lo = -h + (from - 1);
+      hi = -h + (to - 1);
     }
   }
 
   const amount = amountTxt ? Number(amountTxt) : 1;
   const prime = primeTxt === "'";
-  const base = (depthTxt && Number(depthTxt) > 2 ? depthTxt : '') + (wide ? letter.toLowerCase() : letter);
-  return makeMove({ axis: def.axis, lo, hi, dir: def.dir, base, amount, prime });
+  let base;
+  if (!faceTurn) base = letter;
+  else if (from === 1 && to === 1) base = letter;
+  else if (from === to) base = `${from}${letter}`;
+  else if (from === 1) base = size <= 3 ? (to > 2 ? to : '') + letter.toLowerCase() : (to > 2 ? to : '') + letter + 'w';
+  else base = `${from}-${to}${letter}w`;
+  const info = faceTurn ? { face: letter, from, to } : {};
+  return makeMove({ axis: def.axis, lo, hi, dir: def.dir, base, amount, prime, ...info });
 }
 
-function makeMove({ axis, lo, hi, dir, base, amount, prime }) {
+function makeMove({ axis, lo, hi, dir, base, amount, prime, ...rest }) {
   // 3 cuartos = 1 cuarto en sentido contrario.
   if (amount === 3) {
     amount = 1;
@@ -158,7 +183,7 @@ function makeMove({ axis, lo, hi, dir, base, amount, prime }) {
   }
   const q = dir * amount * (prime ? -1 : 1);
   const text = base + (amount === 2 ? '2' : prime ? "'" : '');
-  return { axis, lo, hi, dir, base, amount, prime, q, text };
+  return { ...rest, axis, lo, hi, dir, base, amount, prime, q, text };
 }
 
 export function invertMove(m) {
@@ -231,6 +256,8 @@ export function movesToString(moves) {
 // Modelo
 // ---------------------------------------------------------------------------
 
+const AXIS_UNIT = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+
 export class CubeModel {
   constructor(size = 3) {
     this.size = size;
@@ -246,6 +273,26 @@ export class CubeModel {
         }
       }
     }
+  }
+
+  /** Radianes por unidad de `q`: en un cubo, cuartos de vuelta. */
+  get unit() {
+    return Math.PI / 2;
+  }
+
+  /** Eje unitario [x, y, z] alrededor del cual se mide el giro de un movimiento. */
+  axisVector(move) {
+    return AXIS_UNIT[move.axis];
+  }
+
+  /** Factor de duración de la animación de un movimiento: la media vuelta, algo más larga, no el doble. */
+  turnFactor(move) {
+    return Math.abs(move.q) === 2 ? 1.45 : 1;
+  }
+
+  /** Secuencia inversa (conserva la anotación `group`). */
+  invertMoves(moves) {
+    return invertMoves(moves);
   }
 
   reset() {
@@ -344,13 +391,17 @@ export class CubeModel {
   }
 
   /**
-   * Rotación global del cubo respecto de la orientación de origen. Solo tiene
-   * sentido en tamaños impares, donde los centros fijan el marco de referencia.
+   * Rotación global del cubo respecto de la orientación de origen. En tamaños impares
+   * la fijan los centros. En los pares no hay centros fijos: se usa la esquina
+   * inferior-trasera-izquierda como pieza de referencia, cuyo giro acumulado es el del
+   * cubo. Es un marco válido aunque esa esquina se haya movido con L, B, D, Lw… (la
+   * posición y el giro de una pieza siempre cambian juntos): normalize() deja el estado
+   * descrito respecto de esa pieza, así que L queda igual que R en un 2x2.
    */
   frame() {
-    if (this.size % 2 === 0) return IDENTITY.slice();
-    // Se deduce de la posición de los centros R, U y F (su giro sobre sí mismos no cuenta).
     const h = this.h;
+    if (this.size % 2 === 0) return this.pieceByHome([-h, -h, -h]).rot.slice();
+    // Se deduce de la posición de los centros R, U y F (su giro sobre sí mismos no cuenta).
     const cx = this.pieceByHome([h, 0, 0]).pos;
     const cy = this.pieceByHome([0, h, 0]).pos;
     const cz = this.pieceByHome([0, 0, h]).pos;
@@ -404,5 +455,38 @@ export class CubeModel {
       if (piece.rot[k * 4] !== 1) return false;
     }
     return true;
+  }
+
+  /** Tipo de una pieza: 3 esquina, 2 arista (o ala), 1 centro. Cuenta sus coordenadas en la superficie. */
+  kind(piece) {
+    return piece.home.filter((v) => Math.abs(v) === this.h).length;
+  }
+
+  /**
+   * Todas las posiciones de pegatina del cubo: { face, pos, kind, color }, donde `face`
+   * es la cara en la que está, `kind` el tipo de hueco (3 esquina, 2 arista, 1 centro)
+   * y `color` la cara de origen de la pegatina que lo ocupa. Sirve para decidir por
+   * colores cuando hay piezas indistinguibles (centros, alas gemelas).
+   */
+  slots() {
+    const h = this.h;
+    const out = [];
+    for (const face of FACE_NAMES) {
+      const { right, down } = FACE_BASIS[face];
+      const n = faceNormal(face);
+      for (let r = 0; r < this.size; r++) {
+        for (let c = 0; c < this.size; c++) {
+          const pos = [0, 1, 2].map((k) => n[k] * h + right[k] * (c - h) + down[k] * (r - h));
+          const kind = 1 + (r === 0 || r === this.size - 1) + (c === 0 || c === this.size - 1);
+          out.push({ face, pos, kind, color: this.stickerAt(pos, face).face });
+        }
+      }
+    }
+    return out;
+  }
+
+  /** ¿Todos los huecos de los tipos dados (por defecto, todos) muestran el color de su cara? */
+  stickersSolved(kinds = [1, 2, 3]) {
+    return this.slots().every((s) => !kinds.includes(s.kind) || s.color === s.face);
   }
 }

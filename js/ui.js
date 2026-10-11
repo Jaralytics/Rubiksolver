@@ -1,11 +1,10 @@
 // ui.js — Paneles y controles: método, etapas, lista de casos, algoritmo y
 // reproducción. Conecta el catálogo con el reproductor y la vista 3D.
 
-import { CubeModel } from './cube-model.js';
-import { CubeView } from './cube-view.js';
 import { Animator, Player } from './animator.js';
 import { loadCatalog, caseMoves, caseModel, maskFor, algText } from './catalog.js';
-import { topView, isoView, ARROW_DEFS } from './thumbnails.js';
+import { PUZZLES, DEFAULT_PUZZLE, puzzleById } from './puzzles/index.js';
+import { createPicker } from './puzzle-picker.js';
 
 const $ = (id) => document.getElementById(id);
 const STORE = 'cubo-paso-a-paso';
@@ -21,72 +20,67 @@ const el = (tag, props = {}, children = []) => {
   return node;
 };
 
-// --- Explicación de un movimiento en palabras ---
-
-const PARTE = {
-  R: 'la cara derecha',
-  L: 'la cara izquierda',
-  U: 'la cara superior',
-  D: 'la cara inferior',
-  F: 'la cara frontal',
-  B: 'la cara trasera',
-  r: 'la cara derecha junto con la capa central',
-  l: 'la cara izquierda junto con la capa central',
-  u: 'la cara superior junto con la capa central',
-  d: 'la cara inferior junto con la capa central',
-  f: 'la cara frontal junto con la capa central',
-  b: 'la cara trasera junto con la capa central',
-  M: 'la capa central, en el sentido de L',
-  E: 'la capa central, en el sentido de D',
-  S: 'la capa central, en el sentido de F',
-  x: 'el cubo entero, en el sentido de R',
-  y: 'el cubo entero, en el sentido de U',
-  z: 'el cubo entero, en el sentido de F',
-};
-
-function describeMove(move) {
-  const how = move.amount === 2 ? 'media vuelta' : move.prime ? 'un cuarto de vuelta, antihorario' : 'un cuarto de vuelta, horario';
-  return `${move.text}: ${PARTE[move.base] || move.base}, ${how}`;
-}
-
-// Secuencias con nombre propio; se señalan cuando el caso no trae notas.
-const GATILLOS = [
-  ["R U R' U R U2 R'", 'Sune'],
-  ["R U2 R' U' R U' R'", 'Antisune'],
-  ["F R U R' U' F'", "F + «sexy move» + F'"],
-  ["R U R' U'", '«sexy move»'],
-  ["R' F R F'", '«sledgehammer»'],
-  ["U R U' R'", '«sexy move» inverso'],
-  ["R U R'", 'inserción básica'],
-];
-
-function triggerAt(moves, index) {
-  const texts = moves.map((m) => m.text);
-  for (const [seq, name] of GATILLOS) {
-    const parts = seq.split(' ');
-    for (let start = Math.max(0, index - parts.length + 1); start <= index && start + parts.length <= texts.length; start++) {
-      if (parts.every((p, k) => texts[start + k] === p)) return name;
-    }
+/** Enlace #<puzzle>/<clave>; los antiguos #<caso> son alias del 3x3. */
+function parseHash() {
+  let raw = '';
+  try {
+    raw = decodeURIComponent(location.hash.slice(1));
+  } catch {
+    /* enlace mal formado: se trata como vacío */
   }
-  return null;
+  if (!raw) return { puzzle: null, key: '' }; // sin enlace: se queda el cubo actual
+  const [first, ...rest] = raw.split('/');
+  if (puzzleById(first)) return { puzzle: first, key: rest.join('/') };
+  return { puzzle: DEFAULT_PUZZLE, key: raw };
 }
+
+const isObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+
+/** Lee lo guardado campo a campo: un valor dañado se descarta sin perder el resto. */
+function readSaved() {
+  let raw = {};
+  try {
+    const parsed = JSON.parse(localStorage.getItem(STORE));
+    if (isObject(parsed)) raw = parsed;
+  } catch {
+    /* sin datos o ilegibles */
+  }
+  const speed = Number(raw.speed);
+  const lastCase = (v) => (isObject(v) ? Object.fromEntries(Object.entries(v).filter(([, id]) => typeof id === 'string')) : {});
+  // Formato anterior ({ lastCase, lastStage } del 3x3): pasa a la entrada del 3x3.
+  const blocks = isObject(raw.porCubo) ? raw.porCubo : { [DEFAULT_PUZZLE]: { lastCase: raw.lastCase, lastStage: raw.lastStage } };
+  const porCubo = {};
+  for (const p of PUZZLES) {
+    const block = isObject(blocks[p.id]) ? blocks[p.id] : {};
+    porCubo[p.id] = { lastCase: lastCase(block.lastCase), lastStage: typeof block.lastStage === 'string' ? block.lastStage : undefined };
+  }
+  return {
+    speed: Number.isFinite(speed) && speed >= 0.5 && speed <= 3 ? speed : 1,
+    animateSetup: typeof raw.animateSetup === 'boolean' ? raw.animateSetup : undefined,
+    puzzle: typeof raw.puzzle === 'string' ? raw.puzzle : undefined,
+    porCubo,
+  };
+}
+
+/** Nombre para usar dentro de una frase: «Cubo 3x3» pasa a «cubo 3x3», «Megaminx» a «megaminx». */
+const enFrase = (p) => p.nombre.charAt(0).toLowerCase() + p.nombre.slice(1);
 
 export async function startApp() {
-  const catalog = await loadCatalog();
-  const model = new CubeModel(3);
-  const view = new CubeView($('viewport'), model);
-  const animator = new Animator(model, view);
-  const player = new Player(model, animator);
-  document.body.insertAdjacentHTML('beforeend', ARROW_DEFS);
-
-  const saved = (() => {
-    try {
-      return JSON.parse(localStorage.getItem(STORE)) || {};
-    } catch {
-      return {};
-    }
-  })();
+  const saved = readSaved();
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Cubo activo: todo lo que depende del puzzle se rehace en usePuzzle().
+  let puzzle = null;
+  let catalog = null;
+  let model = null;
+  let view = null;
+  let animator = null;
+  let player = null;
+  let thumbs = new Map();
+  const defsInsertadas = new Set(); // definiciones SVG compartidas ya presentes en la página
+  const catalogs = new Map(); // id → promesa del catálogo (también mientras se carga)
+  let seq = 0; // número del último cambio de cubo pedido; los anteriores se abandonan
+  let pending = null; // cubo que se está cargando
 
   const state = {
     etapa: null,
@@ -94,17 +88,112 @@ export async function startApp() {
     variant: 0,
     moves: [],
     animateSetup: saved.animateSetup ?? !reducedMotion,
-    lastCase: saved.lastCase || {}, // etapa → último caso visto
+    lastCase: {}, // etapa → último caso visto (del cubo activo)
   };
-  player.speed = saved.speed || 1;
+  let speedValue = saved.speed;
 
   const save = () => {
     try {
-      localStorage.setItem(STORE, JSON.stringify({ speed: player.speed, animateSetup: state.animateSetup, lastCase: state.lastCase, lastStage: state.etapa?.id }));
+      saved.porCubo[puzzle.id] = { lastCase: state.lastCase, lastStage: state.etapa?.id };
+      localStorage.setItem(STORE, JSON.stringify({ speed: speedValue, animateSetup: state.animateSetup, puzzle: puzzle.id, porCubo: saved.porCubo }));
     } catch {
       /* almacenamiento no disponible: la página funciona igual */
     }
   };
+
+  const picker = createPicker({
+    trigger: $('puzzle-open'),
+    menu: $('puzzle-menu'),
+    puzzles: PUZZLES,
+    onSelect: (id) => {
+      if (id === (pending || puzzle.id)) return;
+      if (id !== puzzle.id) return switchPuzzle(id);
+      // Vuelve al cubo que ya se ve: basta con anular la carga en curso.
+      seq++;
+      pending = null;
+      picker.setCurrent(id);
+    },
+  });
+
+  /** Notación válida para el cubo activo, en el diálogo de ayuda. */
+  const introAyuda = $('help-intro').textContent; // texto de los cubos; un puzzle puede traer el suyo (ayuda.intro)
+  function renderHelp() {
+    $('help-intro').textContent = puzzle.ayuda.intro ?? introAyuda;
+    $('help-legend').replaceChildren(...puzzle.ayuda.notacion.flatMap(([term, text]) => [el('dt', { textContent: term }), el('dd', { textContent: text })]));
+    $('help-note').textContent = puzzle.ayuda.nota;
+  }
+
+  /** Cambia el cubo activo: modelo, vista, animador, reproductor y catálogo. Libera el cubo anterior. */
+  async function usePuzzle(id) {
+    const mine = ++seq;
+    const next = puzzleById(id);
+    if (!catalogs.has(id)) {
+      const promise = loadCatalog(next.catalogo);
+      catalogs.set(id, promise);
+      promise.catch(() => catalogs.delete(id)); // un fallo no se queda en la caché
+    }
+    const loaded = await catalogs.get(id);
+    if (mine !== seq) return false; // se pidió otro cubo después: gana el último
+    if (player) {
+      player.interrupt();
+      speedValue = player.speed;
+    }
+    const nextModel = next.crearModelo();
+    if (view instanceof next.Vista) view.setModel(nextModel);
+    else {
+      // La vista nueva se crea antes de soltar la anterior: si falla, sigue la que había.
+      const nextView = new next.Vista($('viewport'), nextModel);
+      view?.dispose();
+      view = nextView;
+    }
+    if (next.defs && !defsInsertadas.has(next.defs)) {
+      defsInsertadas.add(next.defs);
+      document.body.insertAdjacentHTML('beforeend', next.defs);
+    }
+    puzzle = next;
+    catalog = loaded;
+    model = nextModel;
+    animator = new Animator(model, view);
+    player = new Player(model, animator);
+    player.speed = speedValue;
+    player.addEventListener('change', renderPlayer);
+    thumbs = new Map();
+    state.lastCase = saved.porCubo[id].lastCase;
+    state.etapa = state.caso = null;
+    picker.setCurrent(id);
+    renderHelp();
+    document.title = `Cubo paso a paso · ${puzzle.etiqueta ?? puzzle.id}`;
+    return true;
+  }
+
+  /** Abre un cubo y muestra el caso o la etapa de `key`, el último visto o el primero. */
+  async function openPuzzle(id, key = '') {
+    if (!(await usePuzzle(id))) return;
+    const caso = catalog.caso(key);
+    const lastStage = saved.porCubo[id].lastStage;
+    if (caso) selectStage(caso.etapa, caso.id);
+    else if (catalog.etapa(key)) selectStage(key);
+    else selectStage(lastStage && catalog.etapa(lastStage) ? lastStage : catalog.etapas[0].id);
+  }
+
+  /** Cambio de cubo pedido por el usuario: si no se puede cargar, avisa y deja el que había. */
+  async function switchPuzzle(id, key = '') {
+    pending = id;
+    try {
+      await openPuzzle(id, key);
+      document.querySelector('.fatal.cambio')?.remove();
+    } catch (error) {
+      console.error(error);
+      if (pending !== id) return; // ya se pidió otro cubo: este fallo no interesa
+      document.querySelector('.fatal.cambio')?.remove();
+      const aviso = el('p', { className: 'fatal cambio', textContent: `No se pudo abrir el ${enFrase(puzzleById(id))}: revisa la conexión e inténtalo de nuevo.` });
+      aviso.setAttribute('role', 'alert');
+      document.body.append(aviso);
+      picker.setCurrent(puzzle.id);
+    } finally {
+      if (pending === id) pending = null;
+    }
+  }
 
   // -------------------------------------------------------------------------
   // Método y etapas
@@ -127,6 +216,7 @@ export async function startApp() {
   function renderStages() {
     const metodo = catalog.metodos.find((m) => m.id === state.etapa.metodo);
     $('stages').classList.toggle('many', metodo.etapas.length > 5);
+    $('stages').classList.toggle('crowded', metodo.etapas.length > 7);
     $('stages').replaceChildren(
       ...metodo.etapas.map((id, i) => {
         const etapa = catalog.etapa(id);
@@ -144,29 +234,27 @@ export async function startApp() {
   // Lista de casos
   // -------------------------------------------------------------------------
 
-  const thumbs = new Map();
   function thumbnail(etapa, caso) {
     if (!thumbs.has(caso.id)) {
-      const m = caseModel(caso);
-      const mask = maskFor(etapa, caso);
-      thumbs.set(caso.id, etapa.miniatura === 'planta' ? topView(m, mask, { arrows: etapa.flechas }) : isoView(m, mask));
+      thumbs.set(caso.id, puzzle.miniatura(caseModel(caso, puzzle), maskFor(puzzle, etapa, caso), etapa, caso));
     }
     return thumbs.get(caso.id);
   }
 
   function renderCases() {
     const etapa = state.etapa;
-    $('stage-name').textContent = `${etapa.nombre} · ${etapa.casos.length} casos`;
+    $('stage-name').textContent = etapa.enlace ? etapa.nombre : `${etapa.nombre} · ${etapa.casos.length} casos`;
     $('stage-desc').textContent = etapa.descripcion;
-    const compact = etapa.casos.length > 12;
+    const compact = etapa.casos.length > (puzzle.maxCasosEnFilas ?? 12);
     const list = $('case-list');
     list.className = compact ? 'grid' : 'rows';
+    if (etapa.enlace) return list.replaceChildren(linkButton());
     list.replaceChildren(
       ...etapa.grupos.flatMap((grupo) => {
         const casos = etapa.casos.filter((c) => c.grupo === grupo);
         const items = casos.map((caso) => {
           const [short, nick] = caso.nombre.split(' · ');
-          const label = compact ? short.replace(/^(OLL|F2L|Perm) /, '') : caso.nombre;
+          const label = compact ? (puzzle.abreviar?.(short) ?? short) : caso.nombre;
           const button = el('button', {
             type: 'button',
             className: 'case',
@@ -232,7 +320,7 @@ export async function startApp() {
     const groups = [];
     state.moves.forEach((m, i) => {
       (groups[m.group] ||= []).push(
-        el('button', { type: 'button', className: 'move', textContent: m.text, title: `Ir a ${describeMove(m)}`, onclick: () => player.seek(i) }),
+        el('button', { type: 'button', className: 'move', textContent: m.text, title: `Ir a ${puzzle.describir(m)}`, onclick: () => player.seek(i) }),
       );
     });
     $('moves').replaceChildren(...groups.filter(Boolean).map((g) => el('span', { className: 'group' }, g)));
@@ -252,11 +340,12 @@ export async function startApp() {
     const move = moves[focus];
     let note;
     if (preparing) note = 'Preparando el caso: el cubo se desarma desde el estado resuelto.';
-    else if (!move) note = 'Caso resuelto. Reproduce hacia atrás para volver al caso y practicarlo.';
+    else if (!move) note = state.caso ? 'Caso resuelto. Reproduce hacia atrás para volver al caso y practicarlo.' : '';
     else {
       const own = state.variant === 0 ? state.caso.notas?.[move.group] : null;
-      const hint = own || (triggerAt(moves, focus) ? `Parte de: ${triggerAt(moves, focus)}` : null);
-      note = hint ? `${hint} — ${describeMove(move)}` : describeMove(move);
+      const trigger = own ? null : puzzle.gatillo?.(moves, focus);
+      const hint = own || (trigger ? `Parte de: ${trigger}` : null);
+      note = hint ? `${hint} — ${puzzle.describir(move)}` : puzzle.describir(move);
     }
     $('note').textContent = note;
     $('now').textContent = preparing ? '' : move ? move.text : '✓';
@@ -277,9 +366,9 @@ export async function startApp() {
 
   function loadVariant(variant) {
     state.variant = variant;
-    const { moves, setup } = caseMoves(state.caso, variant);
+    const { moves, setup } = caseMoves(state.caso, variant, puzzle);
     state.moves = moves;
-    view.setMask(maskFor(state.etapa, state.caso));
+    view.setMask(maskFor(puzzle, state.etapa, state.caso));
     renderCase();
     player.load(moves, { setup, animate: state.animateSetup });
   }
@@ -290,18 +379,43 @@ export async function startApp() {
     state.caso = caso;
     state.lastCase[caso.etapa] = id;
     save();
-    history.replaceState(null, '', `#${id}`);
-    document.title = `${caso.nombre} — Cubo paso a paso`;
+    history.replaceState(null, '', `#${puzzle.id}/${id}`);
+    document.title = `${caso.nombre} — Cubo paso a paso · ${puzzle.etiqueta ?? puzzle.id}`;
     markSelectedCase();
     loadVariant(0);
   }
 
+  /** Botón que lleva a otro cubo (etapa de enlace, como «Como un 3x3» en la reducción del 4x4). */
+  function linkButton() {
+    const destino = puzzleById(state.etapa.enlace);
+    return el('button', { type: 'button', className: 'ghost link-button', textContent: `Abrir el ${enFrase(destino)}`, onclick: () => switchPuzzle(destino.id) });
+  }
+
+  /** Etapa sin casos: explica el paso y ofrece el botón; el cubo se queda resuelto. */
+  function showLink() {
+    const etapa = state.etapa;
+    history.replaceState(null, '', `#${puzzle.id}/${etapa.id}`);
+    document.title = `${etapa.nombre} — Cubo paso a paso · ${puzzle.etiqueta ?? puzzle.id}`;
+    state.moves = [];
+    $('case-name').textContent = etapa.nombre;
+    $('case-desc').textContent = etapa.descripcion;
+    $('case-desc').title = etapa.descripcion;
+    $('variants').hidden = true;
+    $('moves').replaceChildren(linkButton());
+    view.setMask(maskFor(puzzle, etapa, null));
+    player.load([], { setup: [], animate: false });
+    save();
+  }
+
   function selectStage(id, casoId) {
     state.etapa = catalog.etapa(id);
+    view.vistaEtapa?.(state.etapa);
     renderMethods();
     renderStages();
     state.caso = null;
+    $('app').classList.toggle('enlace', Boolean(state.etapa.enlace));
     renderCases();
+    if (state.etapa.enlace) return showLink();
     const remembered = state.etapa.casos.find((c) => c.id === (casoId || state.lastCase[id]));
     selectCase((remembered || state.etapa.casos[0]).id);
   }
@@ -310,7 +424,6 @@ export async function startApp() {
   // Controles
   // -------------------------------------------------------------------------
 
-  player.addEventListener('change', renderPlayer);
   $('btn-play').onclick = () => player.toggle();
   $('btn-rewind').onclick = () => player.toggle(-1);
   $('btn-next').onclick = () => player.next();
@@ -318,11 +431,11 @@ export async function startApp() {
   $('btn-reset').onclick = () => player.reset();
 
   const speed = $('speed');
-  const showSpeed = () => ($('speed-out').textContent = `${player.speed}×`.replace('.', ','));
-  speed.value = player.speed;
+  const showSpeed = () => ($('speed-out').textContent = `${speedValue}×`.replace('.', ','));
+  speed.value = speedValue;
   showSpeed();
   speed.oninput = () => {
-    player.speed = Number(speed.value);
+    player.speed = speedValue = Number(speed.value);
     showSpeed();
     save();
   };
@@ -359,7 +472,7 @@ export async function startApp() {
   const STEP = Math.PI / 12;
   const ORBIT = { ArrowLeft: [-STEP, 0], ArrowRight: [STEP, 0], ArrowUp: [0, -STEP], ArrowDown: [0, STEP] };
   document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey || e.metaKey || e.altKey || $('help').open) return;
+    if (e.ctrlKey || e.metaKey || e.altKey || $('help').open || picker.isOpen()) return;
     const target = e.target;
     const typing = target.matches('input, select, textarea');
     if (e.key === 'Escape') return closeCases();
@@ -389,17 +502,27 @@ export async function startApp() {
   });
 
   // -------------------------------------------------------------------------
-  // Arranque: el caso del enlace (#oll-27), el último visto o el primero.
+  // Arranque: el enlace (#2x2/or-oll-03, o #oll-27 del 3x3), el último cubo visto o el 3x3.
   // -------------------------------------------------------------------------
 
-  const fromHash = () => catalog.caso(decodeURIComponent(location.hash.slice(1)));
-  const initial = fromHash();
-  if (initial) selectStage(initial.etapa, initial.id);
-  else selectStage(saved.lastStage && catalog.etapa(saved.lastStage) ? saved.lastStage : catalog.etapas[0].id);
+  const initial = parseHash();
+  await openPuzzle(initial.puzzle || puzzleById(saved.puzzle)?.id || DEFAULT_PUZZLE, initial.key);
   window.addEventListener('hashchange', () => {
-    const caso = fromHash();
-    if (caso && caso.id !== state.caso?.id) selectStage(caso.etapa, caso.id);
+    const { puzzle: id, key } = parseHash();
+    if (id && id !== (pending || puzzle.id)) switchPuzzle(id, key);
+    else if (key && key !== state.caso?.id) {
+      const caso = catalog.caso(key);
+      if (caso) selectStage(caso.etapa, caso.id);
+      else if (catalog.etapa(key) && key !== state.etapa?.id) selectStage(key);
+    }
   });
 
-  return { catalog, model, view, player, state };
+  return {
+    get catalog() { return catalog; },
+    get model() { return model; },
+    get view() { return view; },
+    get player() { return player; },
+    state,
+    openPuzzle,
+  };
 }

@@ -3,7 +3,7 @@
 // y del ángulo desde el que se mira. Dos algoritmos resuelven el mismo caso si y
 // solo si sus firmas coinciden.
 
-import { CubeModel, parseAlg, invertMoves, quarterTurns, matVec, faceOfNormal } from '../../js/cube-model.js';
+import { CubeModel, parseAlg, invertMoves, quarterTurns, matVec, faceOfNormal } from '../../../js/cube-model.js';
 
 const U = parseAlg('U')[0];
 
@@ -102,28 +102,6 @@ export function f2lSignature(moves) {
     }
   }
   return null;
-}
-
-/** Firma más votada entre una lista de algoritmos de referencia. */
-export function majoritySignature(algs, signatureOf) {
-  const votes = new Map();
-  let invalid = 0;
-  for (const a of algs) {
-    let sig = null;
-    try {
-      sig = signatureOf(parseAlg(a));
-    } catch {
-      sig = null;
-    }
-    if (sig && typeof sig === 'object') sig = sig.key;
-    if (!sig) {
-      invalid++;
-      continue;
-    }
-    votes.set(sig, (votes.get(sig) || 0) + 1);
-  }
-  const sorted = [...votes.entries()].sort((a, b) => b[1] - a[1]);
-  return { signature: sorted[0]?.[0] ?? null, votes: sorted[0]?.[1] ?? 0, total: algs.length, invalid, split: sorted.length };
 }
 
 // ---------------------------------------------------------------------------

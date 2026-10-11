@@ -1,0 +1,649 @@
+{
+ "version": 1,
+ "cubo": "2x2",
+ "generado": "2026-10-09",
+ "convencion": "Blanco abajo, amarillo arriba, verde al frente; la esquina inferior-trasera-izquierda fija la orientación. Cada caso se genera aplicando al cubo resuelto el inverso de \"algoritmo\".",
+ "fuentes": [
+  {
+   "nombre": "SpeedSolving Wiki",
+   "url": "https://www.speedsolving.com/wiki/",
+   "uso": "Nombres de los métodos Ortega y principiante del 2x2"
+  },
+  {
+   "nombre": "Ruwix",
+   "url": "https://ruwix.com/",
+   "uso": "Método principiante por capas"
+  }
+ ],
+ "metodos": [
+  {
+   "id": "principiante",
+   "nombre": "Principiante",
+   "descripcion": "Por capas: primera capa, orientar la última y permutarla.",
+   "etapas": [
+    "pr-capa1",
+    "pr-oll",
+    "pr-pll"
+   ]
+  },
+  {
+   "id": "ortega",
+   "nombre": "Ortega",
+   "descripcion": "Una cara, orientar la última capa (OLL) y permutar ambas capas (PBL).",
+   "etapas": [
+    "or-cara",
+    "or-oll",
+    "or-pbl"
+   ]
+  }
+ ],
+ "etapas": [
+  {
+   "id": "pr-capa1",
+   "metodo": "principiante",
+   "nombre": "Primera capa",
+   "tipo": "capa1",
+   "mascara": "capa1",
+   "miniatura": "iso",
+   "flechas": false,
+   "descripcion": "Completa la capa blanca. Coloca las esquinas blancas una a una: pon la esquina en la capa superior justo encima de su hueco y aplica el caso según hacia dónde mire el blanco.",
+   "grupos": [
+    "Esquina arriba, sobre su hueco",
+    "Esquina en el hueco, mal orientada"
+   ]
+  },
+  {
+   "id": "pr-oll",
+   "metodo": "principiante",
+   "nombre": "Orientar la última capa",
+   "tipo": "oll",
+   "mascara": "oll",
+   "miniatura": "planta",
+   "flechas": false,
+   "descripcion": "Deja las cuatro esquinas con el amarillo arriba. Hay 7 formas; se reconocen por cuántas esquinas ya miran arriba y cómo están las demás.",
+   "grupos": [
+    "Una esquina orientada",
+    "Ninguna esquina orientada",
+    "Dos esquinas orientadas"
+   ]
+  },
+  {
+   "id": "pr-pll",
+   "metodo": "principiante",
+   "nombre": "Permutar la última capa",
+   "tipo": "pll",
+   "mascara": "todo",
+   "miniatura": "planta",
+   "flechas": false,
+   "descripcion": "Con la capa superior orientada, coloca las esquinas. Solo hay dos casos: con faros (adyacentes) o sin ellos (diagonales).",
+   "grupos": [
+    "Intercambio de esquinas"
+   ]
+  },
+  {
+   "id": "or-cara",
+   "metodo": "ortega",
+   "nombre": "Cara",
+   "tipo": "cara",
+   "mascara": "cara",
+   "miniatura": "iso",
+   "flechas": false,
+   "descripcion": "Forma una cara blanca; los colores de los lados no importan todavía. Es intuitivo: lleva cada esquina blanca a su sitio con los mismos casos de la primera capa.",
+   "grupos": [
+    "Esquina arriba, sobre su hueco",
+    "Esquina en el hueco, mal orientada"
+   ]
+  },
+  {
+   "id": "or-oll",
+   "metodo": "ortega",
+   "nombre": "OLL",
+   "tipo": "oll",
+   "mascara": "oll",
+   "miniatura": "planta",
+   "flechas": false,
+   "descripcion": "Orienta la capa superior: 7 casos que dejan la cara amarilla completa.",
+   "grupos": [
+    "Una esquina orientada",
+    "Ninguna esquina orientada",
+    "Dos esquinas orientadas"
+   ]
+  },
+  {
+   "id": "or-pbl",
+   "metodo": "ortega",
+   "nombre": "PBL",
+   "tipo": "pbl",
+   "mascara": "todo",
+   "miniatura": "capas",
+   "flechas": false,
+   "descripcion": "Permutation of Both Layers: un solo algoritmo coloca a la vez las esquinas de las dos capas. Cada capa puede estar resuelta, con un intercambio adyacente o con uno diagonal: 5 casos.",
+   "grupos": [
+    "Una capa resuelta",
+    "Las dos capas desordenadas"
+   ]
+  }
+ ],
+ "casos": [
+  {
+   "etapa": "pr-capa1",
+   "id": "pr-capa1-01",
+   "nombre": "Blanco hacia la derecha",
+   "grupo": "Esquina arriba, sobre su hueco",
+   "algoritmo": "R U R'",
+   "alternativas": [],
+   "descripcion": "La esquina está justo encima de su hueco con el blanco mirando a la derecha.",
+   "notas": [
+    "Baja el hueco, mete la esquina y sube"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "cara": "R"
+   }
+  },
+  {
+   "etapa": "pr-capa1",
+   "id": "pr-capa1-02",
+   "nombre": "Blanco hacia el frente",
+   "grupo": "Esquina arriba, sobre su hueco",
+   "algoritmo": "F' U' F",
+   "alternativas": [],
+   "descripcion": "La esquina está encima de su hueco con el blanco mirando al frente.",
+   "notas": [
+    "El mismo movimiento, pero entrando por el frente"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-capa1",
+   "id": "pr-capa1-03",
+   "nombre": "Blanco hacia arriba",
+   "grupo": "Esquina arriba, sobre su hueco",
+   "algoritmo": "(R U2 R') (U') (R U R')",
+   "alternativas": [],
+   "descripcion": "La esquina está encima de su hueco con el blanco mirando arriba.",
+   "notas": [
+    "Gira la esquina para que el blanco mire de lado",
+    "Recolócala sobre el hueco",
+    "Insértala"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "cara": "U"
+   }
+  },
+  {
+   "etapa": "pr-capa1",
+   "id": "pr-capa1-04",
+   "nombre": "En el hueco, blanco al frente",
+   "grupo": "Esquina en el hueco, mal orientada",
+   "algoritmo": "(F' U' F U) (F' U' F)",
+   "alternativas": [],
+   "descripcion": "La esquina ya está en su hueco pero girada, con el blanco al frente.",
+   "notas": [
+    "Saca la esquina",
+    "Vuelve a insertarla bien orientada"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "pr-capa1",
+   "id": "pr-capa1-05",
+   "nombre": "En el hueco, blanco a la derecha",
+   "grupo": "Esquina en el hueco, mal orientada",
+   "algoritmo": "(R U R' U') (R U R')",
+   "alternativas": [],
+   "descripcion": "La esquina ya está en su hueco pero girada, con el blanco a la derecha.",
+   "notas": [
+    "Saca la esquina",
+    "Vuelve a insertarla bien orientada"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "cara": "R"
+   }
+  },
+  {
+   "etapa": "pr-oll",
+   "id": "pr-oll-01",
+   "nombre": "Sune",
+   "grupo": "Una esquina orientada",
+   "algoritmo": "R U R' U R U2 R'",
+   "alternativas": [],
+   "descripcion": "Una sola esquina con el amarillo arriba (pez).",
+   "verificacion": {
+    "clase": "0222"
+   }
+  },
+  {
+   "etapa": "pr-oll",
+   "id": "pr-oll-02",
+   "nombre": "Antisune",
+   "grupo": "Una esquina orientada",
+   "algoritmo": "R U2 R' U' R U' R'",
+   "alternativas": [],
+   "descripcion": "Una sola esquina con el amarillo arriba; las otras tres giran al contrario que en el Sune.",
+   "verificacion": {
+    "clase": "0111"
+   }
+  },
+  {
+   "etapa": "pr-oll",
+   "id": "pr-oll-03",
+   "nombre": "H",
+   "grupo": "Ninguna esquina orientada",
+   "algoritmo": "F R U R' U' R U R' U' R U R' U' F'",
+   "alternativas": [],
+   "descripcion": "Ninguna esquina con el amarillo arriba; dos pares de faros amarillos en lados opuestos.",
+   "verificacion": {
+    "clase": "1212"
+   }
+  },
+  {
+   "etapa": "pr-oll",
+   "id": "pr-oll-04",
+   "nombre": "Pi",
+   "grupo": "Ninguna esquina orientada",
+   "algoritmo": "R U2 R2 U' R2 U' R2 U2 R",
+   "alternativas": [],
+   "descripcion": "Ninguna esquina con el amarillo arriba; un par de faros amarillos en un lado y las otras dos miran hacia fuera.",
+   "verificacion": {
+    "clase": "1122"
+   }
+  },
+  {
+   "etapa": "pr-oll",
+   "id": "pr-oll-05",
+   "nombre": "Faros (U)",
+   "grupo": "Dos esquinas orientadas",
+   "algoritmo": "R2 D' R U2 R' D R U2 R",
+   "alternativas": [],
+   "descripcion": "Dos esquinas amarillas arriba en el mismo lado; las otras dos forman faros amarillos.",
+   "verificacion": {
+    "clase": "0021"
+   }
+  },
+  {
+   "etapa": "pr-oll",
+   "id": "pr-oll-06",
+   "nombre": "T",
+   "grupo": "Dos esquinas orientadas",
+   "algoritmo": "R U R' U' R' F R F'",
+   "alternativas": [],
+   "descripcion": "Dos esquinas amarillas arriba en el mismo lado; las otras dos miran hacia lados opuestos.",
+   "verificacion": {
+    "clase": "0012"
+   }
+  },
+  {
+   "etapa": "pr-oll",
+   "id": "pr-oll-07",
+   "nombre": "L",
+   "grupo": "Dos esquinas orientadas",
+   "algoritmo": "F R' F' R U R U' R'",
+   "alternativas": [],
+   "descripcion": "Dos esquinas amarillas arriba en diagonal.",
+   "verificacion": {
+    "clase": "0102"
+   }
+  },
+  {
+   "etapa": "pr-pll",
+   "id": "pr-pll-01",
+   "nombre": "Esquinas adyacentes",
+   "grupo": "Intercambio de esquinas",
+   "algoritmo": "R U R' U' R' F R2 U' R' U' R U R' F'",
+   "alternativas": [],
+   "descripcion": "Dos esquinas contiguas de la capa superior están intercambiadas; hay faros en un lado.",
+   "verificacion": {
+    "clase": "adj+solved"
+   }
+  },
+  {
+   "etapa": "pr-pll",
+   "id": "pr-pll-02",
+   "nombre": "Esquinas diagonales",
+   "grupo": "Intercambio de esquinas",
+   "algoritmo": "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+   "alternativas": [],
+   "descripcion": "Dos esquinas opuestas de la capa superior están intercambiadas; no hay faros en ningún lado.",
+   "verificacion": {
+    "clase": "diag+solved"
+   }
+  },
+  {
+   "etapa": "or-cara",
+   "id": "or-cara-01",
+   "nombre": "Blanco hacia la derecha",
+   "grupo": "Esquina arriba, sobre su hueco",
+   "algoritmo": "R U R'",
+   "alternativas": [],
+   "descripcion": "La esquina está justo encima de su hueco con el blanco mirando a la derecha.",
+   "notas": [
+    "Baja el hueco, mete la esquina y sube"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "cara": "R"
+   }
+  },
+  {
+   "etapa": "or-cara",
+   "id": "or-cara-02",
+   "nombre": "Blanco hacia el frente",
+   "grupo": "Esquina arriba, sobre su hueco",
+   "algoritmo": "F' U' F",
+   "alternativas": [],
+   "descripcion": "La esquina está encima de su hueco con el blanco mirando al frente.",
+   "notas": [
+    "El mismo movimiento, pero entrando por el frente"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "or-cara",
+   "id": "or-cara-03",
+   "nombre": "Blanco hacia arriba",
+   "grupo": "Esquina arriba, sobre su hueco",
+   "algoritmo": "(R U2 R') (U') (R U R')",
+   "alternativas": [],
+   "descripcion": "La esquina está encima de su hueco con el blanco mirando arriba.",
+   "notas": [
+    "Gira la esquina para que el blanco mire de lado",
+    "Recolócala sobre el hueco",
+    "Insértala"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "cara": "U"
+   }
+  },
+  {
+   "etapa": "or-cara",
+   "id": "or-cara-04",
+   "nombre": "En el hueco, blanco al frente",
+   "grupo": "Esquina en el hueco, mal orientada",
+   "algoritmo": "(F' U' F U) (F' U' F)",
+   "alternativas": [],
+   "descripcion": "La esquina ya está en su hueco pero girada, con el blanco al frente.",
+   "notas": [
+    "Saca la esquina",
+    "Vuelve a insertarla bien orientada"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "cara": "F"
+   }
+  },
+  {
+   "etapa": "or-cara",
+   "id": "or-cara-05",
+   "nombre": "En el hueco, blanco a la derecha",
+   "grupo": "Esquina en el hueco, mal orientada",
+   "algoritmo": "(R U R' U') (R U R')",
+   "alternativas": [],
+   "descripcion": "La esquina ya está en su hueco pero girada, con el blanco a la derecha.",
+   "notas": [
+    "Saca la esquina",
+    "Vuelve a insertarla bien orientada"
+   ],
+   "verificacion": {
+    "pieza": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "pegatina": "D",
+    "pos": [
+     0.5,
+     -0.5,
+     0.5
+    ],
+    "cara": "R"
+   }
+  },
+  {
+   "etapa": "or-oll",
+   "id": "or-oll-01",
+   "nombre": "Sune",
+   "grupo": "Una esquina orientada",
+   "algoritmo": "R U R' U R U2 R'",
+   "alternativas": [],
+   "descripcion": "Una sola esquina con el amarillo arriba (pez).",
+   "verificacion": {
+    "clase": "0222"
+   }
+  },
+  {
+   "etapa": "or-oll",
+   "id": "or-oll-02",
+   "nombre": "Antisune",
+   "grupo": "Una esquina orientada",
+   "algoritmo": "R U2 R' U' R U' R'",
+   "alternativas": [],
+   "descripcion": "Una sola esquina con el amarillo arriba; las otras tres giran al contrario que en el Sune.",
+   "verificacion": {
+    "clase": "0111"
+   }
+  },
+  {
+   "etapa": "or-oll",
+   "id": "or-oll-03",
+   "nombre": "H",
+   "grupo": "Ninguna esquina orientada",
+   "algoritmo": "F R U R' U' R U R' U' R U R' U' F'",
+   "alternativas": [],
+   "descripcion": "Ninguna esquina con el amarillo arriba; dos pares de faros amarillos en lados opuestos.",
+   "verificacion": {
+    "clase": "1212"
+   }
+  },
+  {
+   "etapa": "or-oll",
+   "id": "or-oll-04",
+   "nombre": "Pi",
+   "grupo": "Ninguna esquina orientada",
+   "algoritmo": "R U2 R2 U' R2 U' R2 U2 R",
+   "alternativas": [],
+   "descripcion": "Ninguna esquina con el amarillo arriba; un par de faros amarillos en un lado y las otras dos miran hacia fuera.",
+   "verificacion": {
+    "clase": "1122"
+   }
+  },
+  {
+   "etapa": "or-oll",
+   "id": "or-oll-05",
+   "nombre": "Faros (U)",
+   "grupo": "Dos esquinas orientadas",
+   "algoritmo": "R2 D' R U2 R' D R U2 R",
+   "alternativas": [],
+   "descripcion": "Dos esquinas amarillas arriba en el mismo lado; las otras dos forman faros amarillos.",
+   "verificacion": {
+    "clase": "0021"
+   }
+  },
+  {
+   "etapa": "or-oll",
+   "id": "or-oll-06",
+   "nombre": "T",
+   "grupo": "Dos esquinas orientadas",
+   "algoritmo": "R U R' U' R' F R F'",
+   "alternativas": [],
+   "descripcion": "Dos esquinas amarillas arriba en el mismo lado; las otras dos miran hacia lados opuestos.",
+   "verificacion": {
+    "clase": "0012"
+   }
+  },
+  {
+   "etapa": "or-oll",
+   "id": "or-oll-07",
+   "nombre": "L",
+   "grupo": "Dos esquinas orientadas",
+   "algoritmo": "F R' F' R U R U' R'",
+   "alternativas": [],
+   "descripcion": "Dos esquinas amarillas arriba en diagonal.",
+   "verificacion": {
+    "clase": "0102"
+   }
+  },
+  {
+   "etapa": "or-pbl",
+   "id": "or-pbl-01",
+   "nombre": "Una capa resuelta, otra adyacente",
+   "grupo": "Una capa resuelta",
+   "algoritmo": "R U' R F2 R' U R F2 R2",
+   "alternativas": [],
+   "descripcion": "Una capa está resuelta y la otra tiene dos esquinas contiguas intercambiadas.",
+   "verificacion": {
+    "clase": "adj+solved"
+   }
+  },
+  {
+   "etapa": "or-pbl",
+   "id": "or-pbl-02",
+   "nombre": "Una capa resuelta, otra diagonal",
+   "grupo": "Una capa resuelta",
+   "algoritmo": "R U' R U R' F2 R' U' R' U F2",
+   "alternativas": [],
+   "descripcion": "Una capa está resuelta y la otra tiene dos esquinas opuestas intercambiadas.",
+   "verificacion": {
+    "clase": "diag+solved"
+   }
+  },
+  {
+   "etapa": "or-pbl",
+   "id": "or-pbl-03",
+   "nombre": "Adyacente en ambas capas",
+   "grupo": "Las dos capas desordenadas",
+   "algoritmo": "R U2 F R2 F2 U2 F U2 R'",
+   "alternativas": [],
+   "descripcion": "Las dos capas tienen un intercambio de esquinas contiguas.",
+   "verificacion": {
+    "clase": "adj+adj"
+   }
+  },
+  {
+   "etapa": "or-pbl",
+   "id": "or-pbl-04",
+   "nombre": "Adyacente y diagonal",
+   "grupo": "Las dos capas desordenadas",
+   "algoritmo": "R U R U' F2 U F' R' F'",
+   "alternativas": [],
+   "descripcion": "Una capa tiene un intercambio contiguo y la otra uno diagonal.",
+   "verificacion": {
+    "clase": "adj+diag"
+   }
+  },
+  {
+   "etapa": "or-pbl",
+   "id": "or-pbl-05",
+   "nombre": "Diagonal en ambas capas",
+   "grupo": "Las dos capas desordenadas",
+   "algoritmo": "R U' R' F' R2 F U F R'",
+   "alternativas": [],
+   "descripcion": "Las dos capas tienen un intercambio de esquinas opuestas.",
+   "verificacion": {
+    "clase": "diag+diag"
+   }
+  }
+ ]
+}

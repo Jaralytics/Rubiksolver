@@ -3,9 +3,9 @@
 // animador se lo pide.
 
 import * as THREE from 'three';
-import { OrbitControls } from '../vendor/OrbitControls.js';
 import { RoundedBoxGeometry } from '../vendor/RoundedBoxGeometry.js';
 import { FACES, FACE_NAMES, faceNormal } from './cube-model.js';
+import { PuzzleView, DIMMED } from './puzzle-view.js';
 
 // Esquema estándar sostenido con la cruz blanca abajo: amarillo arriba, verde al frente.
 export const COLORS = {
@@ -16,10 +16,8 @@ export const COLORS = {
   R: '#ff8a1f',
   L: '#cf2a33',
 };
-export const DIMMED = '#343a48';
+export { DIMMED };
 const BODY = '#0c0e13';
-
-const AXIS_VECTORS = [new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1)];
 
 function stickerGeometry(size, radius) {
   const h = size / 2;
@@ -36,71 +34,32 @@ function stickerGeometry(size, radius) {
   return new THREE.ShapeGeometry(s, 6);
 }
 
-export class CubeView {
-  constructor(container, model) {
-    this.container = container;
-    this.model = model;
-    this.mask = () => true;
-    this.dirty = true;
+export class CubeView extends PuzzleView {
+  static COLORS = COLORS;
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-    this.canvas = this.renderer.domElement;
-    container.appendChild(this.canvas);
+  /** Cámara inicial y límites de zoom según el tamaño del cubo. */
+  fitCamera() {
+    const k = this.model.size / 3;
+    this.home.set(4.6, 4.2, 6.6).multiplyScalar(k);
+    this.controls.minDistance = 5 * k;
+    this.controls.maxDistance = 16 * k;
+  }
 
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
-    this.home = new THREE.Vector3(4.6, 4.2, 6.6).multiplyScalar(model.size / 3);
-    this.camera.position.copy(this.home);
-
-    this.scene.add(new THREE.HemisphereLight(0xffffff, 0xaab0c4, 2.2));
-    const key = new THREE.DirectionalLight(0xffffff, 1.5);
-    key.position.set(5, 9, 7);
-    this.scene.add(key);
-    const fill = new THREE.DirectionalLight(0xffffff, 0.9);
-    fill.position.set(7, 1, -2);
-    this.scene.add(fill);
-
-    this.controls = new OrbitControls(this.camera, this.canvas);
-    this.controls.enablePan = false;
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.12;
-    this.controls.rotateSpeed = 0.9;
-    this.controls.minDistance = 5 * (model.size / 3);
-    this.controls.maxDistance = 16 * (model.size / 3);
-    this.controls.addEventListener('change', () => this.requestRender());
-
-    this.pivot = new THREE.Group();
-    this.scene.add(this.pivot);
-    this.turning = [];
-
-    this.materials = {};
-    for (const f of FACE_NAMES) {
-      this.materials[f] = new THREE.MeshStandardMaterial({ color: COLORS[f], roughness: 0.42, metalness: 0 });
-    }
-    this.dimMaterial = new THREE.MeshStandardMaterial({ color: DIMMED, roughness: 0.7 });
-    this.build();
-
-    new ResizeObserver(() => this.resize()).observe(container);
-    this.resize();
-    const loop = () => {
-      this.controls.update();
-      if (this.dirty) {
-        this.dirty = false;
-        this.renderer.render(this.scene, this.camera);
-      }
-      requestAnimationFrame(loop);
-    };
-    requestAnimationFrame(loop);
+  disposePieces() {
+    for (const group of this.nodes.values()) group.removeFromParent();
+    this.bodyGeometry.dispose();
+    this.stickerGeometry.dispose();
+    this.bodyMaterial.dispose();
+    this.nodes.clear();
+    this.stickers = [];
   }
 
   build() {
-    const body = new RoundedBoxGeometry(0.985, 0.985, 0.985, 3, 0.09);
-    const bodyMaterial = new THREE.MeshStandardMaterial({ color: BODY, roughness: 0.55 });
-    const sticker = stickerGeometry(0.84, 0.13);
+    const body = (this.bodyGeometry = new RoundedBoxGeometry(0.985, 0.985, 0.985, 3, 0.09));
+    const bodyMaterial = (this.bodyMaterial = new THREE.MeshStandardMaterial({ color: BODY, roughness: 0.55 }));
+    const sticker = (this.stickerGeometry = stickerGeometry(0.84, 0.13));
     const h = this.model.h;
-    this.cubies = new Map(); // pieza del modelo → Group
+    this.nodes = new Map(); // pieza del modelo → Group
     this.stickers = [];
     for (const piece of this.model.pieces) {
       const group = new THREE.Group();
@@ -117,7 +76,7 @@ export class CubeView {
         this.stickers.push(mesh);
       }
       this.scene.add(group);
-      this.cubies.set(piece, group);
+      this.nodes.set(piece, group);
     }
     this.sync();
   }
@@ -125,88 +84,12 @@ export class CubeView {
   /** Coloca cada cubie donde dice el modelo. */
   sync() {
     const m = new THREE.Matrix4();
-    for (const [piece, group] of this.cubies) {
+    for (const [piece, group] of this.nodes) {
       const r = piece.rot;
       m.set(r[0], r[1], r[2], 0, r[3], r[4], r[5], 0, r[6], r[7], r[8], 0, 0, 0, 0, 1);
       group.quaternion.setFromRotationMatrix(m);
       group.position.set(piece.pos[0], piece.pos[1], piece.pos[2]);
     }
     this.requestRender();
-  }
-
-  /** `mask(piece, face)` decide qué pegatinas se muestran con color; el resto, en gris. */
-  setMask(mask) {
-    this.mask = mask;
-    for (const s of this.stickers) {
-      s.material = mask(s.userData.piece, s.userData.face) ? this.materials[s.userData.face] : this.dimMaterial;
-    }
-    this.requestRender();
-  }
-
-  // --- Giro de una capa (lo dirige el animador) ---
-
-  beginTurn(move) {
-    this.pivot.rotation.set(0, 0, 0);
-    this.turning = this.model.piecesInMove(move).map((p) => this.cubies.get(p));
-    for (const g of this.turning) this.pivot.attach(g);
-    this.turnAxis = AXIS_VECTORS[move.axis];
-  }
-
-  setTurn(angle) {
-    this.pivot.quaternion.setFromAxisAngle(this.turnAxis, angle);
-    this.requestRender();
-  }
-
-  /** Suelta la capa; el llamador actualiza el modelo y luego llama a sync(). */
-  endTurn() {
-    for (const g of this.turning) this.scene.attach(g);
-    this.turning = [];
-    this.pivot.rotation.set(0, 0, 0);
-  }
-
-  // --- Cámara ---
-
-  orbit(dTheta, dPhi) {
-    const offset = this.camera.position.clone().sub(this.controls.target);
-    const s = new THREE.Spherical().setFromVector3(offset);
-    s.theta += dTheta;
-    s.phi = Math.min(Math.PI - 0.15, Math.max(0.15, s.phi + dPhi));
-    this.camera.position.copy(this.controls.target).add(offset.setFromSpherical(s));
-    this.camera.lookAt(this.controls.target);
-    this.requestRender();
-  }
-
-  zoom(factor) {
-    const offset = this.camera.position.clone().sub(this.controls.target);
-    const d = Math.min(this.controls.maxDistance, Math.max(this.controls.minDistance, offset.length() * factor));
-    this.camera.position.copy(this.controls.target).add(offset.setLength(d));
-    this.requestRender();
-  }
-
-  resetCamera() {
-    this.camera.position.copy(this.home);
-    this.camera.lookAt(this.controls.target);
-    this.fit();
-    this.requestRender();
-  }
-
-  resize() {
-    const w = this.container.clientWidth;
-    const h = this.container.clientHeight;
-    if (!w || !h) return;
-    this.renderer.setSize(w, h, false);
-    this.camera.aspect = w / h;
-    this.fit();
-    this.requestRender();
-  }
-
-  /** En pantallas estrechas abre el campo de visión para que el cubo quepa entero. */
-  fit() {
-    this.camera.fov = this.camera.aspect < 1 ? Math.min(60, 32 / this.camera.aspect) : 32;
-    this.camera.updateProjectionMatrix();
-  }
-
-  requestRender() {
-    this.dirty = true;
   }
 }

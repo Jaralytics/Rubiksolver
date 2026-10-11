@@ -1,0 +1,1319 @@
+{
+ "version": 1,
+ "cubo": "megaminx",
+ "generado": "2026-10-09",
+ "convencion": "Blanco (cara D) abajo y gris (cara U) arriba; los centros fijan la orientación. Cada caso se genera aplicando al puzzle resuelto el inverso de \"algoritmo\".",
+ "fuentes": [
+  {
+   "nombre": "SpeedSolving Wiki",
+   "url": "https://www.speedsolving.com/wiki/",
+   "uso": "Notación del Megaminx y método principiante por capas"
+  },
+  {
+   "nombre": "Ruwix",
+   "url": "https://ruwix.com/",
+   "uso": "Método principiante del Megaminx"
+  }
+ ],
+ "metodos": [
+  {
+   "id": "principiante",
+   "nombre": "Principiante",
+   "descripcion": "Por capas, con el blanco abajo y el gris arriba: estrella y primera capa blancas, segunda capa, y luego orientar y colocar las aristas y las esquinas de la capa gris.",
+   "etapas": [
+    "mg-estrella",
+    "mg-capa1",
+    "mg-capa2",
+    "mg-s2l-bajo",
+    "mg-s2l-alto",
+    "mg-eo",
+    "mg-ep",
+    "mg-cp",
+    "mg-co"
+   ]
+  }
+ ],
+ "etapas": [
+  {
+   "id": "mg-estrella",
+   "metodo": "principiante",
+   "nombre": "Estrella blanca",
+   "tipo": "estrella",
+   "mascara": "estrella",
+   "miniatura": "flor",
+   "cara": "D",
+   "flechas": false,
+   "descripcion": "Lleva las cinco aristas blancas a su sitio alrededor del centro blanco, de una en una; las que ya están bien puestas no se mueven.",
+   "grupos": [
+    "Deslizar por el anillo de abajo",
+    "Entre una cara de arriba y una de abajo",
+    "Volteada en su hueco"
+   ]
+  },
+  {
+   "id": "mg-capa1",
+   "metodo": "principiante",
+   "nombre": "Primera capa",
+   "tipo": "capa1",
+   "mascara": "capa1",
+   "miniatura": "flor",
+   "cara": "D",
+   "flechas": false,
+   "descripcion": "Completa la cara blanca colocando sus cinco esquinas, una a una, sin deshacer la estrella. Cada esquina sigue el caso que más se parezca a su situación: sobre su hueco, girada en su sitio o en el hueco de otra esquina; si está en otro lugar, llévala antes a una de esas posiciones con giros libres.",
+   "grupos": [
+    "Insertar desde arriba",
+    "Girada en su sitio",
+    "En el hueco de otra esquina"
+   ]
+  },
+  {
+   "id": "mg-capa2",
+   "metodo": "principiante",
+   "nombre": "Segunda capa",
+   "tipo": "capa2",
+   "mascara": "capa2",
+   "miniatura": "flor",
+   "cara": "DR",
+   "flechas": false,
+   "descripcion": "Coloca las cinco aristas que unen dos caras inferiores, una a una, sin deshacer la cara blanca. Se meten desde el borde superior, por un lado o por el otro.",
+   "grupos": [
+    "Insertar desde arriba",
+    "Girada en su sitio",
+    "En el hueco de otra arista"
+   ]
+  },
+  {
+   "id": "mg-s2l-bajo",
+   "metodo": "principiante",
+   "nombre": "Esquinas bajas",
+   "tipo": "s2l-bajo",
+   "mascara": "s2l-bajo",
+   "miniatura": "flor",
+   "cara": "DR",
+   "flechas": false,
+   "descripcion": "Baja las cinco esquinas que quedan entre dos caras inferiores y una superior, una a una, sin deshacer lo que ya tienes. Se insertan girando la cara de arriba hasta que la esquina esté al lado de su hueco.",
+   "grupos": [
+    "Esquina en un hueco de arriba",
+    "Esquina en la capa gris"
+   ]
+  },
+  {
+   "id": "mg-s2l-alto",
+   "metodo": "principiante",
+   "nombre": "Capa intermedia",
+   "tipo": "s2l-alto",
+   "mascara": "s2l-alto",
+   "miniatura": "flor",
+   "cara": "F",
+   "flechas": false,
+   "descripcion": "Completa todo lo que queda bajo la capa gris: aristas entre dos caras de arriba, aristas entre una de arriba y una de abajo, y esquinas entre dos de arriba y una de abajo. Sube la pieza a la capa gris, gírala hasta ponerla sobre su sitio y bájala con el algoritmo; si una pieza está mal colocada abajo, el algoritmo de su hueco la saca a la capa gris.",
+   "grupos": [
+    "Arista entre dos caras de arriba",
+    "Arista entre una cara de arriba y una de abajo",
+    "Esquina entre dos caras de arriba y una de abajo"
+   ]
+  },
+  {
+   "id": "mg-eo",
+   "metodo": "principiante",
+   "nombre": "Orientar aristas",
+   "tipo": "eo",
+   "mascara": "eo",
+   "miniatura": "planta",
+   "cara": "U",
+   "flechas": false,
+   "descripcion": "Deja las cinco aristas de la capa gris con el gris hacia arriba, sin importar en qué sitio estén. Las esquinas se ignoran aquí y se resuelven en las etapas siguientes. Mira cuántas aristas tienen el gris de lado: siempre son 2 o 4.",
+   "grupos": [
+    "Dos aristas con el gris de lado",
+    "Cuatro aristas con el gris de lado"
+   ]
+  },
+  {
+   "id": "mg-ep",
+   "metodo": "principiante",
+   "nombre": "Permutar aristas",
+   "tipo": "ep",
+   "mascara": "ep",
+   "miniatura": "planta",
+   "cara": "U",
+   "flechas": false,
+   "descripcion": "Con las aristas de la capa gris ya orientadas, colócalas en su sitio. Las esquinas se ignoran aquí y se resuelven en las etapas siguientes. Solo hay tres casos: un ciclo de tres aristas o dos intercambios de pares; al terminar, gira la capa gris para alinear cada arista con su cara.",
+   "grupos": [
+    "Un ciclo de tres aristas",
+    "Dos pares intercambiados"
+   ]
+  },
+  {
+   "id": "mg-cp",
+   "metodo": "principiante",
+   "nombre": "Permutar esquinas",
+   "tipo": "cp",
+   "mascara": "cp",
+   "miniatura": "planta",
+   "cara": "U",
+   "flechas": false,
+   "descripcion": "Con las aristas ya en su sitio, coloca las cinco esquinas de la capa gris en sus huecos sin importar cómo estén giradas. Hay 15 situaciones y todas se resuelven con un ciclo de tres esquinas, repetido y con giros de la capa superior entre medias.",
+   "grupos": [
+    "Dos pares de esquinas intercambiados",
+    "Ciclo de tres esquinas",
+    "Cinco esquinas desplazadas"
+   ]
+  },
+  {
+   "id": "mg-co",
+   "metodo": "principiante",
+   "nombre": "Orientar esquinas",
+   "tipo": "co",
+   "mascara": "co",
+   "miniatura": "planta",
+   "cara": "U",
+   "flechas": false,
+   "cobertura": {
+    "clases": 4,
+    "de": 16,
+    "maximoAplicaciones": 3
+   },
+   "descripcion": "Con todas las piezas en su sitio, gira las esquinas de la capa gris hasta que el gris mire arriba. Cada algoritmo gira dos esquinas en sentidos opuestos. Solo se listan 4 situaciones de las 16 posibles: cualquier otra se resuelve aplicándolas como máximo 3 veces y girando la capa gris entre medias.",
+   "grupos": [
+    "2 esquinas giradas"
+   ]
+  }
+ ],
+ "casos": [
+  {
+   "etapa": "mg-estrella",
+   "id": "mg-estrella-01",
+   "nombre": "Arista blanca-roja, blanco a la izquierda",
+   "grupo": "Deslizar por el anillo de abajo",
+   "algoritmo": "DR'",
+   "alternativas": [],
+   "descripcion": "La arista blanca y roja (D-DR) está en el hueco entre las caras inferior izquierda e inferior derecha (DL-DR), con el blanco hacia la cara inferior izquierda. El algoritmo la lleva a su hueco entre las caras blanca e inferior derecha (D-DR) sin mover las otras aristas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<B DBR<D",
+    "pieza": [
+     "D",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-estrella",
+   "id": "mg-estrella-02",
+   "nombre": "Arista blanca-morada, blanco a la derecha",
+   "grupo": "Deslizar por el anillo de abajo",
+   "algoritmo": "D DL D'",
+   "alternativas": [],
+   "descripcion": "La arista blanca y morada (D-DBL) está en el hueco entre las caras inferior izquierda e inferior derecha (DL-DR), con el blanco hacia la cara inferior derecha. El algoritmo la lleva a su hueco entre las caras blanca e inferior trasera izquierda (D-DBL) sin mover las otras aristas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<D DBR<DR",
+    "pieza": [
+     "D",
+     "DBL"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-estrella",
+   "id": "mg-estrella-03",
+   "nombre": "Arista blanca-amarilla, blanco a la derecha",
+   "grupo": "Deslizar por el anillo de abajo",
+   "algoritmo": "DBR2' B' DBR2",
+   "alternativas": [],
+   "descripcion": "La arista blanca y amarilla (D-B) está en el hueco entre las caras inferior derecha e inferior trasera derecha (DR-DBR), con el blanco hacia la cara inferior trasera derecha. El algoritmo la lleva a su hueco entre las caras blanca y trasera inferior (D-B) sin mover las otras aristas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<D DBR<DBL",
+    "pieza": [
+     "D",
+     "B"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-estrella",
+   "id": "mg-estrella-04",
+   "nombre": "Arista blanca-amarilla, blanco a la izquierda",
+   "grupo": "Deslizar por el anillo de abajo",
+   "algoritmo": "D2' DR' D2",
+   "alternativas": [],
+   "descripcion": "La arista blanca y amarilla (D-B) está en el hueco entre las caras inferior izquierda e inferior derecha (DL-DR), con el blanco hacia la cara inferior izquierda. El algoritmo la lleva a su hueco entre las caras blanca y trasera inferior (D-B) sin mover las otras aristas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<D DBL<DR",
+    "pieza": [
+     "D",
+     "B"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-estrella",
+   "id": "mg-estrella-05",
+   "nombre": "Arista blanca-azul, blanco a la derecha",
+   "grupo": "Deslizar por el anillo de abajo",
+   "algoritmo": "D2 DBL D2'",
+   "alternativas": [],
+   "descripcion": "La arista blanca y azul (D-DBR) está en el hueco entre las caras inferior trasera izquierda e inferior izquierda (DBL-DL), con el blanco hacia la cara inferior izquierda. El algoritmo la lleva a su hueco entre las caras blanca e inferior trasera derecha (D-DBR) sin mover las otras aristas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<D DBR<DL",
+    "pieza": [
+     "D",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-estrella",
+   "id": "mg-estrella-06",
+   "nombre": "Arista blanca-azul, blanco a la izquierda",
+   "grupo": "Deslizar por el anillo de abajo",
+   "algoritmo": "B2 DBR B2'",
+   "alternativas": [],
+   "descripcion": "La arista blanca y azul (D-DBR) está en el hueco entre las caras trasera inferior e inferior trasera izquierda (B-DBL), con el blanco hacia la cara trasera inferior. El algoritmo la lleva a su hueco entre las caras blanca e inferior trasera derecha (D-DBR) sin mover las otras aristas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<D DBL<DBR",
+    "pieza": [
+     "D",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-estrella",
+   "id": "mg-estrella-07",
+   "nombre": "Arista blanca-roja, blanco hacia arriba",
+   "grupo": "Entre una cara de arriba y una de abajo",
+   "algoritmo": "DR2'",
+   "alternativas": [],
+   "descripcion": "La arista blanca y roja (D-DR) está en el hueco entre las caras frontal e inferior derecha (F-DR), con el blanco hacia la cara frontal. El algoritmo la lleva a su hueco entre las caras blanca e inferior derecha (D-DR) sin mover las otras aristas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<B BR<D",
+    "pieza": [
+     "D",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-estrella",
+   "id": "mg-estrella-08",
+   "nombre": "Arista blanca-azul, blanco hacia arriba",
+   "grupo": "Entre una cara de arriba y una de abajo",
+   "algoritmo": "L' D' F2' DR2' D",
+   "alternativas": [],
+   "descripcion": "La arista blanca y azul (D-DBR) está en el hueco entre las caras izquierda e inferior izquierda (L-DL), con el blanco hacia la cara inferior izquierda. El algoritmo la lleva a su hueco entre las caras blanca e inferior trasera derecha (D-DBR) sin mover las otras aristas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<D BR<DL",
+    "pieza": [
+     "D",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-estrella",
+   "id": "mg-estrella-09",
+   "nombre": "Arista blanca-roja volteada en su hueco",
+   "grupo": "Volteada en su hueco",
+   "algoritmo": "D DBR R' D' DR",
+   "alternativas": [],
+   "descripcion": "La arista blanca y roja (D-DR) está en su hueco pero girada, con el blanco hacia la cara inferior derecha. El algoritmo la lleva a su hueco entre las caras blanca e inferior derecha (D-DR) sin mover las otras aristas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<D D<B",
+    "pieza": [
+     "D",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-capa1",
+   "id": "mg-capa1-01",
+   "nombre": "Esquina blanca-roja-azul, blanco a la izquierda",
+   "grupo": "Insertar desde arriba",
+   "algoritmo": "DR' R' DR",
+   "alternativas": [],
+   "descripcion": "La esquina blanca, roja y azul (D-DR-DBR) está en el hueco entre las caras derecha, inferior derecha e inferior trasera derecha (R-DR-DBR), con el blanco hacia la cara inferior derecha. El algoritmo la lleva a su hueco entre las caras blanca, inferior derecha e inferior trasera derecha (D-DR-DBR) sin mover las aristas blancas ni las esquinas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<B BR<DBR DBR<D",
+    "pieza": [
+     "D",
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-capa1",
+   "id": "mg-capa1-02",
+   "nombre": "Esquina blanca-roja-azul, blanco a la derecha",
+   "grupo": "Insertar desde arriba",
+   "algoritmo": "R' DR' R DR",
+   "alternativas": [],
+   "descripcion": "La esquina blanca, roja y azul (D-DR-DBR) está en el hueco entre las caras derecha, inferior derecha e inferior trasera derecha (R-DR-DBR), con el blanco hacia la cara inferior trasera derecha. El algoritmo la lleva a su hueco entre las caras blanca, inferior derecha e inferior trasera derecha (D-DR-DBR) sin mover las aristas blancas ni las esquinas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<B BL<DBL DBL<D",
+    "pieza": [
+     "D",
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-capa1",
+   "id": "mg-capa1-03",
+   "nombre": "Esquina blanca-roja-azul, blanco arriba",
+   "grupo": "Insertar desde arriba",
+   "algoritmo": "DR2' R' DR2 R DR2",
+   "alternativas": [],
+   "descripcion": "La esquina blanca, roja y azul (D-DR-DBR) está en el hueco entre las caras derecha, inferior derecha e inferior trasera derecha (R-DR-DBR), con el blanco hacia la cara derecha. El algoritmo la lleva a su hueco entre las caras blanca, inferior derecha e inferior trasera derecha (D-DR-DBR) sin mover las aristas blancas ni las esquinas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DBL BL<D DBL<B",
+    "pieza": [
+     "D",
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-capa1",
+   "id": "mg-capa1-04",
+   "nombre": "Esquina blanca-amarilla-morada girada",
+   "grupo": "Girada en su sitio",
+   "algoritmo": "D' B2' D B D' B D B2'",
+   "alternativas": [],
+   "descripcion": "La esquina blanca, amarilla y morada (D-B-DBL) está en su hueco pero girada, con el blanco hacia la cara inferior trasera izquierda. El algoritmo la lleva a su hueco entre las caras blanca, trasera inferior e inferior trasera izquierda (D-B-DBL) sin mover las aristas blancas ni las esquinas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<D D<DBR DBR<B",
+    "pieza": [
+     "D",
+     "B",
+     "DBL"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-capa1",
+   "id": "mg-capa1-05",
+   "nombre": "Esquina blanca-morada-verde girada",
+   "grupo": "Girada en su sitio",
+   "algoritmo": "D DL2 D' DL' D DL' D' DL2",
+   "alternativas": [],
+   "descripcion": "La esquina blanca, morada y verde (D-DBL-DL) está en su hueco pero girada, con el blanco hacia la cara inferior trasera izquierda. El algoritmo la lleva a su hueco entre las caras blanca, inferior trasera izquierda e inferior izquierda (D-DBL-DL) sin mover las aristas blancas ni las esquinas blancas ya colocadas.",
+   "verificacion": {
+    "clase": "B<D D<DBL DBL<B",
+    "pieza": [
+     "D",
+     "DBL",
+     "DL"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-capa1",
+   "id": "mg-capa1-06",
+   "nombre": "Esquina blanca-amarilla-azul en hueco ajeno",
+   "grupo": "En el hueco de otra esquina",
+   "algoritmo": "DR D DBR2' D' DBR2 DR' DBR2'",
+   "alternativas": [],
+   "descripcion": "La esquina blanca, amarilla y azul (D-B-DBR) está en el hueco entre las caras blanca, inferior derecha e inferior trasera derecha (D-DR-DBR), con el blanco hacia la cara inferior derecha. El algoritmo la lleva a su hueco entre las caras blanca, trasera inferior e inferior trasera derecha (D-B-DBR) sin mover las aristas blancas ni las esquinas blancas ya colocadas; además mueve la esquina blanca, roja y azul (D-DR-DBR), que aún no está colocada.",
+   "verificacion": {
+    "clase": "B<B D<DBL DBR<D libres=D-DR-DBR",
+    "pieza": [
+     "D",
+     "B",
+     "DBR"
+    ],
+    "libres": [
+     "D-DR-DBR"
+    ]
+   }
+  },
+  {
+   "etapa": "mg-capa2",
+   "id": "mg-capa2-01",
+   "nombre": "Arista roja-azul de borde, roja a la izquierda",
+   "grupo": "Insertar desde arriba",
+   "algoritmo": "DBR DR R' DR' DBR'",
+   "alternativas": [],
+   "descripcion": "La arista roja y azul (DR-DBR) está en el hueco entre las caras frontal e inferior derecha (F-DR), con la pegatina roja hacia la cara frontal. El algoritmo la lleva a su hueco entre las caras inferior derecha e inferior trasera derecha (DR-DBR) sin mover las piezas de la cara blanca ni las otras aristas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DBL BR<B",
+    "pieza": [
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-capa2",
+   "id": "mg-capa2-02",
+   "nombre": "Arista roja-azul arriba, roja a la izquierda",
+   "grupo": "Insertar desde arriba",
+   "algoritmo": "DBR DR R DR' DBR'",
+   "alternativas": [],
+   "descripcion": "La arista roja y azul (DR-DBR) está en el hueco entre las caras derecha y trasera derecha (R-BR), con la pegatina roja hacia la cara derecha. El algoritmo la lleva a su hueco entre las caras inferior derecha e inferior trasera derecha (DR-DBR) sin mover las piezas de la cara blanca ni las otras aristas ya colocadas.",
+   "verificacion": {
+    "clase": "BL<B BR<DBR",
+    "pieza": [
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-capa2",
+   "id": "mg-capa2-03",
+   "nombre": "Arista roja-azul girada",
+   "grupo": "Girada en su sitio",
+   "algoritmo": "DR' R DR F2 DR2' F' DR2",
+   "alternativas": [],
+   "descripcion": "La arista roja y azul (DR-DBR) está en su hueco pero girada, con la pegatina roja hacia la cara inferior trasera derecha. El algoritmo la lleva a su hueco entre las caras inferior derecha e inferior trasera derecha (DR-DBR) sin mover las piezas de la cara blanca ni las otras aristas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DBL DBL<B",
+    "pieza": [
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-capa2",
+   "id": "mg-capa2-04",
+   "nombre": "Arista amarilla-morada en hueco verde-roja",
+   "grupo": "En el hueco de otra arista",
+   "algoritmo": "DR2' DBR2' D2 B2' D2' DBR2 DR2",
+   "alternativas": [],
+   "descripcion": "La arista amarilla y morada (B-DBL) está en el hueco entre las caras inferior izquierda e inferior derecha (DL-DR), con la pegatina amarilla hacia la cara inferior derecha. El algoritmo la lleva a su hueco entre las caras trasera inferior e inferior trasera izquierda (B-DBL) sin mover las piezas de la cara blanca ni las otras aristas ya colocadas; además mueve la arista verde y roja (DL-DR), que aún no está colocada.",
+   "verificacion": {
+    "clase": "B<DBR DBL<DR libres=DL-DR",
+    "pieza": [
+     "B",
+     "DBL"
+    ],
+    "libres": [
+     "DL-DR"
+    ]
+   }
+  },
+  {
+   "etapa": "mg-capa2",
+   "id": "mg-capa2-05",
+   "nombre": "Arista amarilla-morada en hueco roja-azul",
+   "grupo": "En el hueco de otra arista",
+   "algoritmo": "DR2 DL2 D2' DBL2 D2 DL2' DR2'",
+   "alternativas": [],
+   "descripcion": "La arista amarilla y morada (B-DBL) está en el hueco entre las caras inferior derecha e inferior trasera derecha (DR-DBR), con la pegatina amarilla hacia la cara inferior trasera derecha. El algoritmo la lleva a su hueco entre las caras trasera inferior e inferior trasera izquierda (B-DBL) sin mover las piezas de la cara blanca ni las otras aristas ya colocadas; además mueve la arista roja y azul (DR-DBR), que aún no está colocada.",
+   "verificacion": {
+    "clase": "B<DBL DBR<DL libres=DR-DBR",
+    "pieza": [
+     "B",
+     "DBL"
+    ],
+    "libres": [
+     "DR-DBR"
+    ]
+   }
+  },
+  {
+   "etapa": "mg-capa2",
+   "id": "mg-capa2-06",
+   "nombre": "Arista amarilla-azul en hueco amarilla-morada",
+   "grupo": "En el hueco de otra arista",
+   "algoritmo": "B DBR2 B2 DBR2' B'",
+   "alternativas": [],
+   "descripcion": "La arista amarilla y azul (B-DBR) está en el hueco entre las caras trasera inferior e inferior trasera izquierda (B-DBL), con la pegatina amarilla hacia la cara trasera inferior. El algoritmo la lleva a su hueco entre las caras trasera inferior e inferior trasera derecha (B-DBR) sin mover las piezas de la cara blanca ni las otras aristas ya colocadas; además mueve la arista amarilla y morada (B-DBL), que aún no está colocada.",
+   "verificacion": {
+    "clase": "B<B DBL<DBR libres=B-DBL",
+    "pieza": [
+     "B",
+     "DBR"
+    ],
+    "libres": [
+     "B-DBL"
+    ]
+   }
+  },
+  {
+   "etapa": "mg-capa2",
+   "id": "mg-capa2-07",
+   "nombre": "Arista amarilla-morada en hueco amarilla-azul",
+   "grupo": "En el hueco de otra arista",
+   "algoritmo": "B DBR2 B2' DBR2' B'",
+   "alternativas": [],
+   "descripcion": "La arista amarilla y morada (B-DBL) está en el hueco entre las caras trasera inferior e inferior trasera derecha (B-DBR), con la pegatina amarilla hacia la cara trasera inferior. El algoritmo la lleva a su hueco entre las caras trasera inferior e inferior trasera izquierda (B-DBL) sin mover las piezas de la cara blanca ni las otras aristas ya colocadas; además mueve la arista amarilla y azul (B-DBR), que aún no está colocada.",
+   "verificacion": {
+    "clase": "B<B DBR<DBL libres=B-DBR",
+    "pieza": [
+     "B",
+     "DBL"
+    ],
+    "libres": [
+     "B-DBR"
+    ]
+   }
+  },
+  {
+   "etapa": "mg-capa2",
+   "id": "mg-capa2-08",
+   "nombre": "Arista amarilla-azul en hueco morada-verde",
+   "grupo": "En el hueco de otra arista",
+   "algoritmo": "DBL B2' BL DBL BL' B2 DBL'",
+   "alternativas": [],
+   "descripcion": "La arista amarilla y azul (B-DBR) está en el hueco entre las caras inferior trasera izquierda e inferior izquierda (DBL-DL), con la pegatina amarilla hacia la cara inferior izquierda. El algoritmo la lleva a su hueco entre las caras trasera inferior e inferior trasera derecha (B-DBR) sin mover las piezas de la cara blanca ni las otras aristas ya colocadas; además mueve la arista morada y verde (DBL-DL), que aún no está colocada.",
+   "verificacion": {
+    "clase": "B<DR DBL<DBR libres=DBL-DL",
+    "pieza": [
+     "B",
+     "DBR"
+    ],
+    "libres": [
+     "DBL-DL"
+    ]
+   }
+  },
+  {
+   "etapa": "mg-capa2",
+   "id": "mg-capa2-09",
+   "nombre": "Arista amarilla-morada en hueco morada-verde",
+   "grupo": "En el hueco de otra arista",
+   "algoritmo": "DBL B DBL B' BL' DBL'",
+   "alternativas": [],
+   "descripcion": "La arista amarilla y morada (B-DBL) está en el hueco entre las caras inferior trasera izquierda e inferior izquierda (DBL-DL), con la pegatina amarilla hacia la cara inferior trasera izquierda. El algoritmo la lleva a su hueco entre las caras trasera inferior e inferior trasera izquierda (B-DBL) sin mover las piezas de la cara blanca ni las otras aristas ya colocadas; además mueve la arista morada y verde (DBL-DL), que aún no está colocada.",
+   "verificacion": {
+    "clase": "B<DBR DBL<B libres=DBL-DL",
+    "pieza": [
+     "B",
+     "DBL"
+    ],
+    "libres": [
+     "DBL-DL"
+    ]
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-01",
+   "nombre": "Rosa en crema-rosa-roja, a la derecha",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "R'",
+   "alternativas": [],
+   "descripcion": "La esquina rosa, roja y azul (R-DR-DBR) está en el hueco entre las caras frontal, derecha e inferior derecha (F-R-DR), con la pegatina rosa hacia la cara derecha. El algoritmo la lleva a su hueco entre las caras derecha, inferior derecha e inferior trasera derecha (R-DR-DBR) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DBL BL<BL BR<B",
+    "pieza": [
+     "R",
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-02",
+   "nombre": "Rosa en crema-rosa-roja, abajo",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "R U' R2",
+   "alternativas": [],
+   "descripcion": "La esquina rosa, roja y azul (R-DR-DBR) está en el hueco entre las caras frontal, derecha e inferior derecha (F-R-DR), con la pegatina rosa hacia la cara inferior derecha. El algoritmo la lleva a su hueco entre las caras derecha, inferior derecha e inferior trasera derecha (R-DR-DBR) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<BL BL<B BR<DBL",
+    "pieza": [
+     "R",
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-03",
+   "nombre": "Naranja en rosa-lima-azul, a la derecha",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "B' BR2' B",
+   "alternativas": [],
+   "descripcion": "La esquina naranja, amarilla y morada (BL-B-DBL) está en el hueco entre las caras derecha, trasera derecha e inferior trasera derecha (R-BR-DBR), con la pegatina naranja hacia la cara trasera derecha. El algoritmo la lleva a su hueco entre las caras trasera izquierda, trasera inferior e inferior trasera izquierda (BL-B-DBL) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DL BL<L BR<DBL",
+    "pieza": [
+     "BL",
+     "B",
+     "DBL"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-04",
+   "nombre": "Crema en rosa-lima-azul, a la derecha",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "R2' F2 R2",
+   "alternativas": [],
+   "descripcion": "La esquina crema, verde y roja (F-DL-DR) está en el hueco entre las caras derecha, trasera derecha e inferior trasera derecha (R-BR-DBR), con la pegatina crema hacia la cara trasera derecha. El algoritmo la lleva a su hueco entre las caras frontal, inferior izquierda e inferior derecha (F-DL-DR) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DBR BL<R BR<DR",
+    "pieza": [
+     "F",
+     "DL",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-05",
+   "nombre": "Naranja en rosa-lima-azul, a la izquierda",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "BR2 BL2' BR2'",
+   "alternativas": [],
+   "descripcion": "La esquina naranja, amarilla y morada (BL-B-DBL) está en el hueco entre las caras derecha, trasera derecha e inferior trasera derecha (R-BR-DBR), con la pegatina naranja hacia la cara derecha. El algoritmo la lleva a su hueco entre las caras trasera izquierda, trasera inferior e inferior trasera izquierda (BL-B-DBL) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DBL BL<DL BR<L",
+    "pieza": [
+     "BL",
+     "B",
+     "DBL"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-06",
+   "nombre": "Celeste en rosa-lima-azul, a la izquierda",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "R' U2 L2 R",
+   "alternativas": [],
+   "descripcion": "La esquina celeste, morada y verde (L-DBL-DL) está en el hueco entre las caras derecha, trasera derecha e inferior trasera derecha (R-BR-DBR), con la pegatina celeste hacia la cara derecha. El algoritmo la lleva a su hueco entre las caras izquierda, inferior trasera izquierda e inferior izquierda (L-DBL-DL) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DL BL<DR BR<F",
+    "pieza": [
+     "L",
+     "DBL",
+     "DL"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-07",
+   "nombre": "Naranja en crema-rosa-roja, abajo",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "F' U2' BL2' F",
+   "alternativas": [],
+   "descripcion": "La esquina naranja, amarilla y morada (BL-B-DBL) está en el hueco entre las caras frontal, derecha e inferior derecha (F-R-DR), con la pegatina naranja hacia la cara inferior derecha. El algoritmo la lleva a su hueco entre las caras trasera izquierda, trasera inferior e inferior trasera izquierda (BL-B-DBL) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<F BL<DL BR<DR",
+    "pieza": [
+     "BL",
+     "B",
+     "DBL"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-08",
+   "nombre": "Naranja en crema-celeste-verde, a la izquierda",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "DBL L2 DBL'",
+   "alternativas": [],
+   "descripcion": "La esquina naranja, amarilla y morada (BL-B-DBL) está en el hueco entre las caras frontal, izquierda e inferior izquierda (F-L-DL), con la pegatina naranja hacia la cara izquierda. El algoritmo la lleva a su hueco entre las caras trasera izquierda, trasera inferior e inferior trasera izquierda (BL-B-DBL) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DR BL<DBR BR<R",
+    "pieza": [
+     "BL",
+     "B",
+     "DBL"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-09",
+   "nombre": "Crema en naranja-celeste-morada, abajo",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "L2' DL' L' DL L2'",
+   "alternativas": [],
+   "descripcion": "La esquina crema, verde y roja (F-DL-DR) está en el hueco entre las caras trasera izquierda, izquierda e inferior trasera izquierda (BL-L-DBL), con la pegatina crema hacia la cara inferior trasera izquierda. El algoritmo la lleva a su hueco entre las caras frontal, inferior izquierda e inferior derecha (F-DL-DR) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<L BL<DBL BR<DL",
+    "pieza": [
+     "F",
+     "DL",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-10",
+   "nombre": "Crema en rosa-lima-azul, abajo",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "R2 DR R DR' R2",
+   "alternativas": [],
+   "descripcion": "La esquina crema, verde y roja (F-DL-DR) está en el hueco entre las caras derecha, trasera derecha e inferior trasera derecha (R-BR-DBR), con la pegatina crema hacia la cara inferior trasera derecha. El algoritmo la lleva a su hueco entre las caras frontal, inferior izquierda e inferior derecha (F-DL-DR) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<R BL<DR BR<DBR",
+    "pieza": [
+     "F",
+     "DL",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-11",
+   "nombre": "Celeste en rosa-lima-azul, a la derecha",
+   "grupo": "Esquina en un hueco de arriba",
+   "algoritmo": "BR U2' L2' BR'",
+   "alternativas": [],
+   "descripcion": "La esquina celeste, morada y verde (L-DBL-DL) está en el hueco entre las caras derecha, trasera derecha e inferior trasera derecha (R-BR-DBR), con la pegatina celeste hacia la cara trasera derecha. El algoritmo la lleva a su hueco entre las caras izquierda, inferior trasera izquierda e inferior izquierda (L-DBL-DL) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "B<DR BL<F BR<DL",
+    "pieza": [
+     "L",
+     "DBL",
+     "DL"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-12",
+   "nombre": "Rosa en gris-crema-rosa, a la derecha",
+   "grupo": "Esquina en la capa gris",
+   "algoritmo": "R2'",
+   "alternativas": [],
+   "descripcion": "La esquina rosa, roja y azul (R-DR-DBR) está en el hueco entre las caras gris, frontal y derecha (U-F-R), con la pegatina rosa hacia la cara derecha. El algoritmo la lleva a su hueco entre las caras derecha, inferior derecha e inferior trasera derecha (R-DR-DBR) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "BL<BL BR<DBL U<B",
+    "pieza": [
+     "R",
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-bajo",
+   "id": "mg-s2l-bajo-13",
+   "nombre": "Rosa en gris-rosa-lima, arriba",
+   "grupo": "Esquina en la capa gris",
+   "algoritmo": "R' U' R2",
+   "alternativas": [],
+   "descripcion": "La esquina rosa, roja y azul (R-DR-DBR) está en el hueco entre las caras gris, derecha y trasera derecha (U-R-BR), con la pegatina rosa hacia la cara gris. El algoritmo la lleva a su hueco entre las caras derecha, inferior derecha e inferior trasera derecha (R-DR-DBR) sin mover la cara blanca, las aristas de la segunda capa ni las otras esquinas ya colocadas.",
+   "verificacion": {
+    "clase": "BL<B BR<DBR U<BR",
+    "pieza": [
+     "R",
+     "DR",
+     "DBR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-alto",
+   "id": "mg-s2l-alto-01",
+   "nombre": "Arista crema-rosa, rosa arriba",
+   "grupo": "Arista entre dos caras de arriba",
+   "algoritmo": "U R U' R' U' F' U F",
+   "alternativas": [],
+   "descripcion": "La arista crema y rosa (F-R) está en la capa gris, en el hueco entre las caras gris y frontal (U-F), con la pegatina rosa mirando hacia arriba. El algoritmo la baja a su hueco entre las caras frontal y derecha (F-R). Al terminar solo han cambiado de sitio esa pieza y las de la capa gris; lo demás queda como estaba.",
+   "verificacion": {
+    "clase": "BL<BL U<L",
+    "pieza": [
+     "F",
+     "R"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-alto",
+   "id": "mg-s2l-alto-02",
+   "nombre": "Arista crema-rosa, crema arriba",
+   "grupo": "Arista entre dos caras de arriba",
+   "algoritmo": "U' F' U F U R U' R'",
+   "alternativas": [],
+   "descripcion": "La arista crema y rosa (F-R) está en la capa gris, en el hueco entre las caras gris y derecha (U-R), con la pegatina crema mirando hacia arriba. El algoritmo la baja a su hueco entre las caras frontal y derecha (F-R). Al terminar solo han cambiado de sitio esa pieza y las de la capa gris; lo demás queda como estaba.",
+   "verificacion": {
+    "clase": "BL<BL U<BR",
+    "pieza": [
+     "F",
+     "R"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-alto",
+   "id": "mg-s2l-alto-03",
+   "nombre": "Arista crema-roja, crema arriba",
+   "grupo": "Arista entre una cara de arriba y una de abajo",
+   "algoritmo": "(R' F' R F) U (F' R' F R) U'",
+   "alternativas": [],
+   "descripcion": "La arista crema y roja (F-DR) está en la capa gris, en el hueco entre las caras gris y trasera derecha (U-BR), con la pegatina crema mirando hacia arriba. El algoritmo la baja a su hueco entre las caras frontal e inferior derecha (F-DR). Al terminar solo han cambiado de sitio esa pieza y las de la capa gris; lo demás queda como estaba.",
+   "verificacion": {
+    "clase": "BL<DBR U<R",
+    "pieza": [
+     "F",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-alto",
+   "id": "mg-s2l-alto-04",
+   "nombre": "Arista crema-roja, roja arriba",
+   "grupo": "Arista entre una cara de arriba y una de abajo",
+   "algoritmo": "(R' F2' U F2) U (F2' U' F2 R) U'",
+   "alternativas": [],
+   "descripcion": "La arista crema y roja (F-DR) está en la capa gris, en el hueco entre las caras gris y frontal (U-F), con la pegatina roja mirando hacia arriba. El algoritmo la baja a su hueco entre las caras frontal e inferior derecha (F-DR). Al terminar solo han cambiado de sitio esa pieza y las de la capa gris; lo demás queda como estaba.",
+   "verificacion": {
+    "clase": "BL<BL U<DBL",
+    "pieza": [
+     "F",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-alto",
+   "id": "mg-s2l-alto-05",
+   "nombre": "Arista rosa-roja, rosa arriba",
+   "grupo": "Arista entre una cara de arriba y una de abajo",
+   "algoritmo": "(R U F' R') U (R F U' R') U'",
+   "alternativas": [],
+   "descripcion": "La arista rosa y roja (R-DR) está en la capa gris, en el hueco entre las caras gris y derecha (U-R), con la pegatina rosa mirando hacia arriba. El algoritmo la baja a su hueco entre las caras derecha e inferior derecha (R-DR). Al terminar solo han cambiado de sitio esa pieza y las de la capa gris; lo demás queda como estaba.",
+   "verificacion": {
+    "clase": "BL<B U<BL",
+    "pieza": [
+     "R",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-alto",
+   "id": "mg-s2l-alto-06",
+   "nombre": "Arista rosa-roja, roja arriba",
+   "grupo": "Arista entre una cara de arriba y una de abajo",
+   "algoritmo": "(F R2 U' R2') U (R2 U R2' F') U'",
+   "alternativas": [],
+   "descripcion": "La arista rosa y roja (R-DR) está en la capa gris, en el hueco entre las caras gris y trasera derecha (U-BR), con la pegatina roja mirando hacia arriba. El algoritmo la baja a su hueco entre las caras derecha e inferior derecha (R-DR). Al terminar solo han cambiado de sitio esa pieza y las de la capa gris; lo demás queda como estaba.",
+   "verificacion": {
+    "clase": "BL<BR U<DBR",
+    "pieza": [
+     "R",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-alto",
+   "id": "mg-s2l-alto-07",
+   "nombre": "Esquina crema-rosa-roja, rosa arriba",
+   "grupo": "Esquina entre dos caras de arriba y una de abajo",
+   "algoritmo": "R U R' U2' R U R'",
+   "alternativas": [],
+   "descripcion": "La esquina crema, rosa y roja (F-R-DR) está en la capa gris, en el hueco entre las caras gris, frontal e izquierda (U-F-L), con la pegatina rosa mirando hacia arriba. El algoritmo la baja a su hueco entre las caras frontal, derecha e inferior derecha (F-R-DR). Al terminar solo han cambiado de sitio esa pieza y las de la capa gris; lo demás queda como estaba.",
+   "verificacion": {
+    "clase": "BL<DBL BR<BL U<L",
+    "pieza": [
+     "F",
+     "R",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-alto",
+   "id": "mg-s2l-alto-08",
+   "nombre": "Esquina crema-rosa-roja, crema arriba",
+   "grupo": "Esquina entre dos caras de arriba y una de abajo",
+   "algoritmo": "R U' R' U' R U2 R'",
+   "alternativas": [],
+   "descripcion": "La esquina crema, rosa y roja (F-R-DR) está en la capa gris, en el hueco entre las caras gris, derecha y trasera derecha (U-R-BR), con la pegatina crema mirando hacia arriba. El algoritmo la baja a su hueco entre las caras frontal, derecha e inferior derecha (F-R-DR). Al terminar solo han cambiado de sitio esa pieza y las de la capa gris; lo demás queda como estaba.",
+   "verificacion": {
+    "clase": "BL<B L<BL U<BR",
+    "pieza": [
+     "F",
+     "R",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-s2l-alto",
+   "id": "mg-s2l-alto-09",
+   "nombre": "Esquina crema-rosa-roja, roja arriba",
+   "grupo": "Esquina entre dos caras de arriba y una de abajo",
+   "algoritmo": "R2 U R2' U R2 U2' R2'",
+   "alternativas": [],
+   "descripcion": "La esquina crema, rosa y roja (F-R-DR) está en la capa gris, en el hueco entre las caras gris, frontal y derecha (U-F-R), con la pegatina roja mirando hacia arriba. El algoritmo la baja a su hueco entre las caras frontal, derecha e inferior derecha (F-R-DR). Al terminar solo han cambiado de sitio esa pieza y las de la capa gris; lo demás queda como estaba.",
+   "verificacion": {
+    "clase": "BL<BR BR<BL U<B",
+    "pieza": [
+     "F",
+     "R",
+     "DR"
+    ],
+    "libres": []
+   }
+  },
+  {
+   "etapa": "mg-eo",
+   "id": "mg-eo-01",
+   "nombre": "Dos aristas: frontal y derecha",
+   "grupo": "Dos aristas con el gris de lado",
+   "algoritmo": "F U R U' R' F'",
+   "alternativas": [],
+   "descripcion": "Las aristas frontal y derecha de la capa gris tienen el gris mirando hacia un lado y son vecinas; las otras tres lo tienen arriba. El algoritmo las deja todas con el gris arriba, aunque algunas aristas pueden cambiar de sitio: eso lo arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "00011"
+   }
+  },
+  {
+   "etapa": "mg-eo",
+   "id": "mg-eo-02",
+   "nombre": "Dos aristas: frontal y trasera derecha",
+   "grupo": "Dos aristas con el gris de lado",
+   "algoritmo": "F R U R' U' F'",
+   "alternativas": [],
+   "descripcion": "Las aristas frontal y trasera derecha de la capa gris tienen el gris mirando hacia un lado y entre ellas hay una arista bien orientada; las otras tres lo tienen arriba. El algoritmo las deja todas con el gris arriba, aunque algunas aristas pueden cambiar de sitio: eso lo arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "00101"
+   }
+  },
+  {
+   "etapa": "mg-eo",
+   "id": "mg-eo-03",
+   "nombre": "Cuatro aristas, solo trasera izquierda bien",
+   "grupo": "Cuatro aristas con el gris de lado",
+   "algoritmo": "(F R U R' U' F') (U2) (F R U R' U' F')",
+   "alternativas": [],
+   "descripcion": "Cuatro aristas de la capa gris tienen el gris mirando hacia un lado y solo la arista trasera izquierda lo tiene arriba. El algoritmo las deja todas con el gris arriba, aunque algunas aristas pueden cambiar de sitio: eso lo arregla la etapa siguiente.",
+   "notas": [
+    "Gira un primer par de aristas",
+    "Gira la capa superior 144 grados",
+    "Gira el segundo par de aristas"
+   ],
+   "verificacion": {
+    "clase": "01111"
+   }
+  },
+  {
+   "etapa": "mg-ep",
+   "id": "mg-ep-01",
+   "nombre": "Tres aristas en ciclo 2-3-4",
+   "grupo": "Un ciclo de tres aristas",
+   "algoritmo": "R U R' U R U2' R'",
+   "alternativas": [],
+   "descripcion": "Las aristas derecha, trasera derecha y trasera izquierda de la capa gris están cambiadas entre sí en un ciclo; las aristas frontal e izquierda están en su sitio. Las aristas de la capa gris se numeran del 1 (frontal) al 5 en el orden frontal, derecha, trasera derecha, trasera izquierda e izquierda. El algoritmo las devuelve a su lugar con las aristas ya orientadas.",
+   "verificacion": {
+    "clase": "01342"
+   }
+  },
+  {
+   "etapa": "mg-ep",
+   "id": "mg-ep-02",
+   "nombre": "Dos pares de aristas: 1-2 y 4-5",
+   "grupo": "Dos pares intercambiados",
+   "algoritmo": "(R U R' U R U2' R') (U2) (R U R' U R U2' R')",
+   "alternativas": [],
+   "descripcion": "En la capa gris están intercambiadas las aristas frontal con derecha y trasera izquierda con izquierda; la arista trasera derecha está en su sitio. Las aristas de la capa gris se numeran del 1 (frontal) al 5 en el orden frontal, derecha, trasera derecha, trasera izquierda e izquierda. El algoritmo las devuelve a su lugar con las aristas ya orientadas.",
+   "notas": [
+    "Primer ciclo de tres aristas",
+    "Gira la capa superior 144 grados",
+    "Segundo ciclo de tres aristas"
+   ],
+   "verificacion": {
+    "clase": "02143"
+   }
+  },
+  {
+   "etapa": "mg-ep",
+   "id": "mg-ep-03",
+   "nombre": "Dos pares de aristas: 1-4 y 2-3",
+   "grupo": "Dos pares intercambiados",
+   "algoritmo": "(R U R' U R U2' R') (U2) (R U R' U R U2' R') (U') (R U R' U R U2' R')",
+   "alternativas": [],
+   "descripcion": "En la capa gris están intercambiadas las aristas frontal con trasera izquierda y derecha con trasera derecha; la arista izquierda está en su sitio. Las aristas de la capa gris se numeran del 1 (frontal) al 5 en el orden frontal, derecha, trasera derecha, trasera izquierda e izquierda. El algoritmo las devuelve a su lugar con las aristas ya orientadas.",
+   "notas": [
+    "Primer ciclo de tres aristas",
+    "Gira la capa superior 144 grados",
+    "Segundo ciclo de tres aristas",
+    "Gira la capa superior 72 grados al revés",
+    "Tercer ciclo de tres aristas"
+   ],
+   "verificacion": {
+    "clase": "04321"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-01",
+   "nombre": "Dos pares de esquinas: 1-2 y 3-4",
+   "grupo": "Dos pares de esquinas intercambiados",
+   "algoritmo": "U R U2' L' U2 R' U2' L U R U2' L' U2 R' U2' L U2",
+   "alternativas": [],
+   "descripcion": "Están intercambiadas las esquinas frontal/derecha con derecha/trasera derecha y trasera derecha/trasera izquierda con trasera izquierda/izquierda; la esquina frontal/izquierda está en su sitio. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "02143"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-02",
+   "nombre": "Dos pares de esquinas: 1-3 y 2-4",
+   "grupo": "Dos pares de esquinas intercambiados",
+   "algoritmo": "U' L' U2 R U2' L U2 R' U2 L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Están intercambiadas las esquinas frontal/derecha con trasera derecha/trasera izquierda y derecha/trasera derecha con trasera izquierda/izquierda; la esquina frontal/izquierda está en su sitio. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "03412"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-03",
+   "nombre": "Dos pares de esquinas: 1-4 y 2-3",
+   "grupo": "Dos pares de esquinas intercambiados",
+   "algoritmo": "R U2' L' U2 R' U2' L U L' U2 R U2' L U2 R' U' R U2' L' U2 R' U2' L U2",
+   "alternativas": [],
+   "descripcion": "Están intercambiadas las esquinas frontal/derecha con trasera izquierda/izquierda y derecha/trasera derecha con trasera derecha/trasera izquierda; la esquina frontal/izquierda está en su sitio. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "04321"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-04",
+   "nombre": "Tres esquinas en ciclo 1-2-3",
+   "grupo": "Ciclo de tres esquinas",
+   "algoritmo": "R U2' L' U2 R' U2' L U2",
+   "alternativas": [],
+   "descripcion": "Las esquinas frontal/derecha, derecha/trasera derecha y trasera derecha/trasera izquierda están cambiadas entre sí en un ciclo; las esquinas trasera izquierda/izquierda y frontal/izquierda están en su sitio. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "01342"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-05",
+   "nombre": "Tres esquinas en ciclo 1-3-2",
+   "grupo": "Ciclo de tres esquinas",
+   "algoritmo": "U2' L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Las esquinas frontal/derecha, trasera derecha/trasera izquierda y derecha/trasera derecha están cambiadas entre sí en un ciclo; las esquinas trasera izquierda/izquierda y frontal/izquierda están en su sitio. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "01423"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-06",
+   "nombre": "Tres esquinas en ciclo 1-3-4",
+   "grupo": "Ciclo de tres esquinas",
+   "algoritmo": "U R U2' L' U2 R' U2' L U' L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Las esquinas frontal/derecha, trasera derecha/trasera izquierda y trasera izquierda/izquierda están cambiadas entre sí en un ciclo; las esquinas derecha/trasera derecha y frontal/izquierda están en su sitio. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "02431"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-07",
+   "nombre": "Tres esquinas en ciclo 2-5-3",
+   "grupo": "Ciclo de tres esquinas",
+   "algoritmo": "U' R U2' L' U2 R' U2' L U L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Las esquinas derecha/trasera derecha, frontal/izquierda y trasera derecha/trasera izquierda están cambiadas entre sí en un ciclo; las esquinas frontal/derecha y trasera izquierda/izquierda están en su sitio. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "04132"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-08",
+   "nombre": "Cinco esquinas corridas 1 hueco",
+   "grupo": "Cinco esquinas desplazadas",
+   "algoritmo": "U2 R U2' L' U2 R' U2' L R U2' L' U2 R' U2' L U2",
+   "alternativas": [],
+   "descripcion": "Las cinco esquinas están corridas 1 hueco respecto de su sitio, todas en el mismo sentido alrededor de la capa gris. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "12340"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-09",
+   "nombre": "Cinco esquinas en ciclo 1-3-4-5-2",
+   "grupo": "Cinco esquinas desplazadas",
+   "algoritmo": "U2 R U2' L' U2 R' U2' L U2' L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Las cinco esquinas forman un ciclo. Numeradas del 1 (frontal/derecha) al 5 en sentido contrario a las agujas del reloj visto desde arriba, cada una ocupa el sitio de la anterior en este orden: 1-3-4-5-2. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "12403"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-10",
+   "nombre": "Cinco esquinas en ciclo 1-4-5-2-3",
+   "grupo": "Cinco esquinas desplazadas",
+   "algoritmo": "U2' R U2' L' U2 R' U2' L U' R U2' L' U2 R' U2' L U2",
+   "alternativas": [],
+   "descripcion": "Las cinco esquinas forman un ciclo. Numeradas del 1 (frontal/derecha) al 5 en sentido contrario a las agujas del reloj visto desde arriba, cada una ocupa el sitio de la anterior en este orden: 1-4-5-2-3. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "13042"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-11",
+   "nombre": "Cinco esquinas en ciclo 1-4-5-3-2",
+   "grupo": "Cinco esquinas desplazadas",
+   "algoritmo": "U2' R U2' L' U2 R' U2' L U2 L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Las cinco esquinas forman un ciclo. Numeradas del 1 (frontal/derecha) al 5 en sentido contrario a las agujas del reloj visto desde arriba, cada una ocupa el sitio de la anterior en este orden: 1-4-5-3-2. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "14023"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-12",
+   "nombre": "Cinco esquinas en ciclo 1-3-5-4-2",
+   "grupo": "Cinco esquinas desplazadas",
+   "algoritmo": "L' U2 R U2' L U2 R' U L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Las cinco esquinas forman un ciclo. Numeradas del 1 (frontal/derecha) al 5 en sentido contrario a las agujas del reloj visto desde arriba, cada una ocupa el sitio de la anterior en este orden: 1-3-5-4-2. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "20413"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-13",
+   "nombre": "Cinco esquinas corridas 2 huecos",
+   "grupo": "Cinco esquinas desplazadas",
+   "algoritmo": "U R U2' L' U2 R' U2' L U2' R U2' L' U2 R' U2' L U2' L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Las cinco esquinas están corridas 2 huecos respecto de su sitio, todas en el mismo sentido alrededor de la capa gris. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "23401"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-14",
+   "nombre": "Cinco esquinas corridas 3 huecos",
+   "grupo": "Cinco esquinas desplazadas",
+   "algoritmo": "U' L' U2 R U2' L U2 R' U2 R U2' L' U2 R' U2' L U2 L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Las cinco esquinas están corridas 3 huecos respecto de su sitio, todas en el mismo sentido alrededor de la capa gris. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "34012"
+   }
+  },
+  {
+   "etapa": "mg-cp",
+   "id": "mg-cp-15",
+   "nombre": "Cinco esquinas corridas 4 huecos",
+   "grupo": "Cinco esquinas desplazadas",
+   "algoritmo": "U L' U2 R U2' L U2 R' L' U2 R U2' L U2 R'",
+   "alternativas": [],
+   "descripcion": "Las cinco esquinas están corridas 4 huecos respecto de su sitio, todas en el mismo sentido alrededor de la capa gris. Las aristas ya están en su sitio y se quedan así; puede quedar alguna esquina girada, que arregla la etapa siguiente.",
+   "verificacion": {
+    "clase": "40123"
+   }
+  },
+  {
+   "etapa": "mg-co",
+   "id": "mg-co-01",
+   "nombre": "Esquinas giradas: 1 y 2",
+   "grupo": "2 esquinas giradas",
+   "algoritmo": "(R' DR' R DR)2 U (DR' R' DR R)2 U'",
+   "alternativas": [],
+   "descripcion": "Todas las esquinas están en su sitio, pero en la esquina frontal/derecha (U-F-R) el gris mira hacia la cara derecha y en la esquina derecha/trasera derecha (U-R-BR) el gris mira hacia la cara derecha; las demás ya tienen el gris arriba. El algoritmo gira las dos esquinas en sentidos opuestos y deja todo resuelto. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda.",
+   "verificacion": {
+    "clase": "00012"
+   }
+  },
+  {
+   "etapa": "mg-co",
+   "id": "mg-co-02",
+   "nombre": "Esquinas giradas: 1 y 3",
+   "grupo": "2 esquinas giradas",
+   "algoritmo": "(R' DR' R DR)2 U2 (DR' R' DR R)2 U2'",
+   "alternativas": [],
+   "descripcion": "Todas las esquinas están en su sitio, pero en la esquina frontal/derecha (U-F-R) el gris mira hacia la cara derecha y en la esquina trasera derecha/trasera izquierda (U-BR-BL) el gris mira hacia la cara trasera derecha; las demás ya tienen el gris arriba. El algoritmo gira las dos esquinas en sentidos opuestos y deja todo resuelto. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda.",
+   "verificacion": {
+    "clase": "00102"
+   }
+  },
+  {
+   "etapa": "mg-co",
+   "id": "mg-co-03",
+   "nombre": "Esquinas giradas: 1 y 4",
+   "grupo": "2 esquinas giradas",
+   "algoritmo": "(R' DR' R DR)2 U2' (DR' R' DR R)2 U2",
+   "alternativas": [],
+   "descripcion": "Todas las esquinas están en su sitio, pero en la esquina frontal/derecha (U-F-R) el gris mira hacia la cara derecha y en la esquina trasera izquierda/izquierda (U-BL-L) el gris mira hacia la cara trasera izquierda; las demás ya tienen el gris arriba. El algoritmo gira las dos esquinas en sentidos opuestos y deja todo resuelto. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda.",
+   "verificacion": {
+    "clase": "00201"
+   }
+  },
+  {
+   "etapa": "mg-co",
+   "id": "mg-co-04",
+   "nombre": "Esquinas giradas: 1 y 5",
+   "grupo": "2 esquinas giradas",
+   "algoritmo": "(R' DR' R DR)2 U' (DR' R' DR R)2 U",
+   "alternativas": [],
+   "descripcion": "Todas las esquinas están en su sitio, pero en la esquina frontal/derecha (U-F-R) el gris mira hacia la cara derecha y en la esquina frontal/izquierda (U-F-L) el gris mira hacia la cara izquierda; las demás ya tienen el gris arriba. El algoritmo gira las dos esquinas en sentidos opuestos y deja todo resuelto. Las esquinas de la capa gris se numeran del 1 (frontal/derecha) al 5 en el orden frontal/derecha, derecha/trasera derecha, trasera derecha/trasera izquierda, trasera izquierda/izquierda y frontal/izquierda.",
+   "verificacion": {
+    "clase": "00021"
+   }
+  }
+ ]
+}

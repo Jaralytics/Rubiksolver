@@ -1,5 +1,7 @@
 # Plan de implementación futura
 
+**Estado.** Fase 0 hecha (registro de puzzles, un catálogo por cubo, selector, enlaces `#2x2/…`). Fase 1 hecha en lo básico: 2x2 Principiante y Ortega (OLL 7, PBL 5); faltan CLL y EG. Fase 2 parcial: 4x4 con centros (4 ejemplos), aristas (4), paridad OLL y PLL; hecha la etapa «Como un 3x3» (enlace al catálogo del 3x3); faltan los casos de las últimas dos aristas y más ejemplos de centros. Sin probar a mano en navegador ni móvil.
+
 Hoy la página enseña el 3x3 (CFOP y método principiante). Este documento describe cómo
 crecer hacia otros puzzles: primero 2x2 y 4x4, después el resto de cubos NxN y, a largo
 plazo, toda la familia de puzzles tipo Rubik.
@@ -19,17 +21,17 @@ deja la página publicable y prepara la siguiente.
 | `thumbnails.js` | `topView` e `isoView` leen `model.size`. |
 | Generador y verificador | La estructura (fuente → ajuste de alternativas → verificación → JSON) es independiente del puzzle. |
 
-### Qué está atado al 3x3
+### Qué estaba atado al 3x3
 
-| Dónde | Qué hay que cambiar |
+| Dónde | Estado |
 | --- | --- |
-| `js/ui.js` (`startApp`) | Crea `new CubeModel(3)` y carga un único catálogo. No hay selector de puzzle. |
-| `js/catalog.js` | Las máscaras suponen capas -1 / 0 / 1 y distinguen piezas contando coordenadas no nulas. |
-| `tools/lib/firmas.mjs` | Todas las firmas (F2L, OLL, PLL) y los objetivos de etapa son del 3x3. |
-| `CubeModel.frame()` | Usa los centros para fijar la orientación; en cubos pares no existen. |
-| `CubeModel.isPieceSolved()` | Compara pieza por pieza. En 4x4 o más hay piezas indistinguibles (centros, aristas gemelas), así que «resuelto» debe decidirse por pegatinas. |
-| `parseMove` | En minúscula interpreta `r` como giro ancho. En 4x4+ varias fuentes usan `r` para la capa interior sola; hay que fijar una convención por tamaño. Falta la notación de capa interior (`2R`, `2-3Rw`). |
-| `data/algorithms.json` | Un solo archivo con `"cubo": "3x3"`. |
+| `js/ui.js` (`startApp`) | Hecho: el cubo activo se elige con el selector y se rehacen modelo, vista, reproductor y catálogo (`usePuzzle`). |
+| `js/catalog.js` | Hecho: las máscaras viven en cada puzzle (`js/puzzles/<id>.js`) y se clasifican las piezas por coordenadas extremas (`CubeModel.kind()`). |
+| `tools/lib/firmas.mjs` | Hecho: las firmas son de cada puzzle (`tools/puzzles/<id>/firmas.mjs`); en común queda `tools/lib/comun.mjs`. |
+| `CubeModel.frame()` | Hecho: en cubos pares usa la esquina inferior-trasera-izquierda como pieza de referencia. |
+| `CubeModel.isPieceSolved()` | Se mantiene para 2x2 y 3x3; en el 4x4 «resuelto» y «emparejado» se deciden por pegatinas (`slots()`, `stickersSolved()`). |
+| `parseMove` | Hecho: minúscula = ancho de dos capas en todos los tamaños; añadidas la capa interior (`2R`) y los rangos (`2-3Rw`); M, E y S solo en tamaños impares; se rechazan los anchos que abarcan todo el cubo. |
+| `data/algorithms.json` | Hecho: un catálogo por puzzle (`data/3x3.json`, `2x2.json`, `4x4.json`). |
 
 ### Criterio para empezar (la condición «según cómo haya quedado»)
 

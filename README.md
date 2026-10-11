@@ -1,11 +1,15 @@
 # Cubo paso a paso
 
-Página de una sola vista para aprender a resolver el cubo de Rubik 3x3, con un cubo 3D
+Página de una sola vista para aprender a resolver el cubo de Rubik (2x2, 3x3 y 4x4), con un cubo 3D
 interactivo que se desarma hasta cada caso y reproduce su algoritmo movimiento a movimiento.
 
-- **CFOP**: Cruz (8 casos + 2 ejemplos completos), F2L (41), OLL (57) y PLL (21).
-- **Principiante** (por capas): cruz blanca, esquinas blancas, segunda capa, cruz amarilla,
+Un botón junto a «Ayuda» cambia de cubo (2x2, 3x3, 4x4); cada uno tiene su catálogo.
+
+- **3x3 · CFOP**: Cruz (8 casos + 2 ejemplos completos), F2L (41), OLL (57) y PLL (21).
+- **3x3 · Principiante** (por capas): cruz blanca, esquinas blancas, segunda capa, cruz amarilla,
   cara amarilla, colocar esquinas y colocar aristas. Solo usa seis secuencias cortas.
+- **2x2** · Principiante (primera capa, orientar 7 casos, permutar 2) y Ortega (cara, OLL 7, PBL 5): 31 algoritmos.
+- **4x4** · Reducción: centros (4 ejemplos), aristas (4), etapa «Como un 3x3», paridad OLL (1) y paridad PLL (1): 10 algoritmos. La etapa «Como un 3x3» enlaza con el catálogo del 3x3.
 
 Sitio estático: HTML + CSS + módulos ES + Three.js (incluido en `vendor/`). Sin backend ni
 paso de compilación.
@@ -40,7 +44,7 @@ npm test             # pruebas del motor + verificación de todo el catálogo
 | Restablecer la vista | botón | `0` |
 | Ayuda de notación | botón «Ayuda» | `?` |
 
-El enlace de la página guarda el caso (`…/#oll-27`), así que se puede compartir uno concreto.
+El enlace de la página guarda el cubo y el caso (`…/#3x3/oll-27`; los enlaces antiguos `#oll-27` siguen valiendo para el 3x3), así que se puede compartir uno concreto.
 
 ## Arquitectura
 
@@ -49,19 +53,21 @@ index.html
 css/styles.css
 js/
   cube-model.js   Estado lógico: piezas (posición + orientación), notación, movimientos.
-  cube-view.js    Render con Three.js. Refleja el modelo; no decide nada.
+  cube-view.js    Render con Three.js. Refleja el modelo; setModel() cambia de cubo liberando el anterior.
   animator.js     Animator (un giro con easing) y Player (preparar, reproducir, paso, reinicio).
-  catalog.js      Carga algorithms.json y define las máscaras de cada etapa.
-  thumbnails.js   Miniaturas SVG (planta de la última capa / mini-cubo isométrico).
+  catalog.js      Carga el catálogo de un puzzle y aplica las máscaras de cada etapa.
+  puzzles/        Registro de puzzles (2x2, 3x3, 4x4): id, tamaño, catálogo, máscaras y ayuda.
+  puzzle-picker.js Selector de cubo (icono SVG parametrizado por tamaño y menú accesible).
+  thumbnails.js   Miniaturas SVG (planta de una capa, dos capas / mini-cubo isométrico).
   ui.js           Paneles, controles, teclado y estado de la interfaz.
   main.js         Punto de entrada.
-data/algorithms.json   Catálogo generado y verificado (no editar a mano).
+data/3x3.json, 2x2.json, 4x4.json   Catálogos generados y verificados (no editar a mano).
 tools/
-  catalog-source.mjs   Fuente editable del catálogo.
-  build-catalog.mjs    Genera algorithms.json; no escribe nada si algo falla.
-  verify-catalog.mjs   Verificador (también se ejecuta solo, sobre el JSON).
-  lib/firmas.mjs       "Firmas" de casos: identifican un caso con independencia del algoritmo.
-  fetch-reference.mjs  Extrae la referencia de SpeedSolving Wiki.
+  build-catalog.mjs    Genera data/<puzzle>.json; no escribe nada si algo falla.
+  verify-catalog.mjs   Verificador de todos los catálogos (o de uno).
+  lib/comun.mjs        Utilidades comunes de verificación.
+  puzzles/<id>/        Por puzzle: source.mjs (fuente editable), build.mjs, verify.mjs, firmas.mjs.
+  fetch-reference.mjs  Extrae la referencia de SpeedSolving Wiki (3x3).
   referencia/speedsolving-wiki.json
   test-engine.mjs      Pruebas del motor con identidades conocidas del cubo.
   serve.mjs            Servidor estático mínimo.
@@ -83,7 +89,7 @@ en OLL solo se ve el amarillo de la última capa). Así el caso se reconoce sin 
 
 ## Catálogo y verificación
 
-`data/algorithms.json` contiene `metodos`, `etapas` y `casos`. Cada caso tiene:
+Cada `data/<puzzle>.json` contiene `metodos`, `etapas` y `casos`. Cada caso tiene:
 
 | Campo | Contenido |
 | --- | --- |
@@ -113,33 +119,31 @@ estado del cubo, no se escriben a mano.
 
 ### Agregar o cambiar un algoritmo
 
-1. Edita `tools/catalog-source.mjs` (por ejemplo, añade una alternativa a `OLL_ALGS[27]` o
+1. Edita `tools/puzzles/<id>/source.mjs` (por ejemplo, añade una alternativa a `OLL_ALGS[27]` o
    cambia el algoritmo principal de un caso).
-2. Ejecuta `npm run build:catalog`. Si el algoritmo no resuelve ese caso, el generador lo
+2. Ejecuta `npm run build:catalog` (o `node tools/build-catalog.mjs 2x2`). Si el algoritmo no resuelve ese caso, el generador lo
    dice y no toca el JSON.
 3. Recarga la página.
 
 Los algoritmos principales no deben tener rotación neta del cubo (las alternativas sí
 pueden). Para una etapa nueva, añádela a `ETAPAS` con su `tipo` (qué debe quedar resuelto;
-ver `goalReached` en `tools/lib/firmas.mjs`), su `mascara` (`js/catalog.js`) y su `miniatura`.
+ver `goalReached` en `tools/puzzles/<id>/firmas.mjs`), su `mascara` (`js/puzzles/<id>.js`) y su `miniatura`.
+
+### Notación por tamaño
+
+En el 3x3 la minúscula (`r`) es el ancho de dos capas, igual que `Rw`. En el 4x4 se mantiene esa
+convención (`r` = `Rw`) y se añaden la capa interior (`2R`) y los rangos (`2-3Rw`); `M`, `E` y
+`S` solo existen en tamaños impares. El texto de los algoritmos se muestra tal como está en la
+fuente, y el diálogo de ayuda describe la notación válida del cubo activo.
 
 ### Otros tamaños de cubo
 
-El plan completo por fases (2x2, 4x4, resto de NxN y demás puzzles) está en
-[ROADMAP.md](ROADMAP.md). En resumen:
-
-El motor, la vista, el animador y las miniaturas ya reciben el tamaño como parámetro:
-`new CubeModel(4)` funciona, y la notación admite `Rw`, `3Rw`, etc. Para añadir, por
-ejemplo, el 2x2 o el 4x4:
-
-1. Crear un catálogo por tamaño (p. ej. `data/algorithms-2x2.json`, con `"cubo": "2x2"`) y
-   un selector de cubo en la interfaz que llame a `loadCatalog(url)` y cree el modelo y la
-   vista con ese tamaño (hoy el `3` está fijado en `startApp`, en `js/ui.js`).
-2. Definir las máscaras de sus etapas en `js/catalog.js` (las actuales suponen capas -1/0/1).
-3. Escribir sus firmas en `tools/lib/firmas.mjs`. En cubos pares no hay centros, así que
-   `frame()` no puede fijar la orientación; y en 4x4 o mayores hay piezas indistinguibles
-   (centros, aristas gemelas), por lo que «resuelto» debe compararse por pegatinas
-   (`isSolved()`), no por piezas.
+Para añadir un puzzle: un módulo en `js/puzzles/` (id, tamaño, catálogo, máscaras, ayuda) y su
+carpeta en `tools/puzzles/<id>/` con fuente, firmas y verificación. Sin centros (2x2, 4x4) el
+marco de referencia es la esquina inferior-trasera-izquierda (`CubeModel.frame()`), y en el
+4x4 «resuelto» y «emparejado» se deciden por colores de pegatina (`CubeModel.slots()`). Las
+paridades del 4x4 se verifican comprobando que su vista 3x3 es ilegal, es decir, que no se
+alcanzan solo con giros exteriores. El plan completo está en [ROADMAP.md](ROADMAP.md).
 
 ## Decisiones de diseño
 

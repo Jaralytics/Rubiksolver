@@ -202,6 +202,80 @@ svg {
   border-color: var(--muted);
 }
 
+/* Selector de cubo: botón con el cubo actual y menú con un dibujo de cada cubo. */
+.puzzle-picker {
+  position: relative;
+  flex: none;
+}
+
+.puzzle-trigger {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 32px;
+  padding: 0;
+}
+
+.cube-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.puzzle-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.puzzle-menu[hidden] {
+  display: none;
+}
+
+.puzzle-option {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  color: var(--muted);
+}
+
+.puzzle-option .cube-icon {
+  width: 34px;
+  height: 34px;
+}
+
+.puzzle-option:hover {
+  color: var(--text);
+  background: var(--raised);
+}
+
+.puzzle-option[aria-pressed='true'] {
+  color: var(--text);
+  background: var(--accent-wash);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* Etapa de enlace (sin casos): solo se muestra la explicación y el botón. */
+.enlace .transport,
+.enlace .note {
+  display: none;
+}
+
+.link-button {
+  justify-self: start;
+  border-color: var(--accent);
+  color: var(--text);
+}
+
 /* ---------------------------------------------------------------- Cubo */
 
 .stage {
@@ -372,6 +446,8 @@ svg {
 
 .group {
   display: flex;
+  flex-wrap: wrap; /* un algoritmo largo sin paréntesis es un solo grupo: debe poder partirse */
+  min-width: 0;
   gap: 4px;
 }
 
@@ -624,6 +700,14 @@ svg {
   width: 58px;
 }
 
+.rows .case svg.layers {
+  width: 104px;
+}
+
+.grid .case svg.layers {
+  max-width: 100%;
+}
+
 .arrow {
   stroke: #14161d;
   stroke-width: 2.4;
@@ -722,6 +806,15 @@ kbd {
   color: #fff;
 }
 
+/* Con más etapas de las que caben a cualquier ancho, solo la actual muestra su nombre. */
+.stages .crowded button:not([aria-current]) span:last-child {
+  display: none;
+}
+
+.stages .crowded button:not([aria-current]) {
+  padding: 5px;
+}
+
 /* Con muchas etapas y poco ancho, solo la etapa actual muestra su nombre. */
 @media (max-width: 1340px) {
   .stages .many button:not([aria-current]) span:last-child {
@@ -783,7 +876,8 @@ kbd {
     flex: 1 1 60%;
   }
 
-  .top .ghost {
+  .top .ghost,
+  .puzzle-picker {
     order: 4;
   }
 

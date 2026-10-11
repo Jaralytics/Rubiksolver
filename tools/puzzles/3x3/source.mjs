@@ -1,5 +1,5 @@
-// catalog-source.mjs — Fuente editable del catálogo. `node tools/build-catalog.mjs`
-// la verifica con el motor lógico y genera data/algorithms.json.
+// source.mjs — Fuente editable del catálogo del 3x3. `node tools/build-catalog.mjs`
+// la verifica con el motor lógico y genera data/3x3.json.
 //
 // Convenciones:
 //  - El cubo se sostiene con la cruz (blanco) abajo y el verde al frente.

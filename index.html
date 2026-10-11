@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#141821">
-  <title>Cubo paso a paso — aprende a resolver el 3x3</title>
-  <meta name="description" content="Tutorial interactivo en 3D para resolver el cubo de Rubik 3x3 con CFOP o con el método principiante, caso por caso.">
+  <title>Cubo paso a paso — aprende a resolver el cubo de Rubik</title>
+  <meta name="description" content="Tutorial interactivo en 3D para resolver el cubo de Rubik (2x2, 3x3, 4x4 y Megaminx), caso por caso: CFOP, Ortega y método por capas.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141821'/%3E%3Crect x='5' y='5' width='10' height='10' rx='2' fill='%23f5cf2e'/%3E%3Crect x='17' y='5' width='10' height='10' rx='2' fill='%2327b060'/%3E%3Crect x='5' y='17' width='10' height='10' rx='2' fill='%23ff8a1f'/%3E%3Crect x='17' y='17' width='10' height='10' rx='2' fill='%23b9a0ff'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,10 @@
       <nav class="stages" aria-label="Etapas del método">
         <ol id="stages"></ol>
       </nav>
+      <div class="puzzle-picker">
+        <button class="ghost puzzle-trigger" id="puzzle-open" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="puzzle-menu" title="Cambiar de puzzle" aria-label="Cambiar de puzzle"></button>
+        <div class="puzzle-menu" id="puzzle-menu" role="group" aria-label="Puzzles disponibles" hidden></div>
+      </div>
       <button class="ghost" id="help-open" type="button" aria-haspopup="dialog" title="Notación y atajos de teclado (?)">Ayuda</button>
     </header>
 
@@ -115,18 +119,9 @@
       <div class="help-body">
         <section>
           <h3>Cómo leer un algoritmo</h3>
-          <p>Cada letra es un giro de un cuarto de vuelta en sentido horario, mirando esa cara de frente.</p>
-          <dl class="legend">
-            <dt>R L</dt><dd>Cara derecha e izquierda</dd>
-            <dt>U D</dt><dd>Cara superior e inferior</dd>
-            <dt>F B</dt><dd>Cara frontal y trasera</dd>
-            <dt>R'</dt><dd>El apóstrofo invierte el giro: sentido antihorario</dd>
-            <dt>R2</dt><dd>Media vuelta</dd>
-            <dt>r u f</dt><dd>En minúscula: la cara junto con la capa central</dd>
-            <dt>M E S</dt><dd>Solo la capa central (M sigue a L, E sigue a D, S sigue a F)</dd>
-            <dt>x y z</dt><dd>Gira el cubo entero (como R, como U y como F)</dd>
-          </dl>
-          <p>El cubo se sostiene con la cruz blanca abajo y el verde al frente. Las piezas en gris todavía no importan en esa etapa.</p>
+          <p id="help-intro">Cada letra es un giro de un cuarto de vuelta en sentido horario, mirando esa cara de frente.</p>
+          <dl class="legend" id="help-legend"></dl>
+          <p id="help-note"></p>
         </section>
         <section>
           <h3>Teclado</h3>

@@ -7,10 +7,13 @@ import { COLORS, DIMMED } from './cube-view.js';
 const colorOf = (sticker, mask) => (sticker && mask(sticker.piece, sticker.face) ? COLORS[sticker.face] : DIMMED);
 const n = (v) => Math.round(v * 100) / 100;
 
-/** Vista en planta: cara superior y la fila de pegatinas de cada lado. */
-export function topView(model, mask, { arrows = false } = {}) {
+/**
+ * Contenido de la vista en planta de una cara horizontal (U vista desde arriba, D desde abajo)
+ * y la fila de pegatinas de cada lado. Devuelve { out, total } (el lado del cuadrado en unidades).
+ */
+function planContent(model, mask, { arrows = false, face = 'U' } = {}) {
   const size = model.size;
-  const cell = 24;
+  const cell = size > 3 ? 18 : 24;
   const gap = 2;
   const strip = 7;
   const origin = strip + gap + 2;
@@ -20,19 +23,37 @@ export function topView(model, mask, { arrows = false } = {}) {
   const rect = (x, y, w, h, fill, r = 3) => `<rect x="${n(x)}" y="${n(y)}" width="${w}" height="${h}" rx="${r}" fill="${fill}"/>`;
   let out = '';
 
-  model.faceGrid('U').forEach((row, r) => row.forEach((s, c) => (out += rect(at(c), at(r), cell, cell, colorOf(s, mask)))));
-  const back = model.faceGrid('B')[0].slice().reverse();
-  const front = model.faceGrid('F')[0];
-  const right = model.faceGrid('R')[0].slice().reverse();
-  const left = model.faceGrid('L')[0];
+  model.faceGrid(face).forEach((row, r) => row.forEach((s, c) => (out += rect(at(c), at(r), cell, cell, colorOf(s, mask)))));
+  const edge = face === 'U' ? 0 : size - 1; // fila de cada cara lateral que toca la cara dibujada
+  const rev = (a) => a.slice().reverse();
+  const up = face === 'U';
+  const top = up ? rev(model.faceGrid('B')[edge]) : model.faceGrid('F')[edge];
+  const bottom = up ? model.faceGrid('F')[edge] : rev(model.faceGrid('B')[edge]);
+  const right = up ? rev(model.faceGrid('R')[edge]) : model.faceGrid('R')[edge];
+  const left = up ? model.faceGrid('L')[edge] : rev(model.faceGrid('L')[edge]);
   for (let i = 0; i < size; i++) {
-    out += rect(at(i) + 2, 2, cell - 4, strip, colorOf(back[i], mask), 2);
-    out += rect(at(i) + 2, origin + span + gap, cell - 4, strip, colorOf(front[i], mask), 2);
+    out += rect(at(i) + 2, 2, cell - 4, strip, colorOf(top[i], mask), 2);
+    out += rect(at(i) + 2, origin + span + gap, cell - 4, strip, colorOf(bottom[i], mask), 2);
     out += rect(origin + span + gap, at(i) + 2, strip, cell - 4, colorOf(right[i], mask), 2);
     out += rect(2, at(i) + 2, strip, cell - 4, colorOf(left[i], mask), 2);
   }
   if (arrows) out += permutationArrows(model, (x) => at(x + model.h) + cell / 2);
+  return { out, total };
+}
+
+/** Vista en planta: cara superior y la fila de pegatinas de cada lado. */
+export function topView(model, mask, { arrows = false } = {}) {
+  const { out, total } = planContent(model, mask, { arrows });
   return `<svg viewBox="0 0 ${total} ${total}" aria-hidden="true" focusable="false">${out}</svg>`;
+}
+
+/** Dos plantas, la capa superior y la inferior (vista desde abajo), para casos que afectan a ambas. */
+export function layersView(model, mask) {
+  const up = planContent(model, mask, { face: 'U' });
+  const down = planContent(model, mask, { face: 'D' });
+  const gap = 8;
+  const total = up.total;
+  return `<svg class="layers" viewBox="0 0 ${total * 2 + gap} ${total}" aria-hidden="true" focusable="false">${up.out}<g transform="translate(${total + gap} 0)">${down.out}</g></svg>`;
 }
 
 /** Flechas que indican a dónde debe ir cada pieza de la última capa. */
