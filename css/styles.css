@@ -98,6 +98,24 @@ svg {
   min-width: 0;
 }
 
+.social {
+  flex: none;
+  margin-right: -8px;
+  border-radius: 4px;
+  color: var(--muted);
+  transition: color 0.15s;
+}
+
+.social:hover {
+  color: var(--accent);
+}
+
+.social svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
 .brand {
   font-weight: 700;
   font-size: 17px;
@@ -859,6 +877,10 @@ kbd {
     flex-wrap: wrap;
     gap: 8px 10px;
     padding: 8px 12px;
+  }
+
+  .social {
+    margin-right: 0;
   }
 
   .brand {
