@@ -138,11 +138,6 @@ export class MegaminxModel {
     return NORMALS[FACE_INDEX[move.face]];
   }
 
-  /** Factor de duración de la animación: 144° (q = ±2) dura más que 72°, pero no el doble. */
-  turnFactor(move) {
-    return Math.abs(move.q) === 2 ? 1.45 : 1;
-  }
-
   /** Secuencia inversa (conserva la anotación `group`). */
   invertMoves(moves) {
     return invertMoves(moves);

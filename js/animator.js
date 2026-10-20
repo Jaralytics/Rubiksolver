@@ -27,15 +27,21 @@ export class Animator {
       return Promise.resolve();
     }
     return new Promise((resolve) => {
-      const target = move.q * this.model.unit;
-      // Los giros largos (media vuelta, 144°): algo más lentos, pero no el doble; lo decide el modelo.
-      const total = duration * (this.model.turnFactor?.(move) ?? 1);
+      // Los giros dobles (media vuelta, 144°) se animan como dos giros simples
+      // seguidos, cada uno con su propia aceleración y una breve pausa entre ellos.
+      const steps = Math.abs(move.q);
+      const step = Math.sign(move.q) * this.model.unit;
+      const pause = duration * 0.15;
+      const total = steps * duration + (steps - 1) * pause;
       const start = performance.now();
       this.view.beginTurn(move);
       const job = { move, resolve, frame: 0 };
       const tick = (now) => {
-        const t = Math.min(1, (now - start) / total);
-        this.view.setTurn(target * ease(t));
+        const elapsed = Math.min(total, now - start);
+        const k = Math.min(steps - 1, Math.floor(elapsed / (duration + pause)));
+        const local = Math.min(1, (elapsed - k * (duration + pause)) / duration);
+        const t = elapsed / total;
+        this.view.setTurn(step * (k + ease(local)));
         if (t >= 1) this.finish();
         else job.frame = requestAnimationFrame(tick);
       };

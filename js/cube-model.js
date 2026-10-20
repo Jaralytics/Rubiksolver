@@ -285,11 +285,6 @@ export class CubeModel {
     return AXIS_UNIT[move.axis];
   }
 
-  /** Factor de duración de la animación de un movimiento: la media vuelta, algo más larga, no el doble. */
-  turnFactor(move) {
-    return Math.abs(move.q) === 2 ? 1.45 : 1;
-  }
-
   /** Secuencia inversa (conserva la anotación `group`). */
   invertMoves(moves) {
     return invertMoves(moves);
