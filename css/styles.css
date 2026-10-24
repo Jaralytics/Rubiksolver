@@ -583,6 +583,10 @@ svg {
   font: 500 13px/1 var(--mono);
 }
 
+.check[hidden] {
+  display: none;
+}
+
 .check input {
   width: 16px;
   height: 16px;

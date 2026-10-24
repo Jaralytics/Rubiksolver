@@ -18,10 +18,15 @@ export async function loadCatalog(url) {
 /** Texto del algoritmo elegido: 0 = principal, 1… = alternativas. */
 export const algText = (caso, variant = 0) => (variant === 0 ? caso.algoritmo : caso.alternativas[variant - 1]);
 
-/** Movimientos de la solución y de la preparación (del puzzle resuelto al caso). */
-export function caseMoves(caso, variant, puzzle) {
-  const moves = puzzle.interpretar(algText(caso, variant));
-  const setup = caso.preparacion ? puzzle.interpretar(caso.preparacion) : puzzle.invertir(moves);
+/**
+ * Movimientos de la solución y de la preparación (del puzzle resuelto al caso). Con `soloCaras`
+ * la solución se reescribe sin rotaciones ni capas centrales; la preparación sale del algoritmo
+ * original, así que el caso se ve igual en las dos versiones.
+ */
+export function caseMoves(caso, variant, puzzle, soloCaras = false) {
+  const original = puzzle.interpretar(algText(caso, variant));
+  const setup = caso.preparacion ? puzzle.interpretar(caso.preparacion) : puzzle.invertir(original);
+  const moves = soloCaras && puzzle.soloCaras ? puzzle.soloCaras(original) : original;
   return { moves, setup };
 }
 

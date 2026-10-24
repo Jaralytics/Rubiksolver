@@ -252,6 +252,71 @@ export function movesToString(moves) {
   return moves.map((m) => m.text).join(' ');
 }
 
+const FACE_LETTERS = [['L', 'R'], ['D', 'U'], ['B', 'F']];
+
+/**
+ * Reescribe una secuencia solo con giros de caras (R, U2, y Rw en cubos grandes): sin
+ * rotaciones (x, y, z) ni capas centrales (M, E, S). Cada giro se cambia por su equivalente
+ * con las capas del lado contrario (r = L x, M = R L' x') y la rotación sobrante no se hace:
+ * se recuerda en `frame` para renombrar los giros siguientes. Los centros no se mueven, así
+ * que el resultado deja el mismo estado salvo una rotación del cubo completo. Conserva `group`.
+ */
+export function toFaceTurns(moves, size = 3) {
+  const h = (size - 1) / 2;
+  let frame = IDENTITY; // de los ejes del algoritmo a los del cubo quieto
+  const turns = []; // { axis, lo, hi, q, group }
+
+  const push = (axis, lo, hi, q, group) => {
+    const last = turns[turns.length - 1];
+    if (last && last.group === group && last.axis === axis && last.lo === lo && last.hi === hi) {
+      last.q += q;
+      if (last.q % 4 === 0) turns.pop();
+    } else if (q % 4 !== 0) {
+      turns.push({ axis, lo, hi, q, group });
+    }
+  };
+
+  // Gira las capas [lo, hi] del eje `axis` del cubo quieto `q` cuartos.
+  const turn = (axis, lo, hi, q, group) => {
+    if (lo === -h && hi === h) {
+      frame = matMul(quarterTurns(axis, -q), frame);
+    } else if (lo > -h && hi < h) {
+      // Capas interiores: bloque hasta la cara más cercana menos su parte exterior.
+      if (lo + hi >= 0) {
+        turn(axis, lo, h, q, group);
+        turn(axis, hi + 1, h, -q, group);
+      } else {
+        turn(axis, -h, hi, q, group);
+        turn(axis, -h, lo - 1, -q, group);
+      }
+    } else if (hi - lo + 1 > size - (hi - lo + 1)) {
+      // Más de la mitad del cubo: se giran las capas restantes al revés y el cubo entero.
+      if (hi === h) push(axis, -h, lo - 1, -q, group);
+      else push(axis, hi + 1, h, -q, group);
+      frame = matMul(quarterTurns(axis, -q), frame);
+    } else {
+      push(axis, lo, hi, q, group);
+    }
+  };
+
+  for (const m of moves) {
+    const v = matVec(frame, AXIS_UNIT[m.axis]);
+    const axis = v.findIndex((c) => c !== 0);
+    const s = v[axis];
+    if (s > 0) turn(axis, m.lo, m.hi, m.q, m.group);
+    else turn(axis, -m.hi, -m.lo, -m.q, m.group);
+  }
+
+  return turns.map(({ axis, lo, hi, q, group }) => {
+    const side = hi === h ? 1 : 0;
+    const letter = FACE_LETTERS[axis][side];
+    const depth = hi - lo + 1;
+    const k = (((q * BASE[letter].dir) % 4) + 4) % 4;
+    const token = (depth === 1 ? letter : `${depth > 2 ? depth : ''}${letter}w`) + ['', '', '2', "'"][k];
+    return { ...parseMove(token, size), group };
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Modelo
 // ---------------------------------------------------------------------------

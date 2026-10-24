@@ -57,6 +57,7 @@ function readSaved() {
   return {
     speed: Number.isFinite(speed) && speed >= 0.5 && speed <= 3 ? speed : 1,
     animateSetup: typeof raw.animateSetup === 'boolean' ? raw.animateSetup : undefined,
+    soloCaras: raw.soloCaras === true,
     puzzle: typeof raw.puzzle === 'string' ? raw.puzzle : undefined,
     porCubo,
   };
@@ -88,6 +89,7 @@ export async function startApp() {
     variant: 0,
     moves: [],
     animateSetup: saved.animateSetup ?? !reducedMotion,
+    soloCaras: saved.soloCaras,
     lastCase: {}, // etapa → último caso visto (del cubo activo)
   };
   let speedValue = saved.speed;
@@ -95,7 +97,7 @@ export async function startApp() {
   const save = () => {
     try {
       saved.porCubo[puzzle.id] = { lastCase: state.lastCase, lastStage: state.etapa?.id };
-      localStorage.setItem(STORE, JSON.stringify({ speed: speedValue, animateSetup: state.animateSetup, puzzle: puzzle.id, porCubo: saved.porCubo }));
+      localStorage.setItem(STORE, JSON.stringify({ speed: speedValue, animateSetup: state.animateSetup, soloCaras: state.soloCaras, puzzle: puzzle.id, porCubo: saved.porCubo }));
     } catch {
       /* almacenamiento no disponible: la página funciona igual */
     }
@@ -161,6 +163,7 @@ export async function startApp() {
     state.lastCase = saved.porCubo[id].lastCase;
     state.etapa = state.caso = null;
     picker.setCurrent(id);
+    $('face-turns-option').hidden = !puzzle.soloCaras;
     renderHelp();
     document.title = `Cubo paso a paso · ${puzzle.etiqueta ?? puzzle.id}`;
     return true;
@@ -366,7 +369,7 @@ export async function startApp() {
 
   function loadVariant(variant) {
     state.variant = variant;
-    const { moves, setup } = caseMoves(state.caso, variant, puzzle);
+    const { moves, setup } = caseMoves(state.caso, variant, puzzle, state.soloCaras);
     state.moves = moves;
     view.setMask(maskFor(puzzle, state.etapa, state.caso));
     renderCase();
@@ -443,6 +446,13 @@ export async function startApp() {
   $('animate-setup').onchange = (e) => {
     state.animateSetup = e.target.checked;
     save();
+  };
+
+  $('face-turns').checked = state.soloCaras;
+  $('face-turns').onchange = (e) => {
+    state.soloCaras = e.target.checked;
+    save();
+    if (state.caso) loadVariant(state.variant);
   };
 
   $('zoom-in').onclick = () => view.zoom(0.88);

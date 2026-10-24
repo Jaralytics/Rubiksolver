@@ -1,7 +1,7 @@
 // test-engine.mjs — Pruebas del motor lógico con identidades conocidas del cubo.
 // Uso: node tools/test-engine.mjs
 
-import { CubeModel, parseAlg, invertMoves, movesToString } from '../js/cube-model.js';
+import { CubeModel, parseAlg, invertMoves, movesToString, toFaceTurns } from '../js/cube-model.js';
 
 let failed = 0;
 const check = (name, ok) => {
@@ -259,6 +259,25 @@ check('Megaminx: sentido horario: tras U, la arista U-F está en el hueco U-L', 
   const p = m.pieces[slot('U', 'F')];
   return p.pos === slot('U', 'L') && m.stickerAt(slot('U', 'L'), 'U').face === 'U' && m.stickerAt(slot('U', 'L'), 'L').face === 'F';
 })());
+
+console.log('Solo giros de caras');
+// La versión de caras, deshecha, seguida del original debe dejar solo una rotación del cubo.
+const sameUpToRotation = (size, alg) => {
+  const moves = parseAlg(alg, size);
+  const faces = toFaceTurns(moves, size);
+  const h = (size - 1) / 2;
+  const onlyFaces = faces.every((m) => m.lo === -h || m.hi === h);
+  return onlyFaces && new CubeModel(size).applyMoves(invertMoves(faces)).applyMoves(moves).isSolved();
+};
+const faceText = (alg) => movesToString(toFaceTurns(parseAlg(alg)));
+check("Ua con M: M2 U M U2 M' U M2 = L2 R2 D L' R F2 L R' D L2 R2", faceText("M2 U M U2 M' U M2") === "L2 R2 D L' R F2 L R' D L2 R2");
+check("y' R' U' R = F' U' F; r U = L F", faceText("y' R' U' R") === "F' U' F" && faceText('r U') === 'L F');
+check('Rotaciones, capas centrales y anchas equivalen a giros de caras (2x2 a 5x5)', [
+  [2, "x R y U' z F2 R"],
+  [3, "M2 U M U2 M' U M2 r U R' U' r' F R F' x R' U R' D2 R U' R' D2 R2 x' E S' d f' b l u"],
+  [4, "2R2 U2 2R2 Uw2 2R2 2U2 3Rw x Rw' y 2-3Rw z' Lw"],
+  [5, "M E S 2R 3R 3Rw 2-3Rw 2-4Rw' x y z Rw' 4Rw"],
+].every(([size, alg]) => sameUpToRotation(size, alg)));
 
 console.log(failed ? `\n${failed} prueba(s) fallaron` : '\nMotor OK');
 process.exit(failed ? 1 : 0);

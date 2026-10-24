@@ -1,7 +1,7 @@
 // cubo.js — Fábrica de las entradas de cubos NxN: modelo, vista, notación, miniaturas e icono
 // son los mismos para todos; cada tamaño solo aporta su id, catálogo, máscaras y ayuda.
 
-import { CubeModel, parseAlg, invertMoves } from '../cube-model.js';
+import { CubeModel, parseAlg, invertMoves, toFaceTurns } from '../cube-model.js';
 import { CubeView } from '../cube-view.js';
 import { topView, isoView, layersView, ARROW_DEFS } from '../thumbnails.js';
 import { cubeIcon } from '../icons.js';
@@ -81,6 +81,7 @@ export function crearCubo(size, datos) {
     Vista: CubeView,
     interpretar: (texto) => parseAlg(texto, size),
     invertir: invertMoves,
+    soloCaras: (moves) => toFaceTurns(moves, size),
     gatillo: gatilloEn,
     abreviar: (nombre) => nombre.replace(/^(OLL|F2L|Perm) /, ''),
     defs: ARROW_DEFS,
